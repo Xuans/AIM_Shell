@@ -1,22 +1,16 @@
 import $ from 'jquery'
-
-const Configuration=()=>{};
-
-import KeyManager from './keyManager'
-// import validate from '../resolve/validate'
-// import editor from 'ide/mixins/editor'
+import KeyManager from '../../util/keyManager'
+import makeState from '../util/state'
 
 export default {
   props: ['file'],
-
-  // extends: editor,
 
   data () {
   },
 
   computed: {
-    cfgByResId () {
-      return Configuration(this.file)
+    state () {
+      return makeState(this.file)
     }
   },
 
@@ -25,9 +19,6 @@ export default {
     this.keyManager = new KeyManager()
     this.keyManager.watchPage('0', this.keyManagerOfFlow)
     this.keyManager.active('0')
-
-    // this.cfgByResId.editorActions().forEach(action => this.editorActions.push(action))
-    // this.cfgByResId.editorActions && this.cfgByResId.editorActions().forEach(action => this.editorActions.push(action))
   },
 
   beforeDestroy () {
@@ -36,25 +27,20 @@ export default {
   },
 
   methods: {
-    /* editor hooks */
-    getPartName () {
-      return this.cfgByResId.getDisplayName(this.file.path)
-    },
-
     updateInput (editor) {
-      this.cfgByResId.update(editor)
-      this.cfgByResId.setInput(this.input, this.cfgByResId.genInput(editor))
+      /*this.state.update(editor)
+      this.state.setInput(this.input, this.state.genInput(editor))*/
     },
 
     /* about flow */
-    propsOfFlow (type, input) {
-      let config = this.cfgByResId.input2Config(type, input)
+    propsOfFlow (someParams) {
+      let config = this.state.input2Config(someParams)
       let evnet = { vueHandler: this.handleOfFlowCallback }
 
       return {config, eventsOnEditor: evnet, keyManager: this.keyManagerOfFlow}
     },
     saveOfFlow (editor) {
-      this.cfgByResId.save(editor)
+      this.state.save(editor)
     },
     dirtyOfFlow (editor) {
       return editor == null ? false : editor.isDirty()
@@ -90,6 +76,5 @@ export default {
         }
       }
     }
-  },
-  // components: {switchTool, toolbar}
+  }
 }

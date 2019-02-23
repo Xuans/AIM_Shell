@@ -1,13 +1,17 @@
 <template>
   <div id="app">
-    <Form v-bind:data="data"></Form>
+    <!--<Form v-bind:data="data"></Form>-->
     <Editor v-bind:file="file"></Editor>
   </div>
 </template>
 
+<style>
+  @import "~element-ui/lib/theme-chalk/index.css";
+</style>
+
 <script>
 import Form from './components/Form.vue';
-import Editor from './editor/dblfEditor.vue';
+import Editor from './editor/index.vue';
 
 export default {
   name: 'app',

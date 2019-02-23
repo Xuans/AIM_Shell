@@ -39,7 +39,7 @@
 <script type="text/javascript">
 import $ from "jquery";
 import ___ from "../anrajs/index";
-import KeyManager from "../editor/keyManager";
+import KeyManager from "../util/keyManager";
 import Split from "./split";
 
 const SHOW_MENU = "showmenu";

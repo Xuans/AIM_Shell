@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="height: 1000px">
         <flow-editor ref="stepEditor"
                      v-if="stepOpts.input != null"
                      v-bind="stepCfg"
@@ -12,7 +12,7 @@
             <palette slot="palette" @load="handleOfLoadBcpt" @create="handleOfCreate"></palette>
         </flow-editor>
 
-        <dblf-transition ref="transition"
+        <!--<dblf-transition ref="transition"
                          :visible="nodeOpts.visible"
                          :expand.sync="nodeOpts.expand"
                          :desp="nodeOpts.desp"
@@ -32,21 +32,23 @@
                 <palette slot="palette" @load="handleOfLoadTcpt" @create="handleOfCreate"></palette>
             </flow-editor>
 
-        </dblf-transition>
+        </dblf-transition>-->
     </div>
 </template>
 <script type="text/javascript">
     import palette from '../flowEditor/palette.vue'
     import flowEditor from '../flowEditor/flowEditor.vue'
-    // import contextmenu from 'ide/mixins/contextmenu'
-    import editorFeature from './dblfFeature'
-    import dblfTransition from './dblfEditor-transition.vue'
+    import dblfTransition from './transition.vue'
+
+    import editorFeature from './mixins/dblfFeature'
+    import contextmenu from './mixins/contextmenu'
    // import abbreviate from './abbreviate'
+
 
     export default {
       name: 'dblf-editor',
 
-      mixins: [editorFeature, /*contextmenu, abbreviate*/],
+      mixins: [editorFeature, contextmenu, /*abbreviate*/],
 
       data () {
         return {

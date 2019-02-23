@@ -1,5 +1,5 @@
 import editorFeature from './editorFeature'
-import NodePool from './nodePool'
+import NodePool from '../util/nodePool'
 
 export default {
   extends: editorFeature,
@@ -32,7 +32,7 @@ export default {
     save (resolve, reject) {
       this.validateOfDblf().then(() => {
         this.updateInput()
-        this.saveEditorFile(resolve, reject).then(this.saveOfDblf)
+        // this.saveEditorFile(resolve, reject).then(this.saveOfDblf)
       })
     },
 
@@ -40,16 +40,16 @@ export default {
       return this.inputOfFlow({Node: model.props})
     },
 
-    // @override
+    /*// @override
     updateInput () {
-      /* TODO fix */
-      this.cfgByResId.update(this.flowOfStep, this.store.nodes)
-      this.cfgByResId.setInput(this.input, this.cfgByResId.genInput(this.flowOfStep, this.store.pool))
-    },
+      /!* TODO fix *!/
+      this.state.update(this.flowOfStep, this.store.nodes)
+      this.state.setInput(this.input, this.state.genInput(this.flowOfStep, this.store.pool))
+    },*/
 
     /* about dblf */
     validateOfDblf () {
-      let store = this.store
+      /*let store = this.store
       if (this.store.size === 0) {
         return this.validateOfFlow('step', this.flowOfStep)
       }
@@ -59,10 +59,13 @@ export default {
       let resolve = () => (item = nodeIterator.next()).done
           ? this.validateOfFlow('step', this.flowOfStep)
           : this.validateOfFlow('node', item.value).then(resolve)
-      return this.validateOfFlow('node', item.value).then(resolve)
+      return this.validateOfFlow('node', item.value).then(resolve)*/
+
+      // TODO 验证是否可保存
+      return Promise.resolve()
     },
     saveOfDblf () {
-      Reflect.apply(this.cfgByResId.save, this.cfgByResId, this.getAllEditors(false))
+      Reflect.apply(this.state.save, this.state, this.getAllEditors(false))
     },
 
     /* node pool manage */
