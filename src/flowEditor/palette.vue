@@ -15,14 +15,11 @@
                  :allow-drop="() => false"
                  @node-expand="data => data.expand = true"
                  @node-collapse="data => data.expand = false"
-                 @node-click="handleOfNodeClick"
-                 @node-contextmenu="handleOfContextmenu"></el-tree>
+                 @node-click="handleOfNodeClick"></el-tree>
     </el-container>
 </template>
 
 <style>
-    /* @import "~assets/style/flow1/iconfont.css"; */
-
     .palette_container {
         transition: 1s;
         padding: 5px;
@@ -45,13 +42,10 @@
 
 <script>
     import $ from 'jquery'
-    //import contentmenu from 'ide/mixins/contextmenu'
 
     export default {
 
       inject: ['flowEditor'],
-
-      //extends: contentmenu,
 
       props: {},
 
@@ -60,10 +54,10 @@
           expandKeys: [1],
           treeProps: {
             children: 'children',
-            label: 'label',
-            isLeaf (data) {
+            label: 'tree_node_desc',
+            /*isLeaf (data) {
               return data.$type != null
-            }
+            }*/
           }
         }
       },
@@ -97,8 +91,8 @@
           const content = (
               <span class="custom-tree-node">
                   <span>
-                      <i class={data.icon}
-                         style={`cursor: pointer;padding: 0.6rem;${data.color != null ? `color: ${data.color}` : ''}`}>
+                      <i class={'el-icon-flow-twofirstlevel1'}
+                         style={`cursor: pointer;padding: 0.6rem;color: #466183`}>
                       </i>
                       <span class="el-tree-node__label">{node.label}</span>
                   </span>
@@ -129,7 +123,7 @@
           ])
         },
         handleOfNodeClick (item) {
-          this.handleOfHideMenu()
+          // this.handleOfHideMenu()
           this.$emit('create', item, this.editor)
         }
       }

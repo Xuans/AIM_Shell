@@ -7,6 +7,8 @@
 
 <style>
   @import "~element-ui/lib/theme-chalk/index.css";
+  @import "assets/flow-style.css";
+  @import "assets/flow1/iconfont.css";
 </style>
 
 <script>

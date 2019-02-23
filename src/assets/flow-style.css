@@ -1,0 +1,47 @@
+.canvas-default {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150%;
+    height: 150%;
+}
+
+.canvas-default g {
+    transition: all 0.5s;
+}
+
+.canvas-poper {
+    position:absolute;
+    border-radius:4px;
+}
+
+.connection-wrap {
+    fill: none;
+    stroke: #8F8FF3;
+    stroke-width: 15;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0;
+    cursor: move;
+}
+
+.connection-wrap:hover {
+    opacity: .4;
+    stroke-opacity: .4;
+}
+
+.gird-line {
+    fill: none;
+    stroke: #000000;
+    stroke-width: 1;
+    opacity: 0.5;
+}
+
+.grid-obstacle {
+    pointer-events: none;
+    stroke: none;
+    stroke-width: 1;
+    stroke: #000000;
+    stroke-opacity: 0.5;
+    opacity: 0.5;
+}

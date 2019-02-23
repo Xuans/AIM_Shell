@@ -1,6 +1,7 @@
 import $ from 'jquery'
 import KeyManager from '../../util/keyManager'
 import makeState from '../util/state'
+import handleOfCreate from "../util/create-tool";
 
 export default {
   props: ['file'],
@@ -61,7 +62,7 @@ export default {
     },
 
     /* handlers */
-    handleOfCreate: $.noop,
+    handleOfCreate: handleOfCreate,
     handleOfSave: $.noop,
     handleOfLoad:  $.noop,
     handleOfCommand () {
