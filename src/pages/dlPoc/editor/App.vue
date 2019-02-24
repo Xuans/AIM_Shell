@@ -1,40 +1,26 @@
 <template>
   <div id="app">
-    <!--<Form v-bind:data="data"></Form>-->
     <Editor v-bind:file="file"></Editor>
   </div>
 </template>
 
-<style>
-  @import "~element-ui/lib/theme-chalk/index.css";
-  @import "assets/flow-style.css";
-  @import "assets/flow1/iconfont.css";
-</style>
 
 <script>
-import Form from './components/Form.vue';
-import Editor from './editor/index.vue';
+import Editor from '../../../editor/index.vue';
+import "element-ui/lib/theme-chalk/index.css";
+import "../../../assets/flow-style.css";
+import "../../../assets/flow1/iconfont.css";
 
 export default {
   name: 'app',
   data:function(){
     return {
-      message:'hello world',
-      data:[{
-        type:'string',
-        component:'input',
-        length:'20',
-        name:'length',
-        desp:'长度',
-        value:'hello world'
-      }],
       file:{
         key:'hello'
       }
     };
   },
   components:{
-    Form,
     Editor
   }
 }
