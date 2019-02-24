@@ -27,6 +27,8 @@ npm install
 npm run serve
 ```
 
+假设开发的是`dlPoc`子项目下的`example`页面，访问路径为 `/dlPoc/example.html`，如：`http://localhost:8081/dlPoc/example.html`，具体端口根据实际情况确定。
+
 ### 编译部署代码并复制到AWEB项目
 ```
 npm run build && gulp
