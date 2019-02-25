@@ -54,8 +54,10 @@ export default function makeState() {
               return true
             },
             run() {
-              scriptDebugger.run(Serivces.getServiceInstance(), (index, log) => {
-                console.log(index, log);
+              scriptDebugger.run(Serivces.getServiceInstance(), (index, result, log) => {
+                this.editor.rootEditPart.$emit('vueHandler',vueInstance => {
+                  vueInstance.fireDebug(index, result, log);
+                })
               });
             }
           }
@@ -70,27 +72,27 @@ export default function makeState() {
       return Object.assign(config, BaseConfig)
     },
 
-    save (editor, target) {
+    save(editor, target) {
       if (editor.isDirty() && this.validate(editor)) {
 
         this.update(editor)
 
         Serivces
-            .save(target, this.getData(editor))
-            .then(() => editor.doSave())
+          .save(target, this.getData(editor))
+          .then(() => editor.doSave())
       }
     },
 
-    getData (editor) {
+    getData(editor) {
 
     },
 
-    update (editor) {
+    update(editor) {
       let nodeStore = editor.store.node
       let lineStore = editor.store.line
     },
 
-    validate () {
+    validate() {
       return true
     }
   }
