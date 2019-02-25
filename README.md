@@ -31,7 +31,7 @@ npm run serve
 
 ### 编译部署代码并复制到AWEB项目
 ```
-npm run build && gulp
+npm run build
 ```
 
 ### Run your tests
