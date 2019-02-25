@@ -4,20 +4,20 @@ import makeState from '../util/state'
 import handleOfCreate from "../util/create-tool";
 
 export default {
-  props: ['file'],
+  props: ['target', 'input'],
 
   data () {
   },
 
   computed: {
     state () {
-      return makeState(this.file)
+      return makeState(this.target)
     }
   },
 
   created () {
     this.keyManagerOfFlow = new KeyManager()
-    this.keyManager = new KeyManager()
+    this.keyManager = new KeyManager('global')
     this.keyManager.watchPage('0', this.keyManagerOfFlow)
     this.keyManager.active('0')
   },
@@ -34,8 +34,8 @@ export default {
     },
 
     /* about flow */
-    propsOfFlow (someParams) {
-      let config = this.state.input2Config(someParams)
+    propsOfFlow () {
+      let config = this.state.input2Config(this.target)
       let evnet = { vueHandler: this.handleOfFlowCallback }
 
       return {config, eventsOnEditor: evnet, keyManager: this.keyManagerOfFlow}

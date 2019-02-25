@@ -1,6 +1,12 @@
 <template>
   <div id="app">
-    <Editor v-bind:file="file"></Editor>
+    <Editor v-bind:target="target">
+
+      <!-- 表单凹槽 -->
+      <template slot="form" slot-scope="input">
+        <iform></iform>
+      </template>
+    </Editor>
   </div>
 </template>
 
@@ -16,17 +22,19 @@ import ElementUi from 'element-ui'
 Vue.config.productionTip = false
 Vue.use(ElementUi);
 
+import Serivce from '../../../../public/fakeSerivce/index'
+import iform from '../dyncForm/index.vue'
+
 export default {
   name: 'app',
   data:function(){
     return {
-      file:{
-        key:'hello'
-      }
+      target: Serivce.createSerivceCtr() || Serivce.getServiceCtr()
     };
   },
   components:{
-    Editor
+    Editor,
+    iform
   }
 }
 </script>

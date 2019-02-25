@@ -12,27 +12,16 @@
             <palette slot="palette" @load="handleOfLoadBcpt" @create="handleOfCreate"></palette>
         </flow-editor>
 
-        <!--<dblf-transition ref="transition"
+        <dblf-transition ref="transition"
                          :visible="nodeOpts.visible"
                          :expand.sync="nodeOpts.expand"
                          :desp="nodeOpts.desp"
                          @click-control="nodeOfOpen"
                          @click-back="nodeOfCollapse"
                          @editor-open="nodeOfOpening">
-            <flow-editor ref="nodeEditor"
-                         v-if="nodeOpts.input != null"
-                         v-bind="nodeCfg"
-                         :can-edit="nodeOpts.editable"
-                         :maximize="!nodeOpts.editable"
-                         @init="handleOfNodeInit"
-                         @save="handleOfSave"
-                         @command="handleOfCommand"
-                         @showmenu="handleOfShowMenu"
-                         @hidemenu="handleOfHideMenu">
-                <palette slot="palette" @load="handleOfLoadTcpt" @create="handleOfCreate"></palette>
-            </flow-editor>
 
-        </dblf-transition>-->
+            <slot name="form" :input="nodeOpts.input"></slot>
+        </dblf-transition>
     </div>
 </template>
 <script type="text/javascript">
@@ -42,13 +31,12 @@
 
     import editorFeature from './mixins/dblfFeature'
     import contextmenu from './mixins/contextmenu'
-   // import abbreviate from './abbreviate'
-
+    import abbreviate from './mixins/abbreviate'
 
     export default {
       name: 'dblf-editor',
 
-      mixins: [editorFeature, contextmenu, /*abbreviate*/],
+      mixins: [editorFeature, contextmenu, abbreviate],
 
       data () {
         return {
@@ -70,9 +58,6 @@
       computed: {
         stepCfg () {
           return this.propsOfFlow('step', this.stepOpts.input)
-        },
-        nodeCfg () {
-          return this.propsOfFlow('node', this.nodeOpts.input)
         }
       },
 
@@ -110,14 +95,8 @@
           })
         },
         nodeOfCreateOrReplace (model) {
-          let editor = this.store.getByModel(model)
-          if (editor != null) {
-            return this.$refs['nodeEditor'].replaceEditor(editor)
-          }
-
-          if (model != null) {
-            this.nodeOpts.input = this.inputOfNode(model)
-          }
+          debugger
+          model && (this.nodeOpts.input = model.get('data'))
         },
         nodeOfCreateOrReload (model) {
           if (this.store.containByModel(model)) {

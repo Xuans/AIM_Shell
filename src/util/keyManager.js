@@ -1,4 +1,4 @@
-import 'jquery'
+import $ from 'jquery'
 
 const keyMananger = function (type) {
   let a

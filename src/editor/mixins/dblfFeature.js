@@ -86,7 +86,7 @@ export default {
       return true
     },
     nodeOrNot (selection) {
-      return true
+      return $AG.EditPart.isNode(selection)
     },
 
     setStoreActive (selection) {
@@ -108,11 +108,9 @@ export default {
     },
     handleOfStepInit (editor) {
       this.store = NodePool.create(editor)
-      this.handleOfLoadBcpt(editor)
     },
-    handleOfNodeInit (editor) {
+    handleOfNodeInit () {
       this.store.add(editor)
-      this.handleOfLoadTcpt(editor)
     }
   },
 
