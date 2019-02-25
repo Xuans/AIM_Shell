@@ -1,4 +1,5 @@
-import ___ from "../../anrajs/index";
+
+
 import $ from 'jquery'
 import {terminalPolicy} from './terminal'
 import line from '../figure/line'
@@ -6,6 +7,8 @@ import line from '../figure/line'
 // import {textPolicy0} from "./text-policy";
 
 import {ReaderListener} from "./manhattan-router";
+
+
 
 const fakeNode = {
   canDrag: true,

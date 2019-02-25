@@ -4,13 +4,14 @@
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
-        "build": "vue-cli-service build",
+        "build": "vue-cli-service build && gulp",
         "lint": "vue-cli-service lint"
     },
     "dependencies": {
         "axios": "^0.18.0",
         "element-ui": "^2.5.4",
         "jquery": "^3.3.1",
+        "path": "^0.12.7",
         "split.js": "^1.5.10",
         "vue": "^2.6.6"
     },

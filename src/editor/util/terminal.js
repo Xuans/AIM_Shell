@@ -1,7 +1,6 @@
-import ___ from "../../anrajs/index";
-
 const Terminal = 'Terminal'
 const Terminals = 'Terminals'
+
 
 const LinkTool = $AG.LinkLineTool.extend({
   constructor (callback) {

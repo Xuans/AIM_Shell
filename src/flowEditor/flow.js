@@ -1,8 +1,4 @@
-import $AG from '../anrajs'
 import $ from 'jquery'
-
-console.log($);
-console.log($AG.extend);
 
 const FlowConstruction = $AG.extend({
   background: '#f1f1f4',

@@ -1,5 +1,3 @@
-import $AG from './anrajs'
-
 const isCN = /[^\x00-\xff]/g
 const spacing = 3
 

@@ -482,7 +482,7 @@
    *
    *
    */
-  const anra = anra || {};
+  const anra = window.anra || {};
   const noop$1 = Util.noop;
   /**
    * 数据库
@@ -8316,6 +8316,7 @@
 
   // export * as constants from './src/core/anra.constants';
 
+  window.$AG=$AG;
   return $AG;
 
 })));

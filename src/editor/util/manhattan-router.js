@@ -3,6 +3,8 @@
  * 1. No angle compution, the default is perpendicular
  * 2. Unable to guarantee accurate loss due to decimal point
  */
+
+
 const defaults = {
   padding: 10,
   obstacleSize: 100,
@@ -77,7 +79,6 @@ const defaults = {
   }
 }
 
-import ___ from "../../anrajs/index";
 const Util = $AG.Util
 
 /* Helper Classes */

@@ -1,10 +1,19 @@
 import Vue from 'vue'
 import App from './App.vue'
-import ElementUi from 'element-ui'
 
-Vue.config.productionTip = false
-Vue.use(ElementUi)
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+(function () {
+  const app=window.app;
+  if (app && app.dispatcher) {
+    app.dlPoc = app.dlPoc || {};
+    app.dlPoc.editor = function (viewId) {
+      window.AIM_SHELL = new Vue({
+        render: h => h(App),
+      }).$mount(`#${viewId}`);
+    }
+  } else {
+    window.AIM_SHELL = new Vue({
+      render: h => h(App),
+    }).$mount('#app');
+  }
+}());

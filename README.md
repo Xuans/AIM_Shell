@@ -45,7 +45,7 @@ npm run lint
 ```
 
 ### 自定义打包配置
-参数 [Configuration Reference](https://cli.vuejs.org/config/)。
+[参数](https://cli.vuejs.org/zh/config/)。
 
 在项目中根据项目文件夹打包。
 

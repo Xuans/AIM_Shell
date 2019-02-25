@@ -38,7 +38,6 @@
 
 <script type="text/javascript">
 import $ from "jquery";
-import ___ from "../anrajs/index";
 import KeyManager from "../util/keyManager";
 import Split from "./split";
 
