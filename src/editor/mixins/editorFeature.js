@@ -35,7 +35,7 @@ export default {
 
       return {config, eventsOnEditor: evnet, keyManager: this.keyManagerOfFlow}
     },
-    save (editor) {
+    saveOfFlow (editor) {
       this.state.save(editor)
     },
     dirtyOfFlow (editor) {

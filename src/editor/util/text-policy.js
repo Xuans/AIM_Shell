@@ -115,9 +115,9 @@ export const textPolicy0 = $AG.Policy.extend({
     return $AG.Policy.TextPolicy('data.id', locator, options)
   },
   createDespPolicy () {
-    let duplicate = false
+    let duplicate = true
     let model = this.getHost().model
-    let limit = this.limit
+    // let limit = this.limit
     const fontHeight = this.fontHeight
     const handle = this.createDuplicate()
     const computer = this.computeDespCenter
@@ -126,9 +126,9 @@ export const textPolicy0 = $AG.Policy.extend({
       attribute: {'text-anchor': 'middle'},
       formatter (text) {
         if (duplicate) {
-          /*handle.setText("第一行")
+          handle.setText(`${text}:${model.get('data.port')}`)
           handle.setVisible(true)
-          return `${text}:${model.get('data.port')}`*/
+          return model.get('data.name')
           // can't reach
         } else {
           handle.setVisible(false)

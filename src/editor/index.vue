@@ -60,6 +60,7 @@
       },
 
       created () {
+        window.xx = this
         // 设置快键键
         this.keyManagerOfFlow.bind('tab', (e) => {
           if (e.type === 'keydown') {

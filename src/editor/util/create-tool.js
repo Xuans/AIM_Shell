@@ -6,7 +6,6 @@ export function createData ({id}, data = {}) {
   return {
     id: id,
     type: 'node',
-    color: 'red',
     bounds: data.bounds,
     Terminals: {
       Terminal: [

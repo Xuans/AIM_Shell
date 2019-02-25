@@ -27,5 +27,9 @@ export default {
   policies: {
     't': terminalPolicy({addAnchor: data => data}),
     'tt': textPolicy0,
+  },
+
+  attr: {
+    fill: "grey"
   }
 }

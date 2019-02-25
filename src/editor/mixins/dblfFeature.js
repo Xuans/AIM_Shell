@@ -29,6 +29,10 @@ export default {
       }
       return this.dirty
     },
+    save () {
+      debugger
+      this.saveOfFlow(this.store.step)
+    },
 
     /* node pool manage */
     nodeOfToDelete (model) { // 准备进行删除
