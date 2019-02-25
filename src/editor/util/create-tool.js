@@ -7,7 +7,7 @@ export function createData ({id}, data = {}) {
     id: id,
     type: 'node',
     color: 'red',
-    bounds: [50, 50, 180, 40],
+    bounds: data.bounds,
     Terminals: {
       Terminal: [
         {id: '1', dir: 's', offset: 30},

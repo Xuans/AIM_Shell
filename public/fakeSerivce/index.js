@@ -55,6 +55,7 @@ export default {
           "port":"22",
           "params":{
           },
+          bounds:[120,40,180,40],
           "target":{
             "0":"2",
             "1":"4"
@@ -66,6 +67,7 @@ export default {
           "scriptId":"ahawerw",
           "ip":"192.168.1.2",
           "port":"22",
+          bounds:[20,120,180,40],
           "params":{
           },
           "target":{
@@ -79,6 +81,7 @@ export default {
           "scriptId":"afagaf",
           "ip":"192.168.1.122",
           "port":"22",
+          bounds:[320,250,180,40],
           "params":{
           },
           "target":{
@@ -90,6 +93,7 @@ export default {
           "scriptId":"dsaf123sd",
           "ip":"192.168.1.3",
           "port":"2212",
+          bounds:[20,250,180,40],
           "params":{
             "output":"f:/log/script.log",
             "type":"1"

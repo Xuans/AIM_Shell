@@ -6,9 +6,7 @@
                      :maximize="stepOpts.maximize"
                      @init="handleOfStepInit"
                      @save="handleOfSave"
-                     @command="handleOfCommand"
-                     @showmenu="handleOfShowMenu"
-                     @hidemenu="handleOfHideMenu">
+                     @command="handleOfCommand">
             <palette slot="palette" @load="handleOfLoadBcpt" @create="handleOfCreate"></palette>
         </flow-editor>
 
