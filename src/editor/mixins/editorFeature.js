@@ -4,7 +4,7 @@ import makeState from '../util/state'
 import handleOfCreate from "../util/create-tool";
 
 export default {
-  props: ['target', 'input'],
+  props: ['target'],
 
   data () {
   },
@@ -28,11 +28,6 @@ export default {
   },
 
   methods: {
-    updateInput (editor) {
-      /*this.state.update(editor)
-      this.state.setInput(this.input, this.state.genInput(editor))*/
-    },
-
     /* about flow */
     propsOfFlow () {
       let config = this.state.input2Config(this.target)
@@ -40,22 +35,11 @@ export default {
 
       return {config, eventsOnEditor: evnet, keyManager: this.keyManagerOfFlow}
     },
-    saveOfFlow (editor) {
+    save (editor) {
       this.state.save(editor)
     },
     dirtyOfFlow (editor) {
       return editor == null ? false : editor.isDirty()
-    },
-    validateOfFlow (type, editor) {
-      /*return new Promise(resolve => {
-        validate(type, editor).then(resolve).catch(error => {
-          this.$alert(error.toString(), '保存错误', {
-            confirmButtonText: 'OK',
-            type: 'error',
-            dangerouslyUseHTMLString: true
-          })
-        })
-      })*/
     },
     inputOfFlow (input) {
       return $.extend(true, {}, input)

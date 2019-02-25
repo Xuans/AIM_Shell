@@ -67,7 +67,7 @@ export const textPolicy0 = $AG.Policy.extend({
     const host = this.getHost()
     this.fontHeight = $AG.Util.fontHeight(host.editor.canvas.owner) / 2
     const idPolicy = this.createIdPolicy()
-    const despPolicy = this.createDespPolicy()
+      const despPolicy = this.createDespPolicy()
     host.installPolicies({idPolicy, despPolicy})
   },
   deactivate () {
@@ -112,10 +112,11 @@ export const textPolicy0 = $AG.Policy.extend({
       this.setBounds(location)
     }
 
-    return $AG.Policy.TextPolicy('id', locator, options)
+    return $AG.Policy.TextPolicy('data.id', locator, options)
   },
   createDespPolicy () {
     let duplicate = false
+    let model = this.getHost().model
     let limit = this.limit
     const fontHeight = this.fontHeight
     const handle = this.createDuplicate()
@@ -124,16 +125,14 @@ export const textPolicy0 = $AG.Policy.extend({
       isListen: true,
       attribute: {'text-anchor': 'middle'},
       formatter (text) {
-        const splition = splitStr(text, limit)
-        duplicate = splition[1].length > 0
-
         if (duplicate) {
-          handle.setText(splition[1])
+          /*handle.setText("第一行")
           handle.setVisible(true)
-          return splition[0]
+          return `${text}:${model.get('data.port')}`*/
+          // can't reach
         } else {
           handle.setVisible(false)
-          return text
+          return `${text}:${model.get('data.port')}`
         }
       }
     }
@@ -155,7 +154,7 @@ export const textPolicy0 = $AG.Policy.extend({
       this.setAttribute({'dy': fontHeight - offset})
     }
 
-    return $AG.Policy.TextPolicy('Desp', locator, options)
+    return $AG.Policy.TextPolicy('data.ip', locator, options)
   }
 })
 
