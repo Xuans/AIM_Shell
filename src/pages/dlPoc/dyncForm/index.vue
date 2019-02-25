@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="dync-form-ctn-aim-shell">
+  <div class="dync-form-ctn-aim-shell">
     <el-row :gutter="8">
       <el-col :span="8">
         <el-container>

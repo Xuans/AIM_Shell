@@ -10,7 +10,12 @@
     "dependencies": {
         "axios": "^0.18.0",
         "element-ui": "^2.5.4",
+        "fs": "0.0.1-security",
         "jquery": "^3.3.1",
+        "koa": "^2.7.0",
+        "koa-body": "^4.0.8",
+        "koa-router": "^7.4.0",
+        "koa-static": "^5.0.0",
         "path": "^0.12.7",
         "split.js": "^1.5.10",
         "vue": "^2.6.6"
@@ -69,5 +74,5 @@
         "last 2 versions",
         "not ie <= 8"
     ],
-    "port": 63833
+    "port": 62233
 }

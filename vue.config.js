@@ -71,7 +71,7 @@ module.exports = {
   configureWebpack: config => {
     if (process.env.NODE_ENV === "production") {
       config.output = {
-        libraryTarget:'amd',//'umd',
+        libraryTarget:'umd',
         //filenameHashing:false,
         path: path.join(__dirname, "./dist"),
         // filename: "[name]/js/[name].[contenthash:8].js",

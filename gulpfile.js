@@ -1,5 +1,3 @@
-//是否进行代码压缩
-const isUglify = true;
 //打包目录
 const DEST = '/Users/lijiancheng/Agree/AIM3.0/WebContent';
 const SRC_FLODER = 'dist';
@@ -12,12 +10,11 @@ const CHUNK_FLODER='chunk-vendors';
 const JS_FILE_NAME='script.js';
 const STYLE_FILE_NAME='style.css';
 
+const CLASS_PREFIX='body';
+
 const gulp = require('gulp');
-const uglify = require('gulp-uglify');
 const through2 = require('through2');
 
-const babel = require('gulp-babel');
-const babelenv = require('babel-preset-env');
 const fs = require('fs');
 const path = require('path');
 
@@ -64,9 +61,16 @@ const mkdir = (dirname) => {
 const copyFile=function(src, dst) {
     fs.writeFileSync(dst, fs.readFileSync(src));
 }
+const copyCssFile=function(src,dst){
+    const file=fs.readFileSync(`${src}`).toString();
+
+    fs.writeFileSync(dst,new Buffer(file.replace(/\.el-/g,`${CLASS_PREFIX} .el-`)));
+}
 
 const generateModule = function (queue) {
     const diliver = [SRC_FLODER, PAGES_FLODER].join(path.sep);
+
+    let cssList=[];
     gulp
         .src([
             `${SRC}/${PAGES_FLODER}/**/*.html`], { allowEmpty: true })
@@ -115,6 +119,14 @@ const generateModule = function (queue) {
 
                         return `"requireCss!./${path.join('./', link.replace(path.join(PAGES_FLODER, moduleName), './'))}"` ;
                     }else{
+                        //特殊处理公用样式，加类名前缀
+                        cssList.push({
+                            src:path.join(chunk.dirname,upToRootDir,link),
+                            dst:path.join(moduleDir,upToRootDir,link)
+                        });
+        
+                        
+
                         return `"requireCss!${path.join(upToRootDir, link)}"`;
                     }
                 });
@@ -153,7 +165,21 @@ const generateModule = function (queue) {
             console.log(error);
         })
         .on('end', function () {
+            
+            let map={};
+            cssList.forEach(css=>map[css.src]=css.dst);
+
+            for(let i in map){
+                if(map.hasOwnProperty(i)){
+                    copyCssFile(i,map[i]);
+                }
+            }
+
+
             console.log(new Date().toString() + '\t:复制生成模块成功！');
+
+
+
             queue.next();
         });
 };
@@ -164,6 +190,7 @@ const copy = function (queue) {
         `${SRC}/*`,
         `!${SRC}/pages`,
         `!${SRC}/pages/**/*`,
+        `!${SRC}/${CHUNK_FLODER}/css/*`,
         // `!${SRC}/fakeData`,
         // `!${SRC}/fakeData/**/*`,
         `!${SRC}/fonts`,
