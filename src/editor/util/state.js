@@ -4,6 +4,7 @@ import { ReaderListener } from "./manhattan-router"
 import types from '../figure/types'
 import node from '../figure/node'
 import Serivces from '../../../public/fakeSerivce/index'
+import update from '../util/update'
 import { dblfPolicy } from "./bind-event";
 import { createData, createLine } from "./create-tool";
 import scriptDebugger from "../../util/scriptDebugger";
@@ -82,12 +83,16 @@ export default function makeState() {
     },
 
     getData (editor) {
+      const json = { data: {} }
+      editor.store.node().each(record => {
+        json.data[record.id] = record.data
+      })
 
+      return json
     },
 
     update (editor) {
-      let nodeStore = editor.store.node
-      let lineStore = editor.store.line
+      update(editor)
     },
 
     validate () {
