@@ -70,10 +70,28 @@ export default function makeState() {
       return Object.assign(config, BaseConfig)
     },
 
-    save() {
+    save (editor, target) {
+      if (editor.isDirty() && this.validate(editor)) {
+
+        this.update(editor)
+
+        Serivces
+            .save(target, this.getData(editor))
+            .then(() => editor.doSave())
+      }
     },
 
-    update: $.noop,
-    setInput: $.noop
+    getData (editor) {
+
+    },
+
+    update (editor) {
+      let nodeStore = editor.store.node
+      let lineStore = editor.store.line
+    },
+
+    validate () {
+      return true
+    }
   }
 }

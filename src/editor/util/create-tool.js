@@ -10,9 +10,9 @@ export function createData ({id}, data = {}) {
     bounds: data.bounds,
     Terminals: {
       Terminal: [
-        {id: '1', dir: 's', offset: 30},
-        {id: '0', dir: 's', offset: -30},
-        {id: 'n', dir: 'n', offset: 0}
+        {id: '1', dir: 's', offset: 30, max: 1, linkmyself: false, type: 'out'},
+        {id: '0', dir: 's', offset: -30, max: 1, linkmyself: false, type: 'out'},
+        {id: 'n', dir: 'n', offset: 0, max: 1, linkmyself: false, type: 'in'}
       ]
     },
     data: data

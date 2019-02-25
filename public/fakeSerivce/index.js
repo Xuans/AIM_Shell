@@ -107,5 +107,8 @@ export default {
     return {
       id: 'a service ctr'
     }
+  },
+  save (target, data) {
+    return Promise.reject()
   }
 }

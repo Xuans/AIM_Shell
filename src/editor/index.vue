@@ -93,7 +93,6 @@
           })
         },
         nodeOfCreateOrReplace (model) {
-          debugger
           model && (this.nodeOpts.input = model.get('data'))
         },
         nodeOfCreateOrReload (model) {
