@@ -16,6 +16,7 @@ export default {
   },
 
   created () {
+    window.xx = this
     this.keyManagerOfFlow = new KeyManager()
     this.keyManager = new KeyManager('global')
     this.keyManager.watchPage('0', this.keyManagerOfFlow)
@@ -30,7 +31,7 @@ export default {
   methods: {
     /* about flow */
     propsOfFlow () {
-      let config = this.state.input2Config(this.target)
+      let config = this.state.input2Config()
       let evnet = { vueHandler: this.handleOfFlowCallback }
 
       return {config, eventsOnEditor: evnet, keyManager: this.keyManagerOfFlow}

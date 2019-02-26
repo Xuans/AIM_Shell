@@ -1,9 +1,9 @@
 <template>
     <div style="height: 1000px">
         <flow-editor ref="stepEditor"
-                     v-if="stepOpts.input != null"
+                     v-if="state != null"
                      v-bind="stepCfg"
-                     :maximize="stepOpts.maximize"
+                     :maximize="maximize"
                      @init="handleOfStepInit"
                      @save="handleOfSave"
                      @command="handleOfCommand">
@@ -46,7 +46,6 @@
             visible: false
           },
           stepOpts: {
-            input: this.inputOfFlow(this.input),
             maximize: false,
             disable: false
           }
@@ -55,7 +54,10 @@
 
       computed: {
         stepCfg () {
-          return this.propsOfFlow('step', this.stepOpts.input)
+          return this.propsOfFlow()
+        },
+        maximize () {
+          return this.state.hasPalette ? this.stepOpts.maximize : true
         }
       },
 

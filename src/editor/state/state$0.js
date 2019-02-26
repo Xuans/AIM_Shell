@@ -109,7 +109,8 @@ export default class State$0 extends State {
     this.hasPalette = true
   }
 
-  input2Config (target) {
+  input2Config () {
+    const target = this.target
     const serviceInstance = Serivces.getServiceInstance(target)
     const config = {}
 
@@ -135,9 +136,24 @@ export default class State$0 extends State {
 
   getData (editor) {
     const json = { data: {} }
+    const targetSet = new Set()
+
     editor.store.node().each(record => {
       json.data[record.id] = record.data
+
+      if (record.data.target) {
+        for (let target of Object.values(record.data.target)) {
+          targetSet.add(target)
+        }
+      }
     })
+
+    for (let id of Object.keys(json.data)) {
+      if (!targetSet.has(id)) {
+        json.start = id
+        break
+      }
+    }
 
     return json
   }

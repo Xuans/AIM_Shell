@@ -72,6 +72,7 @@ export default {
       this.handleOfLoad('node', editor)
     },
     handleOfStepInit (editor) {
+      this.store && this.store.clear()
       this.store = NodePool.create(editor)
     },
     handleOfNodeInit () {
