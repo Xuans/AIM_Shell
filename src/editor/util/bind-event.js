@@ -10,6 +10,7 @@ export const dblfPolicy = {
     }
   },
   activate () {
+    console.log("dblfPolicy policy active");
     // this.getHost().addEditPartListener('removingChild', this.removingChild)
     this.getHost().addEditPartListener('selectionChanged', this.selectionChanged)
   },

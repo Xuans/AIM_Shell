@@ -1,6 +1,7 @@
 import {terminalPolicy} from "../util/terminal";
 import selectable from '../util/state-policy'
 import {textPolicy0} from "../util/text-policy";
+import {debugUIPolicy} from "../util/debug-policy";
 
 export default {
   canDrag: true,
@@ -27,6 +28,7 @@ export default {
   policies: {
     't': terminalPolicy({addAnchor: data => data}),
     'tt': textPolicy0,
+    'debugUI':debugUIPolicy,
   },
 
   attr: {

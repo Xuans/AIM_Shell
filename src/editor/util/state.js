@@ -8,13 +8,14 @@ import update from '../util/update'
 import { dblfPolicy } from "./bind-event";
 import { createData, createLine } from "./create-tool";
 import scriptDebugger from "../../util/scriptDebugger";
+import { debugRootPolicy } from "./debug-policy";
 
 const BaseConfig = {
   children: { node },
   lines: { '0': line },
   types,
   onHooks: [ReaderListener],
-  policies: { dblfPolicy },
+  policies: { dblfPolicy, debugRootPolicy },
 }
 
 function addDataAndLine(config, dataOfService) {
@@ -41,25 +42,23 @@ function addDataAndLine(config, dataOfService) {
 }
 
 export default function makeState() {
+  const _self = this;
   return {
+
     input2Config(target) {
       const serviceInstance = Serivces.getServiceInstance(target)
       const config = {
         operations: [
           {
             id: 'debugger',
-            name: '调试',
+            name: '执行流程',
             type: 2,
             key: 'f11',
             check() {
               return true
             },
             run() {
-              scriptDebugger.run(Serivces.getServiceInstance(), (index, result, log) => {
-                this.editor.rootEditPart.$emit('vueHandler',vueInstance => {
-                  vueInstance.fireDebug(index, result, log);
-                })
-              });
+              debuggerRunner.start(this.editor.rootEditPart, _self.getData(this.edtior));
             }
           }
         ]
@@ -84,7 +83,7 @@ export default function makeState() {
       }
     },
 
-    getData (editor) {
+    getData(editor) {
       const json = { data: {} }
       editor.store.node().each(record => {
         json.data[record.id] = record.data
