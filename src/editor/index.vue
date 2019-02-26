@@ -7,7 +7,7 @@
                      @init="handleOfStepInit"
                      @save="handleOfSave"
                      @command="handleOfCommand">
-            <palette slot="palette" @load="handleOfLoadBcpt" @create="handleOfCreate"></palette>
+            <palette v-if="state.hasPalette" slot="palette" @load="handleOfLoadBcpt" @create="handleOfCreate"></palette>
         </flow-editor>
 
         <dblf-transition ref="transition"
@@ -60,7 +60,6 @@
       },
 
       created () {
-        window.xx = this
         // 设置快键键
         this.keyManagerOfFlow.bind('tab', (e) => {
           if (e.type === 'keydown') {

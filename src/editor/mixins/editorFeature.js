@@ -1,6 +1,6 @@
 import $ from 'jquery'
 import KeyManager from '../../util/keyManager'
-import makeState from '../util/state'
+import makeState from '../state'
 import handleOfCreate from "../util/create-tool";
 
 export default {

@@ -54,6 +54,7 @@ export default {
           "ip":"192.168.1.2",
           "port":"22",
           "params":{
+            "output":"f:/log/script.log"
           },
           bounds:[120,40,180,40],
           "target":{
@@ -69,6 +70,7 @@ export default {
           "port":"22",
           bounds:[20,120,180,40],
           "params":{
+            "output":"f:/log/script.log"
           },
           "target":{
             "0":"3",
@@ -83,6 +85,7 @@ export default {
           "port":"22",
           bounds:[320,250,180,40],
           "params":{
+            "output":"f:/log/script.log"
           },
           "target":{
           }
@@ -105,7 +108,8 @@ export default {
   getServiceCtr () {},
   createSerivceCtr () {
     return {
-      id: 'a service ctr'
+      id: 'a service ctr',
+      type: 0
     }
   },
   save (target, data) {

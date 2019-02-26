@@ -61,3 +61,22 @@ export default {
     }
   }
 }
+
+export const lineOfUnselectable = {
+  createFigure (model) {
+    this.config.style.stroke = getColor(model.get('exit'))
+    return $AG.Figure.init(this.config)
+  },
+  style: {
+    'stroke': '#323232',
+    'stroke-width': 3,
+    'cursor': 'move'
+  },
+  type: $AG.CURVE_LINE,
+  endMarker: {
+    type: $AG.TRIANGLE,
+    size: 3
+  },
+  selectable: false,
+  router
+}

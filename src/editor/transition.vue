@@ -14,7 +14,7 @@
                            style="transform: translateY(-40px)"
                            @click="handleOfExpand">
                 </el-button>
-                <span>二级<br/>流程<br/>(TAB)</span>
+                <span>配置<br/>(TAB)</span>
             </div>
         </transition>
 

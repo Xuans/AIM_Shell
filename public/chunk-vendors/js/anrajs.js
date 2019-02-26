@@ -3076,6 +3076,7 @@
               fill: 'white',
               stroke: 'black'
           });
+          this.setStyle('visibility', 'hidden')
       },
       addMenuItem: function (action) {
           var item = new anra.svg.MenuItem(action);
@@ -3099,8 +3100,6 @@
               return;
           }
           this.clearMenuItems();
-          this.setBounds({x: e.x, y: e.y});
-          this.setStyle('visibility', 'visible');
 
           var count = this.addActions(this.host.actionRegistry.selectionActions, selection);
           count += this.addActions(this.host.actionRegistry.cmdStackActions, cmdStack);
@@ -3109,6 +3108,8 @@
           if (count === 0)
               return;
 
+          this.setBounds({x: e.x, y: e.y});
+          this.setStyle('visibility', 'visible');
           this.setBounds({width: 100, height: 30 * count});
           this.paint();
           this.play(0, 0.05);

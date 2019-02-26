@@ -29,6 +29,10 @@ function splitStr (str, limit) {
   return [prefix, str.substr(++i)]
 }
 
+function toString (text) {
+  return text || ''
+}
+
 const DuplicateText = $AG.Control.extend($AG.svg.Text).extend({
   limit: 1,
   text: '',
@@ -126,10 +130,9 @@ export const textPolicy0 = $AG.Policy.extend({
       attribute: {'text-anchor': 'middle'},
       formatter (text) {
         if (duplicate) {
-          handle.setText(`${text}:${model.get('data.port')}`)
+          handle.setText(`${toString(text)}:${toString(model.get('data.port'))}`)
           handle.setVisible(true)
-          return model.get('data.name')
-          // can't reach
+          return toString(model.get('data.name'))
         } else {
           handle.setVisible(false)
           return `${text}:${model.get('data.port')}`

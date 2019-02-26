@@ -6,7 +6,7 @@ export function createData ({id}, data = {}) {
   return {
     id: id,
     type: 'node',
-    bounds: data.bounds,
+    bounds: data.bounds || [50, 50, 180, 40],
     Terminals: {
       Terminal: [
         {id: '1', dir: 's', offset: 30, max: 1, linkmyself: false, type: 'out'},
@@ -31,7 +31,8 @@ export function createLine ({sourceId, targetId, exit, entr}) {
 
 const Tool = $AG.Tool.CreationTool.extend({
   constructor (item) {
-    const data = createData({id: item.tree_p_node_name})
+    const data = createData({id: item.tree_p_node_name}, {name: item.tree_p_node_name})
+    debugger
     const model = $AG.Node.create(data)
 
     this.base(model)
