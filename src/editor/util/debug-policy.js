@@ -122,6 +122,7 @@ export const debugUIPolicy = {
             let dip = panel.dispose;
             panel.dispose = () => {
                 pi.destroy();
+                document.body.removeChild(pop1);
                 dip.call(panel);
                 console.log("dispose");
             }
@@ -182,9 +183,9 @@ export const debugUIPolicy = {
             this.getHost().refresh();
         },
         clean() {
-            this.removeLogPanel();
-            this.getHost().model.set('color', null);
+            this.getHost().model.set('color', 0);
             this.getHost().refresh();
+            this.removeLogPanel();
 
             //回复透明度
             let conns = this.getHost().sConns;

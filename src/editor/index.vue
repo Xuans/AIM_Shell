@@ -1,6 +1,7 @@
 <template>
 
-    <div style="height: 1000px">
+    <div style="position:absolute;height: 95%;width:98%;">
+        <button @click="showLogPanel=!showLogPanel">LOG</button>
         <flow-editor ref="stepEditor"
                      v-if="state != null"
                      v-bind="stepCfg"
@@ -21,20 +22,25 @@
 
             <slot name="form" :input="nodeOpts.input"></slot>
         </dblf-transition>
-    <div ref="logPanel" style="position:fixed;bottom:0;right:0;width:80%;height:200px;box-shadow:0 0 5px gray">
-      <el-table :data="logs" @row-click="handleSelect" style="width:40%;height:100%;float:left;">
-        <el-table-column prop="time" label="日期" width="180"></el-table-column>
-        <el-table-column prop="duration" label="耗时(ms)" width="180"></el-table-column>
-        <el-table-column prop="result" label="结果"></el-table-column>
-      </el-table>
-      <div style="width:60%;height:100%;float:right;background:black;color:white;font-size:.8rem;">
-       
-        <div :key="i" v-for="(node,i) in currentLog.progress" style="padding:4px 4px;">
-            >节点: {{i}} 耗时: <span :style="{color:node.duration>36000?'red':node.duration>10000?'yellow':'green'}">{{convertTimeFormat(node.duration)}}</span><br>  
-            <span :style="{color: node.result?'green':'red'}">{{node.log}}</span>
+      <transition name="el-fade-in-linear">
+        <div  v-show="showLogPanel" ref="logPanel"   class="ui-widget-content"
+        style="position:fixed;bottom:0;right:0;width:80%;height:200px;box-shadow:0 0 5px gray;">
+          <div style="position:relative;height:20px;width:100%;">
+            <span style="position:absolute;right:5px;" @click="showLogPanel=false">x</span>
+          </div>
+          <el-table :data="logs" @row-click="handleSelect" height="calc(100% - 20px)" style="width:40%;float:left;">
+            <el-table-column prop="time" label="日期" width="180"></el-table-column>
+            <el-table-column prop="duration" label="耗时(ms)" width="180"></el-table-column>
+            <el-table-column prop="result" label="结果"></el-table-column>
+          </el-table>
+          <div style="width:60%;height:calc(100% - 20px);float:right;background:black;color:white;font-size:.8rem;overflow-y:scroll;">
+            <div :key="i" v-for="(node,i) in currentLog.progress" style="padding:4px 4px;">
+                >节点: {{i}} 耗时: <span :style="{color:node.duration>36000?'red':node.duration>10000?'yellow':'green'}">{{convertTimeFormat(node.duration)}}</span><br>  
+                <span :style="{color: node.result?'green':'red'}">{{node.log}}</span>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+    </transition>
     <dblf-transition
       ref="transition"
       :visible="nodeOpts.visible"
@@ -46,7 +52,9 @@
     >
       <slot name="form" :input="nodeOpts.input"></slot>
     </dblf-transition>
+    
   </div>
+  
 </template>
 <script type="text/javascript">
 import palette from "../flowEditor/palette.vue";
@@ -69,6 +77,7 @@ export default {
     let logs = Service.getLogs();
     return {
       logs,
+      showLogPanel:false,
       currentLog:{},
           nodeOpts: {
             desp: '',
@@ -93,7 +102,13 @@ export default {
     }
   },
 
+  mounted(){
+    $(this.$refs.logPanel).draggable();
+    $(this.$refs.logPanel).resizable({
+      handles: "w,e,s,n,se,ne,sw,nw" , 
+    });
 
+  },
   created() {
     // 设置快键键
     this.keyManagerOfFlow.bind("tab", e => {
