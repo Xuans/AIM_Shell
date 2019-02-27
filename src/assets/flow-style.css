@@ -25,6 +25,11 @@
     cursor: move;
 }
 
+.dashline{
+    stroke-dasharray:20;
+    stroke-dashoffset: 200;
+}
+
 .connection-wrap:hover {
     opacity: .4;
     stroke-opacity: .4;

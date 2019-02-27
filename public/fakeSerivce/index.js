@@ -1,5 +1,5 @@
 export default {
-  getScriptInstanceTree () {
+  getScriptInstanceTree() {
     return [
       {
         "tree_p_node_name": "",
@@ -43,76 +43,154 @@ export default {
           }],
       }]
   },
-  getServiceInstance () {
+  getServiceInstance() {
     return {
-      "start":"1",
-      "data":{
-        "1":{
-          "id":"1",
-          "name":"编译交易脚本",
-          "scriptId":"caf41eaf",
-          "ip":"192.168.1.2",
-          "port":"22",
-          "params":{
-            "output":"f:/log/script.log"
+      "start": "1",
+      "data": {
+        "1": {
+          "id": "1",
+          "name": "编译交易脚本",
+          "scriptId": "caf41eaf",
+          "ip": "192.168.1.2",
+          "port": "22",
+          "params": {
+            "output": "f:/log/script.log"
           },
-          bounds:[120,40,180,40],
-          "target":{
-            "0":"2",
-            "1":"4"
+          bounds: [120, 40, 180, 40],
+          "target": {
+            "0": "4",
+            "1": "2"
           }
         },
-        "2":{
-          "id":"2",
-          "name":"打包项目",
-          "scriptId":"ahawerw",
-          "ip":"192.168.1.2",
-          "port":"22",
-          bounds:[20,120,180,40],
-          "params":{
-            "output":"f:/log/script.log"
+        "2": {
+          "id": "2",
+          "name": "打包项目",
+          "scriptId": "ahawerw",
+          "ip": "192.168.1.2",
+          "port": "22",
+          bounds: [20, 120, 180, 40],
+          "params": {
+            "output": "f:/log/script.log"
           },
-          "target":{
-            "0":"3",
-            "1":"4"
+          "target": {
+            "0": "4",
+            "1": "3"
           }
         },
-        "3":{
-          "id":"3",
-          "name":"部署项目",
-          "scriptId":"afagaf",
-          "ip":"192.168.1.122",
-          "port":"22",
-          bounds:[320,250,180,40],
-          "params":{
-            "output":"f:/log/script.log"
+        "3": {
+          "id": "3",
+          "name": "部署项目",
+          "scriptId": "afagaf",
+          "ip": "192.168.1.122",
+          "port": "22",
+          bounds: [320, 250, 180, 40],
+          "params": {
+            "output": "f:/log/script.log"
           },
-          "target":{
+          "target": {
           }
         },
-        "4":{
-          "id":"4",
-          "name":"脚本执行出错",
-          "scriptId":"dsaf123sd",
-          "ip":"192.168.1.3",
-          "port":"2212",
-          bounds:[20,250,180,40],
-          "params":{
-            "output":"f:/log/script.log",
-            "type":"1"
+        "4": {
+          "id": "4",
+          "name": "脚本执行出错",
+          "scriptId": "dsaf123sd",
+          "ip": "192.168.1.3",
+          "port": "2212",
+          bounds: [20, 250, 180, 40],
+          "params": {
+            "output": "f:/log/script.log",
+            "type": "1"
           }
         }
       }
     }
   },
-  getServiceCtr () {},
-  createSerivceCtr () {
+  getLogs() {
+
+    return [
+      {
+        time: "2019/2/25 12:11:01",
+        duration: '100',
+        result: 1,
+        progress: {
+          1: {
+            log: 'file ajz.1 compiler successed',
+            result: 1,
+            time: "2019/2/25 12:11:01",
+            duration: '40',
+          },
+
+          2: {
+            log: 'resource faz.jar ajz.1 deploy successed',
+            result: 1,
+            time: "2019/2/25 12:11:21",
+            duration: '40',
+          },
+          3: {
+            log: 'resource faz.jar ajz.1 deploy successed<b>asdasdad</b> <h1>adq2eqe</h1>fjoiqerqowirsdhfjaf<br>',
+            result: 1,
+            time: "2019/2/25 12:11:21",
+            duration: '50',
+          },
+        }
+      },
+      {
+        time: "2019/2/25 12:11:01",
+        duration: '80',
+        result: 0,
+        progress: {
+          1: {
+            log: 'can not found file',
+            result: 0,
+            time: "2019/2/25 12:11:01",
+            duration: '40',
+          },
+
+          4: {
+            log: 'record error',
+            result: 1,
+            time: "2019/2/25 12:11:21",
+            duration: '40',
+          }
+        }
+      },
+      {
+        time: "2019/2/25 12:11:01",
+        duration: '100',
+        result: 0,
+        progress: {
+          1: {
+            log: 'file ajz.1 compiler successed',
+            result: 1,
+            time: "2019/2/25 11:11:01",
+            duration: '1330',
+          },
+
+          2: {
+            log: 'timeout error',
+            result: 0,
+            time: "2019/2/25 12:11:21",
+            duration: '40',
+          },
+          4: {
+            log: 'record error',
+            result: 1,
+            time: "2019/2/25 12:21:21",
+            duration: '1',
+          }
+        }
+      },
+
+    ]
+  },
+  getServiceCtr() { },
+  createSerivceCtr() {
     return {
       id: 'a service ctr',
-      type: 0
+      type: 1
     }
   },
-  save (target, data) {
+  save(target, data) {
     return Promise.reject()
   }
 }

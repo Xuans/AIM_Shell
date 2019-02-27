@@ -8,6 +8,7 @@
         "lint": "vue-cli-service lint"
     },
     "dependencies": {
+        "animate.css": "^3.7.0",
         "axios": "^0.18.0",
         "element-ui": "^2.5.4",
         "fs": "0.0.1-security",
@@ -17,6 +18,7 @@
         "koa-router": "^7.4.0",
         "koa-static": "^5.0.0",
         "path": "^0.12.7",
+        "popper.js": "^1.14.7",
         "split.js": "^1.5.10",
         "vue": "^2.6.6"
     },

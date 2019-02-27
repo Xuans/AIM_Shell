@@ -6,7 +6,14 @@ export default class State {
 
   save (editor, target) {}
 
-  getData (editor) {}
+  getData (editor) {
+    const json = { data: {} ,start:1}
+    editor.store.node().each(record => {
+      json.data[record.id] = record.data
+    })
+
+    return json
+  }
 
 
   static addDataAndLine(config, dataOfService) {

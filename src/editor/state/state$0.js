@@ -133,14 +133,6 @@ export default class State$0 extends State {
     }
   }
 
-  getData (editor) {
-    const json = { data: {} }
-    editor.store.node().each(record => {
-      json.data[record.id] = record.data
-    })
-
-    return json
-  }
 
   validate () {
     return true
