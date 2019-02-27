@@ -1,7 +1,6 @@
 <template>
-  <div id="app">
+  <div class="aim-shell-editor">
     <Editor v-bind:target="target">
-
       <!-- 表单凹槽 -->
       <template slot="form" slot-scope="input">
         <iform></iform>
@@ -40,4 +39,14 @@ export default {
 </script>
 
 <style>
+.aim-shell-editor{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom: 15px;
+  overflow: hidden;
+  border-radius: 6px;
+  border:1px solid #efefef;
+}
 </style>

@@ -1,45 +1,83 @@
 <template>
+  <div class="aim-shell-content">
+    <div class="aim-shell-header">
+      <span>任务编排</span>
+      <div class="tookit">
+        <span
+          data-role="btn"
+          title="查看日志"
+          v-show="showLogBtn"
+          @click="((showLogPanel=true) && (showLogBtn=false))"
+        >
+          <i class="fa fa-file-text"></i>
+          查看日志
+        </span>
+      </div>
+    </div>
+    <flow-editor
+      ref="stepEditor"
+      v-if="state != null"
+      v-bind="stepCfg"
+      :maximize="maximize"
+      @init="handleOfStepInit"
+      @save="handleOfSave"
+      @command="handleOfCommand"
+    >
+      <palette
+        v-if="state.hasPalette"
+        slot="palette"
+        @load="handleOfLoadBcpt"
+        @create="handleOfCreate"
+      ></palette>
+    </flow-editor>
 
-    <div style="position:absolute;height: 95%;width:98%;">
-        <button @click="showLogPanel=!showLogPanel">LOG</button>
-        <flow-editor ref="stepEditor"
-                     v-if="state != null"
-                     v-bind="stepCfg"
-                     :maximize="maximize"
-                     @init="handleOfStepInit"
-                     @save="handleOfSave"
-                     @command="handleOfCommand">
-            <palette v-if="state.hasPalette" slot="palette" @load="handleOfLoadBcpt" @create="handleOfCreate"></palette>
-        </flow-editor>
-
-        <dblf-transition ref="transition"
-                         :visible="nodeOpts.visible"
-                         :expand.sync="nodeOpts.expand"
-                         :desp="nodeOpts.desp"
-                         @click-control="nodeOfOpen"
-                         @click-back="nodeOfCollapse"
-                         @editor-open="nodeOfOpening">
-
-            <slot name="form" :input="nodeOpts.input"></slot>
-        </dblf-transition>
-      <transition name="el-fade-in-linear">
-        <div  v-show="showLogPanel" ref="logPanel"   class="ui-widget-content"
-        style="position:fixed;bottom:0;right:0;width:80%;height:200px;box-shadow:0 0 5px gray;">
-          <div style="position:relative;height:20px;width:100%;">
-            <span style="position:absolute;right:5px;" @click="showLogPanel=false">x</span>
-          </div>
-          <el-table :data="logs" @row-click="handleSelect" height="calc(100% - 20px)" style="width:40%;float:left;">
-            <el-table-column prop="time" label="日期" width="180"></el-table-column>
-            <el-table-column prop="duration" label="耗时(ms)" width="180"></el-table-column>
-            <el-table-column prop="result" label="结果"></el-table-column>
-          </el-table>
-          <div style="width:60%;height:calc(100% - 20px);float:right;background:black;color:white;font-size:.8rem;overflow-y:scroll;">
-            <div :key="i" v-for="(node,i) in currentLog.progress" style="padding:4px 4px;">
-                >节点: {{i}} 耗时: <span :style="{color:node.duration>36000?'red':node.duration>10000?'yellow':'green'}">{{convertTimeFormat(node.duration)}}</span><br>  
-                <span :style="{color: node.result?'green':'red'}">{{node.log}}</span>
-            </div>
+    <dblf-transition
+      ref="transition"
+      :visible="nodeOpts.visible"
+      :expand.sync="nodeOpts.expand"
+      :desp="nodeOpts.desp"
+      @click-control="nodeOfOpen"
+      @click-back="nodeOfCollapse"
+      @editor-open="nodeOfOpening"
+    >
+      <slot name="form" :input="nodeOpts.input"></slot>
+    </dblf-transition>
+    <transition name="el-fade-in-linear">
+      <div
+        v-show="showLogPanel"
+        ref="logPanel"
+        class="ui-widget-content"
+        style="position:fixed;bottom:0;right:0;width:80%;height:200px;box-shadow:0 0 5px gray;"
+      >
+        <div style="position:relative;height:20px;width:100%;">
+          <span
+            style="position:absolute;right:5px;"
+            @click="((showLogBtn=true) && (showLogPanel=false))"
+          >x</span>
+        </div>
+        <el-table
+          :data="logs"
+          @row-click="handleSelect"
+          height="calc(100% - 20px)"
+          style="width:40%;float:left;"
+        >
+          <el-table-column prop="time" label="日期" width="180"></el-table-column>
+          <el-table-column prop="duration" label="耗时(ms)" width="180"></el-table-column>
+          <el-table-column prop="result" label="结果"></el-table-column>
+        </el-table>
+        <div
+          style="width:60%;height:calc(100% - 20px);float:right;background:black;color:white;font-size:.8rem;overflow-y:scroll;"
+        >
+          <div :key="i" v-for="(node,i) in currentLog.progress" style="padding:4px 4px;">
+            >节点: {{i}} 耗时:
+            <span
+              :style="{color:node.duration>36000?'red':node.duration>10000?'yellow':'green'}"
+            >{{convertTimeFormat(node.duration)}}</span>
+            <br>
+            <span :style="{color: node.result?'green':'red'}">{{node.log}}</span>
           </div>
         </div>
+      </div>
     </transition>
     <dblf-transition
       ref="transition"
@@ -52,9 +90,7 @@
     >
       <slot name="form" :input="nodeOpts.input"></slot>
     </dblf-transition>
-    
   </div>
-  
 </template>
 <script type="text/javascript">
 import palette from "../flowEditor/palette.vue";
@@ -77,37 +113,37 @@ export default {
     let logs = Service.getLogs();
     return {
       logs,
-      showLogPanel:false,
-      currentLog:{},
-          nodeOpts: {
-            desp: '',
-            input: null,
-            editable: true,
-            expand: false,
-            visible: false
-          },
-          stepOpts: {
-            maximize: false,
-            disable: false
-          }
-        }
-    },
+      showLogPanel: false,
+      showLogBtn: true,
+      currentLog: {},
+      nodeOpts: {
+        desp: "",
+        input: null,
+        editable: true,
+        expand: false,
+        visible: false
+      },
+      stepOpts: {
+        maximize: false,
+        disable: false
+      }
+    };
+  },
 
   computed: {
-    stepCfg () {
-      return this.propsOfFlow()
+    stepCfg() {
+      return this.propsOfFlow();
     },
-    maximize () {
-      return this.state.hasPalette ? this.stepOpts.maximize : true
+    maximize() {
+      return this.state.hasPalette ? this.stepOpts.maximize : true;
     }
   },
 
-  mounted(){
+  mounted() {
     $(this.$refs.logPanel).draggable();
     $(this.$refs.logPanel).resizable({
-      handles: "w,e,s,n,se,ne,sw,nw" , 
+      handles: "w,e,s,n,se,ne,sw,nw"
     });
-
   },
   created() {
     // 设置快键键
@@ -124,25 +160,22 @@ export default {
   },
 
   methods: {
-    convertTimeFormat(ms){
-      if(ms<1000)
-        return ms+'ms';
-        let s=ms/1000;
-      if(s<60)
-      return s+'s';
-      if(s<3600)
-        return s/60 +'min';
+    convertTimeFormat(ms) {
+      if (ms < 1000) return ms + "ms";
+      let s = ms / 1000;
+      if (s < 60) return s + "s";
+      if (s < 3600) return s / 60 + "min";
 
-    var hours = parseInt(ms  / 3600000);
-    var minutes = parseInt((ms % (3600000)) / (1000 * 60));
-    var seconds = (ms % (1000 * 60)) / 1000;
-    
-    return hours + "h " + minutes + "min " + seconds + "s ";
+      var hours = parseInt(ms / 3600000);
+      var minutes = parseInt((ms % 3600000) / (1000 * 60));
+      var seconds = (ms % (1000 * 60)) / 1000;
+
+      return hours + "h " + minutes + "min " + seconds + "s ";
     },
     handleSelect(row, event, column) {
       console.log(this.$refs.stepEditor.editor.rootEditPart);
       let root = this.$refs.stepEditor.editor.rootEditPart;
-      this.currentLog=row;
+      this.currentLog = row;
       const json = { data: {}, start: 1 };
       this.$refs.stepEditor.editor.store.node().each(record => {
         json.data[record.id] = record.data;
@@ -220,3 +253,83 @@ export default {
   }
 };
 </script>
+<style lang="less">
+.aim-shell-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100% !important;
+  width: 100% !important;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+
+  > .aim-shell-header {
+    background-color: #fafafa;
+    border-bottom: 1px solid #e5e5e5;
+    height: 44px;
+    line-height: 44px;
+    padding-left: 20px;
+    font-size: 14px;
+    margin: 0;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+
+    > .tookit {
+      float: right;
+
+      > [data-role="btn"] {
+        background-color: #13b1f5;
+        color: #fff;
+        margin: 0 5px;
+        cursor: pointer;
+        padding: 0.25em 0.5em;
+
+        > i {
+          font-size: 12px;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}
+
+ 
+.aim-shell-content .el-aside .el-transfer-panel{
+    border:none;
+}
+.aim-shell-content .el-aside .el-input{
+    height: 28px;
+    align-items: center;
+    border: 1px solid #DADADA;
+    border-radius: 4px;
+    margin: 5px auto;
+    display: flex;
+    flex-direction: row;
+    width: calc(100% - 2px);
+}
+.aim-shell-content .el-aside .el-input input{
+    border: none;
+    box-shadow: none;
+    font-size: 12px;
+    margin: 0;
+    flex: 1;
+    height: 100%;
+}
+.aim-shell-content .el-aside .el-input span{
+    font-size: 14px;
+    margin-right: 10px;
+    color: #9B9B9B;
+    position: relative;
+    top: -6px;
+}
+.aim-shell-content .el-transfer-panel+.el-transfer-panel{
+    border-top:1px solid #e5e5e5;
+    border-radius:0;
+    margin-top:-5px;
+    padding-top:5px;
+}
+</style>
+

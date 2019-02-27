@@ -96,7 +96,11 @@ const generateModule = function (queue) {
                 .map(script => {
                     script = script.match(/src=([^\s>]+)/)[1] || '';
 
-                    if(script.indexOf(PAGES_FLODER) !== -1){
+                   
+                    if(!script || script==='/'||script.indexOf('http')===0){
+                        console.log(script);
+                        return '';
+                    }else if(script.indexOf(PAGES_FLODER) !== -1){
                         //拷贝页面js
                         copyFile(path.join(chunk.dirname,JS_FILE_NAME),path.join(moduleDir,JS_FILE_NAME));
 
@@ -104,7 +108,7 @@ const generateModule = function (queue) {
                     }else{
                         return `"${path.join(upToRootDir, script)}"`
                     }
-                });
+                }).filter(script=>!!script);
             
 
             //css
