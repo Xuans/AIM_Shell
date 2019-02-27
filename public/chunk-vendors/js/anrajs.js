@@ -5985,11 +5985,13 @@
 
         this.listeners = {
             repaint: f => this.refreshLocation(f),
-            visible: v => this.refreshVisible(v)
+            visible: v => this.refreshVisible(v),
+            handler: fn => fn(this)
         };
 
         figure.addRepaintListener(this.listeners.repaint);
         figure.addVisibleListener(this.listeners.visible);
+        figure.on('handler', this.listeners.handler)
 
         this.refreshLocation(figure);
         this.refreshVisible(figure.visible);
@@ -6000,6 +6002,7 @@
 
       figure.removeRepaintListener(this.listeners.repaint);
       figure.removeVisibleListener(this.listeners.visible);
+      figure.off('handler', this.listeners.handler)
       anra.svg.Control.prototype.dispose.call(this);
     },
     getDragTracker:function () {
