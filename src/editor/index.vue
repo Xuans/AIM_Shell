@@ -21,12 +21,19 @@
 
             <slot name="form" :input="nodeOpts.input"></slot>
         </dblf-transition>
-    <div ref="logPanel" style="position:fixed;bottom:0;right:0;width:400px;height:200px;">
-      <el-table :data="logs" @row-click="handleSelect">
+    <div ref="logPanel" style="position:fixed;bottom:0;right:0;width:80%;height:200px;box-shadow:0 0 5px gray">
+      <el-table :data="logs" @row-click="handleSelect" style="width:40%;height:100%;float:left;">
         <el-table-column prop="time" label="日期" width="180"></el-table-column>
-        <el-table-column prop="duration" label="耗时" width="180"></el-table-column>
+        <el-table-column prop="duration" label="耗时(ms)" width="180"></el-table-column>
         <el-table-column prop="result" label="结果"></el-table-column>
       </el-table>
+      <div style="width:60%;height:100%;float:right;background:black;color:white;font-size:.8rem;">
+       
+        <div :key="i" v-for="(node,i) in currentLog.progress" style="padding:4px 4px;">
+            >节点: {{i}} 耗时: <span :style="{color:node.duration>36000?'red':node.duration>10000?'yellow':'green'}">{{convertTimeFormat(node.duration)}}</span><br>  
+            <span :style="{color: node.result?'green':'red'}">{{node.log}}</span>
+        </div>
+      </div>
     </div>
     <dblf-transition
       ref="transition"
@@ -62,6 +69,7 @@ export default {
     let logs = Service.getLogs();
     return {
       logs,
+      currentLog:{},
           nodeOpts: {
             desp: '',
             input: null,
@@ -101,10 +109,25 @@ export default {
   },
 
   methods: {
+    convertTimeFormat(ms){
+      if(ms<1000)
+        return ms+'ms';
+        let s=ms/1000;
+      if(s<60)
+      return s+'s';
+      if(s<3600)
+        return s/60 +'min';
+
+    var hours = parseInt(ms  / 3600000);
+    var minutes = parseInt((ms % (3600000)) / (1000 * 60));
+    var seconds = (ms % (1000 * 60)) / 1000;
+    
+    return hours + "h " + minutes + "min " + seconds + "s ";
+    },
     handleSelect(row, event, column) {
       console.log(this.$refs.stepEditor.editor.rootEditPart);
       let root = this.$refs.stepEditor.editor.rootEditPart;
-
+      this.currentLog=row;
       const json = { data: {}, start: 1 };
       this.$refs.stepEditor.editor.store.node().each(record => {
         json.data[record.id] = record.data;

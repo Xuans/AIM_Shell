@@ -186,7 +186,7 @@ export default {
             log: 'timeout error',
             result: 0,
             time: "2019/2/25 12:11:21",
-            duration: '40',
+            duration: '7623012',
           },
           4: {
             log: 'record error',

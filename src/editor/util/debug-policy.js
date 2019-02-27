@@ -5,6 +5,7 @@ import $ from 'jquery'
 export const debugRootPolicy = {
     config: {
         overNode({ index, result, log }) {
+            if(!this.debugging)return;
             console.log("over-node", index);
             var part = this.getHost().getEditPartById(index);
             if (part) {
@@ -12,6 +13,7 @@ export const debugRootPolicy = {
             }
         },
         intoNode({ index, prevIndex }) {
+            if(!this.debugging)return;
             console.log("into-node", index, prevIndex);
             var part = this.getHost().getEditPartById(index);
             if (part) {
@@ -19,7 +21,7 @@ export const debugRootPolicy = {
             }
         },
         errorNode({ index, result, log }) {
-
+            if(!this.debugging)return;
             console.log("errornode", index);
             var part = this.getHost().getEditPartById(index);
             if (part) {
@@ -28,6 +30,7 @@ export const debugRootPolicy = {
         },
         start() {
             console.log("start");
+            this.debugging=true;
             this.cleanChildren();
             this.getHost().$emit("readOnly", 1);
 
@@ -38,6 +41,7 @@ export const debugRootPolicy = {
                 }
         },
         stop() {
+            this.debugging=false;
             console.log("stop");
             this.cleanChildren();
             this.getHost().$emit("readOnly", 0);
@@ -52,6 +56,7 @@ export const debugRootPolicy = {
         },
     },
     activate() {
+        this.debugging=false;
         console.log("debug policy activate,install listeners");
         this.on("debug-start", this.start);
         this.on("debug-stop", this.stop);
@@ -138,6 +143,10 @@ export const debugUIPolicy = {
             $(this.getHost().getFigure().owner).animate({
                 opacity: 1
             })
+            
+            this.getHost().getFigure().fire('handler', handler => {
+                handler.setOpacity(1);
+            });
         },
         over({ result, log }) {
             this.getHost().refresh();
@@ -147,15 +156,16 @@ export const debugUIPolicy = {
 
             let conns = this.getHost().sConns;
             if (conns) {
+                //渐进线效果
                 for (let i = 0; i < conns.length; i++) {
                     if (result == conns[i].model.get('exit')) {
                         conns[i].getFigure().addClass('dashline');
                         $(conns[i].getFigure().owner).animate({
                             opacity: 1,
-                            'stroke-dashoffset':0,
-                        },()=>{
+                            'stroke-dashoffset': 0,
+                        }, () => {
                             conns[i].getFigure().setStyle({
-                                'stroke-dashoffset':200,
+                                'stroke-dashoffset': 200,
                             });
                             conns[i].getFigure().removeClass('dashline');
                         })
@@ -165,6 +175,7 @@ export const debugUIPolicy = {
                 }
             }
 
+            //修改执行颜色
             this.getHost().model.set('color', result ? 'green' : 'red'); this.getHost().refresh();
         },
         error() {
@@ -175,12 +186,20 @@ export const debugUIPolicy = {
             this.getHost().model.set('color', null);
             this.getHost().refresh();
 
+            //回复透明度
             let conns = this.getHost().sConns;
             if (conns) {
                 for (let i = 0; i < conns.length; i++) {
                     conns[i].getFigure().setOpacity(1);
+                    //停止正在进行的动画
+                    $(conns[i].getFigure().owner).stop();
                 }
-            }this.getHost().getFigure().setOpacity(1);
+            } 
+            this.getHost().getFigure().setOpacity(1);
+            $(this.getHost().getFigure().owner).stop();
+            this.getHost().getFigure().fire('handler', handler => {
+                handler.setOpacity(1);
+            });
         },
         start() {
             let conns = this.getHost().sConns;
@@ -190,6 +209,9 @@ export const debugUIPolicy = {
                 }
             }
             this.getHost().getFigure().setOpacity(.1);
+            this.getHost().getFigure().fire('handler', handler => {
+                handler.setOpacity(.1);
+            });
         }
     },
     activate() {
