@@ -5702,7 +5702,7 @@
                       .first();
               } else {
                   let obj = this.props, i = 0;
-                  for (; i < key_list.length - 1; i ++) obj = obj[_key];
+                  for (; i < key_list.length - 1; i ++) obj = obj[key_list[i]];
 
                   obj[key_list[i]] = value;
               }
