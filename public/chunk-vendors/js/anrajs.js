@@ -3356,6 +3356,11 @@
               this.__adapters[k].call(this, p, callback);
           }
       },
+      $off (key, fn) {
+        if (this.__adapters && this.__adapters[key] === fn) {
+          Reflect.deleteProperty(this.__adapters, key)
+        }
+      },
       setLayout: function (layout) {
           this.getLayer(anra.gef.RootEditPart.PrimaryLayer).layoutManager = layout;
           this.getLayer(anra.gef.RootEditPart.PrimaryLayer).paint();
@@ -5329,6 +5334,9 @@
       emit: function (k, p, callback) {
           this.getHost().getRoot().$emit(k, p, callback);
       },
+      off (key, fn) {
+        this.getHost().getRoot().$off(key, fn)
+      }
   });
   anra.gef.Policy.init = function (config) {
       let instance = typeof config === 'function' ? Reflect.construct(config, []) : Util.construct(anra.gef.Policy, config);
@@ -8294,7 +8302,8 @@
     Command,
     EditPart,
     Listener,
-    Platform: anra.Platform
+    Platform: anra.Platform,
+    FigureUtil: anra.FigureUtil
   };
 
   let types$8 = {};

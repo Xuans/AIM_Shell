@@ -1,6 +1,9 @@
 import {createData, createLine} from "../util/create-tool";
 
 export default class State {
+  constructor (target) {
+    this.target = target
+  }
 
   input2Config (target) {}
 

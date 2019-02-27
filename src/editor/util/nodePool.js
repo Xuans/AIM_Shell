@@ -39,6 +39,7 @@ export default class NodePool {
   }
 
   clear () {
+    this.step && this.step.dispose()
     this.step = null
     this.pool.clear()
   }

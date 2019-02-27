@@ -1,21 +1,54 @@
 <template>
     <el-container direction="vertical" class="palette_container">
-        <el-input prefix-icon="el-icon-search"
-                  size="mini"
-                  clearable
-                  @input="handleOfFilterChange"></el-input>
-        <el-tree ref="tree"
-                 style="margin-top: 0.5rem"
-                 draggable
-                 :filter-node-method="filter"
-                 :data="treeData"
-                 :props="treeProps"
-                 :render-content="renderContent"
-                 :allow-drag="(node) => node.data != null"
-                 :allow-drop="() => false"
-                 @node-expand="data => data.expand = true"
-                 @node-collapse="data => data.expand = false"
-                 @node-click="handleOfNodeClick"></el-tree>
+        <div class="el-transfer-panel" style="width: auto;height: 50%">
+            <p class="el-transfer-panel__header">
+                <span>脚本</span>
+            </p>
+
+            <div class="el-transfer-panel__body">
+                <el-input prefix-icon="el-icon-search"
+                          size="mini"
+                          clearable
+                          @input="handleOfFilterChange"></el-input>
+                <el-tree ref="tree"
+                         style="margin-top: 0.5rem"
+                         draggable
+                         :filter-node-method="filter"
+                         :data="treeData"
+                         :props="treeProps"
+                         :render-content="renderContent"
+                         :allow-drag="(node) => node.data != null"
+                         :allow-drop="() => false"
+                         @node-expand="data => data.expand = true"
+                         @node-collapse="data => data.expand = false"
+                         @node-click="handleOfNodeClick"></el-tree>
+            </div>
+        </div>
+
+        <div class="el-transfer-panel" style="width: auto; margin-top: 10px; height: 50%">
+            <p class="el-transfer-panel__header">
+                <span>服务</span>
+            </p>
+
+            <div class="el-transfer-panel__body">
+                <el-input prefix-icon="el-icon-search"
+                          size="mini"
+                          clearable
+                          @input="handleOfFilterChange"></el-input>
+                <el-tree ref="tree1"
+                         style="margin-top: 0.5rem"
+                         draggable
+                         :filter-node-method="filter"
+                         :data="serviceTreeData"
+                         :props="serviceTreeProps"
+                         :render-content="renderContent"
+                         :allow-drag="(node) => node.data != null"
+                         :allow-drop="() => false"
+                         @node-expand="data => data.expand = true"
+                         @node-collapse="data => data.expand = false"
+                         @node-click="handleOfNodeClick"></el-tree>
+            </div>
+        </div>
     </el-container>
 </template>
 
@@ -23,6 +56,7 @@
     .palette_container {
         transition: 1s;
         padding: 5px;
+        height: 100%;
     }
 
     .custom-tree-node {
@@ -32,6 +66,35 @@
         justify-content: space-between;
         font-size: 14px;
         padding-right: 8px;
+    }
+
+    .custom-translater {
+        text-align: center;
+        margin: 5px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        display: block;
+        width: auto;
+    }
+
+    .custom-translater .el-input__inner{
+        height:32px;
+        width:100%;
+        font-size:12px;
+        display:inline-block;
+        -webkit-box-sizing:border-box;
+        box-sizing: border-box;
+        border-radius:16px;
+        padding-right:10px;
+        padding-left:30px
+    }
+
+    .custom-translater .el-input__icon{
+        margin-left:5px
+    }
+
+    .custom-translater .el-icon-circle-close{
+        cursor:pointer
     }
 
     .el-tree-node__expand-icon.custom_expanded{
@@ -58,6 +121,10 @@
             /*isLeaf (data) {
               return data.$type != null
             }*/
+          },
+          serviceTreeProps: {
+            children: 'children',
+            label: 'serivce_name',
           }
         }
       },
@@ -70,6 +137,16 @@
           let result
           try {
             result = this.editor.config.palette
+          } catch (e) {
+            result = []
+          }
+
+          return result
+        },
+        serviceTreeData () {
+          let result
+          try {
+            result = this.editor.config.palette$0
           } catch (e) {
             result = []
           }
@@ -123,7 +200,6 @@
           ])
         },
         handleOfNodeClick (item) {
-          // this.handleOfHideMenu()
           this.$emit('create', item, this.editor)
         }
       }

@@ -1,21 +1,26 @@
 <template>
-  <div style="height: 1000px">
-    <flow-editor
-      ref="stepEditor"
-      v-if="stepOpts.input != null"
-      v-bind="stepCfg"
-      :maximize="stepOpts.maximize"
-      @init="handleOfStepInit"
-      @save="handleOfSave"
-      @command="handleOfCommand"
-    >
-      <palette
-        v-if="state.hasPalette"
-        slot="palette"
-        @load="handleOfLoadBcpt"
-        @create="handleOfCreate"
-      ></palette>
-    </flow-editor>
+
+    <div style="height: 1000px">
+        <flow-editor ref="stepEditor"
+                     v-if="state != null"
+                     v-bind="stepCfg"
+                     :maximize="maximize"
+                     @init="handleOfStepInit"
+                     @save="handleOfSave"
+                     @command="handleOfCommand">
+            <palette v-if="state.hasPalette" slot="palette" @load="handleOfLoadBcpt" @create="handleOfCreate"></palette>
+        </flow-editor>
+
+        <dblf-transition ref="transition"
+                         :visible="nodeOpts.visible"
+                         :expand.sync="nodeOpts.expand"
+                         :desp="nodeOpts.desp"
+                         @click-control="nodeOfOpen"
+                         @click-back="nodeOfCollapse"
+                         @editor-open="nodeOfOpening">
+
+            <slot name="form" :input="nodeOpts.input"></slot>
+        </dblf-transition>
     <div ref="logPanel" style="position:fixed;bottom:0;right:0;width:400px;height:200px;">
       <el-table :data="logs" @row-click="handleSelect">
         <el-table-column prop="time" label="日期" width="180"></el-table-column>
@@ -51,6 +56,7 @@ import debuggerRunner from "../util/scriptDebugger.js";
 export default {
   name: "dblf-editor",
 
+<<<<<<< HEAD
   mixins: [editorFeature, contextmenu, abbreviate],
 
   data() {
@@ -63,6 +69,31 @@ export default {
         editable: true,
         expand: false,
         visible: false
+=======
+      data () {
+        return {
+          nodeOpts: {
+            desp: '',
+            input: null,
+            editable: true,
+            expand: false,
+            visible: false
+          },
+          stepOpts: {
+            maximize: false,
+            disable: false
+          }
+        }
+      },
+
+      computed: {
+        stepCfg () {
+          return this.propsOfFlow()
+        },
+        maximize () {
+          return this.state.hasPalette ? this.stepOpts.maximize : true
+        }
+>>>>>>> f82e0b3cfbba4bb989caf35ebc83760286954d44
       },
       stepOpts: {
         input: this.inputOfFlow(this.input),

@@ -39,7 +39,12 @@ function registerOperations(config, state) {
 }
 
 export default class State$1 extends State {
-  input2Config(target) {
+  constructor (target) {
+    super(target)
+  }
+
+  input2Config() {
+    const target = this.target
     const serviceInstance = Serivces.getServiceInstance(target)
     const config = {}
 

@@ -4,9 +4,9 @@ export default {
       const model = this.getHost().model
       const figure = this.getHostFigure()
 
-      let text = `名称：${model.get('data.name')}
-地址：${model.get('data.ip')}:${model.get('data.port')}
-参数：${model.get('data.params.output')}`
+      let text = `名称：${model.get('data.name') || ''}
+地址：${model.get('data.ip')}:${model.get('data.port') || '' }
+参数：${model.get('data.params.output') || ''}`
 
       figure.addToolTip(text)
     }
