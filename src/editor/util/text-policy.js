@@ -78,6 +78,7 @@ export const textPolicy0 = $AG.Policy.extend({
     if (this.handles != null) {
       for (let handle of this.handles) {
         this.getHandleLayer().removeChild(handle)
+        this.getHostFigure().off('handler', handle.hook)
         handle.dispose()
       }
     }
@@ -100,6 +101,9 @@ export const textPolicy0 = $AG.Policy.extend({
     handle.setLimit(this.limit)
     this.handles.push(handle)
     this.getHandleLayer().addChild(handle)
+
+    handle.hook = (fn) => fn(handle)
+    this.getHostFigure().on('handler', handle.hook)
 
     return handle
   },

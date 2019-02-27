@@ -48,12 +48,12 @@ export default {
     return [
       {
         type: '1',
-        service_id: 'unknown',
+        service_id: 'start',
         serivce_name: '启动服务',
       },
       {
         type: '1',
-        service_id: 'unknown',
+        service_id: 'close',
         serivce_name: '关闭服务'
       }
     ]
@@ -203,7 +203,7 @@ export default {
   createSerivceCtr() {
     return {
       id: 'a service ctr',
-      type: 1
+      type: 0
     }
   },
   save(target, data) {

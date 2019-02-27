@@ -8,6 +8,21 @@ function checkType$0 (item) {
   return item.type === '1'
 }
 
+function descId (arr) {
+  for (let [index, id] of arr.entries()) {
+    if (id === index + 1) continue
+    return index + 1
+  }
+  return arr.length + 1
+}
+
+function createID (editor) {
+  let arr = Object.keys(editor.rootModel.children)
+      .map((item) => parseInt(item))
+      .sort((pre, next) => pre - next)
+  return descId(arr) + ''
+}
+
 export function createData ({id}, data = {}) {
   return {
     id: id,
@@ -37,15 +52,24 @@ export function createLine ({sourceId, targetId, exit, entr}) {
 
 const Tool = $AG.Tool.CreationTool.extend({
   constructor (item) {
-    const data = createData({id: item.tree_p_node_name}, {name: item.tree_p_node_name, params: {}})
-    const model = $AG.Node.create(data)
+    this.item = item
+  },
+  activate () {
+    const item = this.item
 
-    this.base(model)
+    let id = createID(this.editor)
+    const data = createData({id}, {id: id, name: item.tree_p_node_name, params: {}})
+
+    this.model = $AG.Node.create(data)
+    this.base()
   }
 })
 
 const Tool$0 = $AG.Tool.CreationTool.extend({
   constructor (item) {
+    this.item = item
+
+    // const item = this.item
     const json = Service.getServiceInstance(item)
     const nodes = Object.values(json.data)
 
@@ -57,11 +81,9 @@ const Tool$0 = $AG.Tool.CreationTool.extend({
     let offset = Array.of()
 
     this.models = nodes.map(node => {
-      let model = $AG.Node.create(createData(node, node))
+      let data = createData(node, node)
+      let model = $AG.Node.create(data)
       let bounds = model.get('bounds')
-
-      // TODO
-      model.set('id', model.get('id') + 10)
 
       offset.push(bounds)
 
@@ -89,6 +111,49 @@ const Tool$0 = $AG.Tool.CreationTool.extend({
     this.offset = offset
   },
 
+  /*activate () {
+    const item = this.item
+    const json = Service.getServiceInstance(item)
+    const nodes = Object.values(json.data)
+
+    let left, right, top, bottom
+
+    left = top = Number.MAX_VALUE
+    right = bottom = Number.MIN_VALUE
+
+    let offset = Array.of()
+
+    this.models = nodes.map(node => {
+      let data = createData(node, node)
+      let model = $AG.Node.create(data)
+      let bounds = model.get('bounds')
+
+      offset.push(bounds)
+
+      left = Math.min(bounds[0], left)
+      top = Math.min(bounds[1], top)
+
+      right = Math.max(bounds[0] + bounds[2], right)
+      bottom = Math.max(bounds[1] + bounds[3], bottom)
+
+      return model
+    })
+
+    let centerX = (right + left) >>> 1
+    let centerY = (top + bottom) >>> 1
+
+    for (let i = 0; i < offset.length; i++) {
+      let bounds = offset[i]
+
+      offset[i] = {
+        x: bounds[0] - centerX,
+        y: bounds[1] - centerY
+      }
+    }
+
+    this.offset = offset
+  },*/
+
   show (policy, req) {
     for (let index of this.models.keys()) {
       this.index = index
@@ -110,7 +175,18 @@ const Tool$0 = $AG.Tool.CreationTool.extend({
   command (policy, req) {
     let command
     let oldEvent = req.event
+
+    let startId = createID(this.editor)
+    let idMap = new Map()
+
     for (let index of this.models.keys()) {
+      let model = this.models[index]
+      let id = model.get('id')
+
+      idMap.set(id, (id = startId++))
+      model.set('id', id)
+      model.set('data.id', id)
+
       req.event = {
         prop: {
           drag: {
@@ -124,6 +200,41 @@ const Tool$0 = $AG.Tool.CreationTool.extend({
 
       command = command ? command.chain(cmd) : cmd
     }
+
+    let root = this.editor.rootEditPart
+    this.models.forEach(model => {
+      let target = model.get('data.target')
+      if (target) {
+        let id = model.get('id')
+
+        for (let [terminalId, targetId] of Object.entries(target)) {
+          let lineModel = $AG.Line.create(createLine({
+            sourceId: id,
+            targetId: idMap.get(targetId),
+            exit: terminalId,
+            entr: 'n'
+          }))
+
+          command = command.chain(new $AG.CreateLineCommand(root, lineModel, id, idMap.get(targetId)))
+        }
+      }
+    })
+    /*for (let model of this.models) {
+      let id = model.get('data.id')
+      let target = model.get('data.target')
+      /!*if (target) {
+        for (let [terminalId, targetId] of Object.entries(target)) {
+          let id = model.get('id')
+          let lineModel = $AG.Line.create(createLine({
+            sourceId: id,
+            targetId: idMap.get(targetId),
+            exit: terminalId
+          }))
+
+          command.chain(new $AG.CreateLineCommand(root, lineModel, id, idMap.get(id)))
+        }
+      }*!/
+    }*/
 
     req.event = oldEvent
 

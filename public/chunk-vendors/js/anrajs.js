@@ -7207,13 +7207,111 @@
                         ]);
                     }
 
-                    if (item["children"] && childConfig["children"]) {
-                        Node.addChildren(model, item["children"], childConfig["children"]);
-                    }
-                });
-            });
-        }
-    };
+          return val;
+      },
+      constructor: function () {
+          this.props = {};
+      },
+      /**
+       * 输入应当为json
+       * @param p
+       * @param fire
+       */
+      setValues: function (p, unfire) {
+          for (var key in p) {
+              this.set(key, p[key], unfire);
+          }
+      },
+      set(key, value, unfire) {
+          if (typeof key === 'string' && key !== '') {
+              let key_list = key.split('.'),
+                  val = this._findProps(key_list);
+
+              if (this.store) {
+                  this.props = this.store.update(
+                      key_list.reduceRight(
+                          (_tj, key) => ({[key]: _tj}), value
+                      ))
+                      .first();
+              } else {
+                  let obj = this.props, i = 0;
+                  for (; i < key_list.length - 1; i ++) obj = obj[key_list[i]];
+
+                  obj[key_list[i]] = value;
+              }
+
+              if (this.pls && !unfire)
+                  this.pls.firePropertyChanged(key, val, value);
+          }
+      },
+      /*set: function (key, value, unfire) {
+          var o = this.props[key];
+
+          if (this.store) {
+              var _tj = {};
+              _tj[key] = value;
+              this.props = this.store.update(_tj).first();
+          } else
+              this.props[key] = value;
+
+          if (this.pls && !unfire)
+              this.pls.firePropertyChanged(key, o, value);
+      },*/
+      get: function (key) {
+          return this._findProps(key.split('.'));
+      },
+      addPropertyListener: function (l, k) {
+          if (this.pls == null)
+              this.pls = new anra.PropertyListenerSupport();
+          this.pls.addPropertyListener(l, k);
+      },
+      removePropertyListener: function (l, k) {
+          if (this.pls != null)
+              this.pls.removePropertyListener(l, k);
+      },
+      hashCode: function () {
+          if (this.uuid == null)
+              this.uuid = Util.genUUID();
+          return this.uuid;
+      }
+  });
+
+  anra.gef.NodeModel = anra.gef.BaseModel.extend({
+      sourceLines: null,
+      targetLines: null,
+      children: null,
+      constructor: function () {
+          anra.gef.BaseModel.prototype.constructor.call(this);
+          this.sourceLines = new Map();
+          this.targetLines = new Map();
+          this.children = {};
+      },
+      hasSourceLine: function (line) {
+          if (line instanceof anra.gef.LineModel) {
+              return this.sourceLines.has(this.lineId(line.props.id))
+          } else {
+              return this.sourceLines.has(line);
+          }
+      },
+      hasTargetLine: function (line) {
+          if (line instanceof anra.gef.LineModel) {
+              return this.targetLines.has(this.lineId(line.get('id')));
+          } else {
+              return this.targetLines.has(line);
+          }
+      },
+      addSourceLine: function (line) {
+          var nId = this.lineId(line.get('id'));
+          line.sourceNode = this;
+          if (!this.sourceLines.has(nId)) {
+              this.sourceLines.set(nId, line);
+              if (this.storeId) {
+                  if (line.store) {
+                      line.store.update(line.props);
+                  } else {
+                      line.store = anra.Store.get(this.storeId).line.insert(line.props);
+                  }
+              }
 
     const types$1 = {
         LINE: anra.gef.Line,
