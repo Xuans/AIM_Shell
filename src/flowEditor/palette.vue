@@ -16,6 +16,19 @@
                  @node-expand="data => data.expand = true"
                  @node-collapse="data => data.expand = false"
                  @node-click="handleOfNodeClick"></el-tree>
+
+        <el-tree ref="tree1"
+                 style="margin-top: 0.5rem"
+                 draggable
+                 :filter-node-method="filter"
+                 :data="serviceTreeData"
+                 :props="serviceTreeProps"
+                 :render-content="renderContent"
+                 :allow-drag="(node) => node.data != null"
+                 :allow-drop="() => false"
+                 @node-expand="data => data.expand = true"
+                 @node-collapse="data => data.expand = false"
+                 @node-click="handleOfNodeClick"></el-tree>
     </el-container>
 </template>
 
@@ -58,6 +71,10 @@
             /*isLeaf (data) {
               return data.$type != null
             }*/
+          },
+          serviceTreeProps: {
+            children: 'children',
+            label: 'serivce_name',
           }
         }
       },
@@ -70,6 +87,16 @@
           let result
           try {
             result = this.editor.config.palette
+          } catch (e) {
+            result = []
+          }
+
+          return result
+        },
+        serviceTreeData () {
+          let result
+          try {
+            result = this.editor.config.palette$0
           } catch (e) {
             result = []
           }
@@ -123,7 +150,6 @@
           ])
         },
         handleOfNodeClick (item) {
-          // this.handleOfHideMenu()
           this.$emit('create', item, this.editor)
         }
       }

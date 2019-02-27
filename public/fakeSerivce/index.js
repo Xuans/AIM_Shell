@@ -43,6 +43,20 @@ export default {
           }],
       }]
   },
+  getServiceInstanceTree () {
+    return [
+      {
+        type: '1',
+        service_id: 'unknown',
+        serivce_name: '启动服务',
+      },
+      {
+        type: '1',
+        service_id: 'unknown',
+        serivce_name: '关闭服务'
+      }
+    ]
+  },
   getServiceInstance () {
     return {
       "start":"1",

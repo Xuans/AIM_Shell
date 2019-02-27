@@ -116,6 +116,7 @@ export default class State$0 extends State {
 
     config.id = target.id
     config.palette = Serivces.getScriptInstanceTree(target)
+    config.palette$0 = Serivces.getServiceInstanceTree(target)
 
     State.addDataAndLine(config, serviceInstance.data)
     registerOperations(config)

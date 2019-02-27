@@ -34,7 +34,7 @@ export default $AG.TransitionPolicy.extend({
 
     this.handle = new StateHandle(this.getHost())
     this.getHandle = () => this.handle
-    return this.handle
+    return this.handle//6235730800001008024
   },
   changeOfSelected () {
     this.setState('selected')
@@ -62,7 +62,7 @@ export default $AG.TransitionPolicy.extend({
     this.getHandleLayer().addChild(this.getHandle())
   },
   hide () {
-    this.getHandleLayer().removeChild(this.getHandle())
+    this.handle && this.getHandleLayer().removeChild(this.handle)
   },
   setState (state) {
     this.getHandle().setAttribute('stroke', this.states[state])
