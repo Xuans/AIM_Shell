@@ -56,22 +56,12 @@ import debuggerRunner from "../util/scriptDebugger.js";
 export default {
   name: "dblf-editor",
 
-<<<<<<< HEAD
   mixins: [editorFeature, contextmenu, abbreviate],
 
   data() {
     let logs = Service.getLogs();
     return {
       logs,
-      nodeOpts: {
-        desp: "",
-        input: null,
-        editable: true,
-        expand: false,
-        visible: false
-=======
-      data () {
-        return {
           nodeOpts: {
             desp: '',
             input: null,
@@ -84,32 +74,17 @@ export default {
             disable: false
           }
         }
-      },
-
-      computed: {
-        stepCfg () {
-          return this.propsOfFlow()
-        },
-        maximize () {
-          return this.state.hasPalette ? this.stepOpts.maximize : true
-        }
->>>>>>> f82e0b3cfbba4bb989caf35ebc83760286954d44
-      },
-      stepOpts: {
-        input: this.inputOfFlow(this.input),
-        maximize: false,
-        disable: false
-      }
-    };
-  },
+    },
 
   computed: {
-    stepCfg() {
-      return this.propsOfFlow("step", this.stepOpts.input);
+    stepCfg () {
+      return this.propsOfFlow()
+    },
+    maximize () {
+      return this.state.hasPalette ? this.stepOpts.maximize : true
     }
   },
-  mounted() {
-  },
+
 
   created() {
     // 设置快键键
