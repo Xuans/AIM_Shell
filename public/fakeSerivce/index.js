@@ -1,3 +1,4 @@
+import large from "./largeFlow"
 export default {
   getScriptInstanceTree() {
     return [
@@ -59,6 +60,8 @@ export default {
     ]
   },
   getServiceInstance () {
+    if(true)
+      return large;
 
     return {
       "start": "1",
@@ -207,6 +210,7 @@ export default {
     }
   },
   save(target, data) {
+    console.log(data)
     return Promise.reject()
   }
 }

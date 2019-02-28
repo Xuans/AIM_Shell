@@ -51,7 +51,7 @@
       >
         <div style="position:relative;height:20px;width:100%;">
           <span
-            style="position:absolute;right:5px;"
+            style="position:absolute;right:5px;top:-2px;"
             @click="((showLogBtn=true) && (showLogPanel=false))"
           >x</span>
         </div>
