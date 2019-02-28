@@ -32,7 +32,7 @@
     </div>
     <flow-editor
       ref="stepEditor"
-      v-if="state != null"
+      v-if="state != null&&stepCfg!=null"
       v-bind="stepCfg"
       :maximize="maximize"
       @init="handleOfStepInit"
@@ -154,7 +154,8 @@ export default {
       stepOpts: {
         maximize: false,
         disable: false
-      }
+      },
+      stepCfg:null,
     };
   },
 
@@ -168,14 +169,19 @@ export default {
         this._dirty = v;
       }
     },
-    stepCfg() {
-      return this.propsOfFlow();
-    },
+    // stepCfg() {
+    //   return this.propsOfFlow();
+    // },
     maximize() {
       return this.state.hasPalette ? this.stepOpts.maximize : true;
     }
   },
   watch: {
+    target:{
+      handler(v){
+      },
+      deep:true,
+    },
     editMode() {
       this.store.step.rootEditPart.$emit("vueHandler", vue => {
         vue.target.type = this.editMode ? 0 : 1;
@@ -189,6 +195,8 @@ export default {
       minHeight: 150,
       minWidth: 250
     });
+
+    this.setServiceId(1)
   },
   created() {
     // 设置快键键
@@ -205,6 +213,9 @@ export default {
   },
 
   methods: {
+    setServiceId(id){
+        this.propsOfFlow(id);
+    },
     doSave() {
       this.saving=true;
       Service.doSave(this.store.step,()=>{
@@ -233,6 +244,7 @@ export default {
     taskChanged(item) {
       // console.log(item);
       this.target.inputId = item.inputId;
+      this.propsOfFlow();
     },
 
     convertTimeFormat(ms) {

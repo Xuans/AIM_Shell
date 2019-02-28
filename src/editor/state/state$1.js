@@ -43,15 +43,25 @@ export default class State$1 extends State {
     super(target)
   }
 
-  input2Config() {
+  input2Config(callback) {
     const target = this.target
-    const serviceInstance = Serivces.getServiceInstance(target)
-    const config = {}
+    const promise = Serivces.getServiceInstance(target)
+    // const config = {}
 
-    config.id = target.id
-    State.addDataAndLine(config, serviceInstance.data)
-    registerOperations(config,this)
+    // config.id = target.id
+    // State.addDataAndLine(config, serviceInstance.data)
+    // registerOperations(config,this)
 
-    return Object.assign(config, BaseConfig)
+    // return Object.assign(config, BaseConfig)
+
+    // const promise = Serivces.getServiceInstance(target)
+
+    promise.then(d=>{
+      const config = {}
+      config.id = target.id
+      State.addDataAndLine(config, d.data)
+      registerOperations(config)
+      callback(Object.assign(config, BaseConfig));
+    });
   }
 }

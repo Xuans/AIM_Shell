@@ -6,16 +6,16 @@ import handleOfCreate from "../util/create-tool";
 export default {
   props: ['target'],
 
-  data () {
+  data() {
   },
 
   computed: {
-    state () {
+    state() {
       return makeState(this.target)
     }
   },
 
-  created () {
+  created() {
     window.xx = this
     this.keyManagerOfFlow = new KeyManager()
     this.keyManager = new KeyManager('global')
@@ -23,37 +23,37 @@ export default {
     this.keyManager.active('0')
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     this.keyManagerOfFlow.unwatchAllPage()
     this.keyManager.unwatchAllPage()
   },
 
   methods: {
     /* about flow */
-    propsOfFlow () {
-      let config = this.state.input2Config()
-      let evnet = { vueHandler: this.handleOfFlowCallback }
-
-      return {config, eventsOnEditor: evnet, keyManager: this.keyManagerOfFlow}
+    propsOfFlow(id=1) {
+      this.state.input2Config((config)=>{
+        let event = { vueHandler: this.handleOfFlowCallback }
+        this.stepCfg = { config, eventsOnEditor: event, keyManager: this.keyManagerOfFlow };
+      })
     },
-    saveOfFlow (editor) {
+    saveOfFlow(editor) {
       this.state.save(editor)
     },
-    dirtyOfFlow (editor) {
+    dirtyOfFlow(editor) {
       return editor == null ? false : editor.isDirty()
     },
-    inputOfFlow (input) {
+    inputOfFlow(input) {
       return $.extend(true, {}, input)
     },
 
     /* handlers */
     handleOfCreate: handleOfCreate,
     handleOfSave: $.noop,
-    handleOfLoad:  $.noop,
-    handleOfCommand () {
+    handleOfLoad: $.noop,
+    handleOfCommand() {
       this.dirty = this.isDirty()
     },
-    handleOfFlowCallback (fn, params=[]) {
+    handleOfFlowCallback(fn, params = []) {
       if ($.isFunction(fn)) {
         fn(this)
       } else if (typeof fn === 'string') {

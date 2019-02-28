@@ -109,19 +109,19 @@ export default class State$0 extends State {
     this.hasPalette = true
   }
 
-  input2Config () {
+  input2Config (callback) {
     const target = this.target
-    const serviceInstance = Serivces.getServiceInstance(target)
-    const config = {}
+    const promise = Serivces.getServiceInstance(target)
 
-    config.id = target.id
-    config.palette = Serivces.getScriptInstanceTree(target)
-    config.palette$0 = Serivces.getServiceInstanceTree(target)
-
-    State.addDataAndLine(config, serviceInstance.data)
-    registerOperations(config)
-
-    return Object.assign(config, BaseConfig)
+    promise.then(d=>{
+      const config = {}
+      config.id = target.id
+      config.palette = Serivces.getScriptInstanceTree(target)
+      config.palette$0 = Serivces.getServiceInstanceTree(target)
+      State.addDataAndLine(config, d.data)
+      registerOperations(config)
+      callback(Object.assign(config, BaseConfig));
+    });
   }
 
   save (editor, target) {
