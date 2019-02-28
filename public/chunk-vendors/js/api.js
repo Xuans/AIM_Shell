@@ -7,7 +7,8 @@
 			type: "POST",
 			beforeSend: function (XMLHttpRequest) {
 				XMLHttpRequest.setRequestHeader("aim_sdk", "amlog");
-			},
+            },
+            shelter:'正在加载数据，请稍候…',
 			data: {
 				appType: "aweb",
 				target: "C016",
