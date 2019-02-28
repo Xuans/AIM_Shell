@@ -8,21 +8,25 @@ import App from './App.vue'
     app.dlPoc = app.dlPoc || {};
 
     let isFirst=true;
-    const dispay=function(viewId){
-      window.AIM_SHELL = new Vue({
+    const dispay=function(viewId,serviceId){
+      let ins=new Vue({
         render: h => h(App),
       }).$mount(`#${viewId}`);
+
+      ins.$children[0].$children[0].setServiceId(serviceId);
+
+      window.AIM_SHELL=ins;
     }
 
-    app.dlPoc.editor = function (viewId) {
+    app.dlPoc.editor = function (viewId,serviceId) {
 
       if(isFirst){
         setTimeout(()=>{
-          dispay(viewId);
+          dispay(viewId,serviceId);
         },220);
         isFirst=false;
       }else{
-        dispay(viewId);
+        dispay(viewId,serviceId);
       }
     }
   } else {

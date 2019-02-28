@@ -1,6 +1,6 @@
 <template>
   <el-container :class="{'cant-edit': !canEdit}" style="height: 100%">
-    <el-aside ref="palette" class="flow-palette">
+    <el-aside ref="palette" width="264px" class="flow-palette">
       <slot name="palette"></slot>
     </el-aside>
 

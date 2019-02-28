@@ -8,76 +8,6 @@
         "value":"hello world"
     },{
         "type":"string",
-        "component":"input",
-        "length":"20",
-        "name":"length1",
-        "label":"长度",
-        "value":"hello world"
-    },{
-        "type":"string",
-        "component":"input",
-        "length":"20",
-        "name":"length2",
-        "label":"长度",
-        "value":"hello world"
-    },{
-        "type":"string",
-        "component":"input",
-        "length":"20",
-        "name":"length3",
-        "label":"长度",
-        "value":"hello world"
-    },{
-        "type":"string",
-        "component":"input",
-        "length":"20",
-        "name":"length4",
-        "label":"长度",
-        "value":"hello world"
-    },{
-        "type":"string",
-        "component":"input",
-        "length":"20",
-        "name":"length5",
-        "label":"长度",
-        "value":"hello world"
-    },{
-        "type":"string",
-        "component":"input",
-        "length":"20",
-        "name":"length6",
-        "label":"长度",
-        "value":"hello world"
-    },{
-        "type":"string",
-        "component":"input",
-        "length":"20",
-        "name":"length7",
-        "label":"长度",
-        "value":"hello world"
-    },{
-        "type":"string",
-        "component":"input",
-        "length":"20",
-        "name":"length8",
-        "label":"长度",
-        "value":"hello world"
-    },{
-        "type":"string",
-        "component":"input",
-        "length":"20",
-        "name":"length9",
-        "label":"长度",
-        "value":"hello world"
-    },{
-        "type":"string",
-        "component":"input",
-        "length":"20",
-        "name":"length11",
-        "label":"长度",
-        "value":"hello world"
-    },{
-        "type":"string",
         "component":"select",
         "length":"5",
         "options":[{
@@ -95,10 +25,29 @@
         "value":"20"
     }],
     "input":[{
+        "uid":"111111111111111111111111111111111111111111111111",
         "name":"name",
+        "length":20,
+        "alais":"name1",
         "label":"字典名（英文）",
         "component":"input",
-        "regex":"^[a-zA-z][a-zA-z0-9_]{3,10}$",
-        "msg":"请输入a-z、A-Z、_ 4 ~ 10 位字符。"
+        "value":""
+    },{
+        "uid":"111111111111111111111111111111111111111111111112",
+        "name":"age",
+        "alais":"age1",
+        "label":"年龄",
+        "component":"select",
+        "value":"",
+        "options":[{
+            "value":"1",
+            "label":"1岁"
+        },{
+            "value":"2",
+            "label":"2岁"
+        },{
+            "value":"20",
+            "label":"20岁"
+        }]
     }]
 }
