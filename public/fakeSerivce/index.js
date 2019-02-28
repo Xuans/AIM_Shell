@@ -81,7 +81,7 @@ export default {
       }
     ]
   },
-  getServiceInstance(target) {
+   getServiceInstance: async function(target) {
     switch (target.inputId) {
       case 0: return large
       default: return {

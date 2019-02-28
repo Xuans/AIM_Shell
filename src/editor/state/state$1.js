@@ -45,7 +45,7 @@ export default class State$1 extends State {
 
   input2Config() {
     const target = this.target
-    const serviceInstance =await Serivces.getServiceInstance(target)
+    const serviceInstance = Serivces.getServiceInstance(target)
     const config = {}
 
     config.id = target.id
