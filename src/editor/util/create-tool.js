@@ -70,7 +70,7 @@ const Tool$0 = $AG.Tool.CreationTool.extend({
     this.item = item
 
     // const item = this.item
-    const json = await Service.getServiceInstance(item)
+    const json =  Service.getServiceInstance(item)
     const nodes = Object.values(json.data)
 
     let left, right, top, bottom
