@@ -60,9 +60,9 @@ const overPrevNode = ({ index, prevIndex, result, log }) => {
     } else {
         unlinkedGroup.prevIndex = { index, prevIndex, result, log };
     }
-    for (var i = 0; i < queue.lenght; i++) {
-        queue[i].index == prevIndex;
-    }
+    // for (var i = 0; i < queue.lenght; i++) {
+    //     queue[i].index == prevIndex;
+    // }
 }
 const start = (emittable, data, flow) => {
     //通知editPart开始debug
@@ -82,6 +82,7 @@ const start = (emittable, data, flow) => {
                 emittable.$emit('debug-over-node', { index: prevIndex, result, log });
                 //into下一个节点
                 emittable.$emit('debug-into-node', { index, prevIndex });
+                
             }
         });
 

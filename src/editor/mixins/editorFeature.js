@@ -53,7 +53,7 @@ export default {
     handleOfCommand () {
       this.dirty = this.isDirty()
     },
-    handleOfFlowCallback (fn, params) {
+    handleOfFlowCallback (fn, params=[]) {
       if ($.isFunction(fn)) {
         fn(this)
       } else if (typeof fn === 'string') {
