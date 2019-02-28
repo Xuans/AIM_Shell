@@ -208,14 +208,17 @@ const Tool$0 = $AG.Tool.CreationTool.extend({
         let id = model.get('id')
 
         for (let [terminalId, targetId] of Object.entries(target)) {
+
+          let newTargetId=idMap.get(targetId);
           let lineModel = $AG.Line.create(createLine({
             sourceId: id,
-            targetId: idMap.get(targetId),
+            targetId: newTargetId,
             exit: terminalId,
             entr: 'n'
           }))
 
-          command = command.chain(new $AG.CreateLineCommand(root, lineModel, id, idMap.get(targetId)))
+          if(newTargetId)
+            command = command.chain(new $AG.CreateLineCommand(root, lineModel, id, newTargetId));
         }
       }
     })
