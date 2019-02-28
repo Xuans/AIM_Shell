@@ -21,6 +21,7 @@
         "path": "^0.12.7",
         "popper.js": "^1.14.7",
         "split.js": "^1.5.10",
+        "uid": "0.0.2",
         "vue": "^2.6.6"
     },
     "devDependencies": {
@@ -77,5 +78,5 @@
         "last 2 versions",
         "not ie <= 8"
     ],
-    "port": 62233
+    "port": 56056
 }

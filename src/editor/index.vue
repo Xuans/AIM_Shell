@@ -1,32 +1,16 @@
 <template>
   <div class="aim-shell-content">
     <div class="aim-shell-header">
-      <span>脚本编排</span>
+      <span>任务编排</span>
       <div class="tookit">
-        <!-- <span
+        <span
           data-role="btn"
-          title="打开日志面板"
-          v-show="showLogBtn&&!editMode"
+          title="查看日志"
+          v-show="showLogBtn"
           @click="((showLogPanel=true) && (showLogBtn=false))"
         >
           <i class="fa fa-file-text"></i>
-          打开日志面板
-        </span>-->
-        <span
-          data-role="btn"
-          title="保存编排"
-          v-show="editMode"
-          @click="doSave"
-           v-loading="saving"
-           element-loading-spinner="el-icon-loading"
-    element-loading-background="rgba(22, 22, 22, 0.8)"
-        >
-          <i class="fa fa-file-text"></i>
-          保存
-        </span>
-        <span data-role="btn" title="切换模式" @click="editMode=!editMode">
-          <i class="fa fa-file-text"></i>
-          {{editMode?'查看日志':'编排脚本'}}
+          查看日志
         </span>
       </div>
     </div>
@@ -60,35 +44,27 @@
     </dblf-transition>
     <transition name="el-fade-in-linear">
       <div
-        v-show="!editMode"
+        v-show="showLogPanel"
         ref="logPanel"
         class="ui-widget-content"
-        style="position:fixed;bottom:5%;right:5%;width:80%;height:300px;box-shadow:0 0 5px gray;"
+        style="position:fixed;bottom:0;right:0;width:80%;height:200px;box-shadow:0 0 5px gray;"
       >
         <div style="position:relative;height:20px;width:100%;">
-          <!-- <span
+          <span
             style="position:absolute;right:5px;top:-2px;"
             @click="((showLogBtn=true) && (showLogPanel=false))"
-          >x</span>-->
+          >x</span>
         </div>
-        <div style="width:40%;float:left;height:calc(100% - 20px)">
-          <div style="padding:0 10px 0 10px;height:50px;width:100%;">
-            <span style="font-size:.8rem">选择任务：</span>
-            <el-autocomplete
-              v-model="task"
-              :fetch-suggestions="querySearchAsync"
-              placeholder="查看任务日志"
-              @select="taskChanged"
-              size="mini"
-              value="name"
-            ></el-autocomplete>
-          </div>
-          <el-table :data="logs" @row-click="handleSelect" height="calc(100% - 50px)">
-            <el-table-column prop="time" label="日期" width="180"></el-table-column>
-            <el-table-column prop="duration" label="耗时(ms)" width="180"></el-table-column>
-            <el-table-column prop="result" label="结果"></el-table-column>
-          </el-table>
-        </div>
+        <el-table
+          :data="logs"
+          @row-click="handleSelect"
+          height="calc(100% - 20px)"
+          style="width:40%;float:left;"
+        >
+          <el-table-column prop="time" label="日期" width="180"></el-table-column>
+          <el-table-column prop="duration" label="耗时(ms)" width="180"></el-table-column>
+          <el-table-column prop="result" label="结果"></el-table-column>
+        </el-table>
         <div
           style="width:60%;height:calc(100% - 20px);float:right;background:black;color:white;font-size:.8rem;overflow-y:scroll;"
         >
@@ -136,14 +112,10 @@ export default {
   data() {
     let logs = Service.getLogs();
     return {
-      _dirty:false,
-      task: "",
-      editMode: true,
       logs,
       showLogPanel: false,
       showLogBtn: true,
       currentLog: {},
-      saving:false,
       nodeOpts: {
         desp: "",
         input: null,
@@ -191,9 +163,7 @@ export default {
   mounted() {
     $(this.$refs.logPanel).draggable();
     $(this.$refs.logPanel).resizable({
-      handles: "w,e,s,n,se,ne,sw,nw",
-      minHeight: 150,
-      minWidth: 250
+      handles: "w,e,s,n,se,ne,sw,nw"
     });
 
     this.setServiceId(1)
@@ -247,6 +217,12 @@ export default {
       this.propsOfFlow();
     },
 
+    setServiceId(id){
+     setTimeout(()=>{
+       debugger;
+       this.target.inputId=id;
+     });
+    },
     convertTimeFormat(ms) {
       if (ms < 1000) return ms + "ms";
       let s = ms / 1000;
