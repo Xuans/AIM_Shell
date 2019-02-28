@@ -30,6 +30,9 @@
 		c:'tc.cama.aweb.shell.service.ITreeNodeService',
 		m:'getTreeNodeLoop'
 	},{
+        c:'tc.cama.aweb.shell.service.ITreeNodeService',
+        m:'updateTreeNode'
+    },{
 		c:'tc.cama.aweb.shell.service.ITreeNodeService',
 		m:'delTreeNode'
 	},{
