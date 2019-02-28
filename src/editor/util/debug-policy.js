@@ -105,7 +105,14 @@ export const debugUIPolicy = {
             pop1.style['margin'] = '10px 10px';
             pop1.classList.add('animated', 'fadeIn');
 
-            document.body.appendChild(pop1);
+            const $pop1=$(pop1);
+
+            $(this.getHost().getFigure().domContainer())
+                    .closest('.flow-canvas')
+                    .append($pop1);
+                
+
+            //document.body.appendChild();
             var pi = new Popper(this.getHost().getFigure().owner, pop1, {
                 onCreate: data => {
                     console.log(data)
@@ -122,7 +129,7 @@ export const debugUIPolicy = {
             let dip = panel.dispose;
             panel.dispose = () => {
                 pi.destroy();
-                document.body.removeChild(pop1);
+                $pop1.remove();
                 dip.call(panel);
                 console.log("dispose");
             }
