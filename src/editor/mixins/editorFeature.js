@@ -30,7 +30,7 @@ export default {
 
   methods: {
     /* about flow */
-    propsOfFlow(id=1) {
+    propsOfFlow() {
       this.state.input2Config((config)=>{
         let event = { vueHandler: this.handleOfFlowCallback }
         this.stepCfg = { config, eventsOnEditor: event, keyManager: this.keyManagerOfFlow };
