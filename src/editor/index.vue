@@ -1,16 +1,20 @@
 <template>
   <div class="aim-shell-content">
     <div class="aim-shell-header">
-      <span>任务编排</span>
+      <span>脚本编排</span>
       <div class="tookit">
-        <span
+        <!-- <span
           data-role="btn"
-          title="查看日志"
-          v-show="showLogBtn"
+          title="打开日志面板"
+          v-show="showLogBtn&&!editMode"
           @click="((showLogPanel=true) && (showLogBtn=false))"
         >
           <i class="fa fa-file-text"></i>
-          查看日志
+          打开日志面板
+        </span> -->
+        <span data-role="btn" title="切换模式" @click="editMode=!editMode">
+          <i class="fa fa-file-text"></i>
+          {{editMode?'查看日志':'编排脚本'}}
         </span>
       </div>
     </div>
@@ -44,27 +48,35 @@
     </dblf-transition>
     <transition name="el-fade-in-linear">
       <div
-        v-show="showLogPanel"
+        v-show="!editMode"
         ref="logPanel"
         class="ui-widget-content"
-        style="position:fixed;bottom:0;right:0;width:80%;height:200px;box-shadow:0 0 5px gray;"
+        style="position:fixed;bottom:5%;right:5%;width:80%;height:300px;box-shadow:0 0 5px gray;"
       >
         <div style="position:relative;height:20px;width:100%;">
-          <span
+          <!-- <span
             style="position:absolute;right:5px;top:-2px;"
             @click="((showLogBtn=true) && (showLogPanel=false))"
-          >x</span>
+          >x</span> -->
         </div>
-        <el-table
-          :data="logs"
-          @row-click="handleSelect"
-          height="calc(100% - 20px)"
-          style="width:40%;float:left;"
-        >
-          <el-table-column prop="time" label="日期" width="180"></el-table-column>
-          <el-table-column prop="duration" label="耗时(ms)" width="180"></el-table-column>
-          <el-table-column prop="result" label="结果"></el-table-column>
-        </el-table>
+        <div style="width:40%;float:left;height:calc(100% - 20px)">
+          <div style="padding:0 10px 0 10px;height:50px;width:100%;">
+            <span style="font-size:.8rem"> 选择任务：</span>
+            <el-autocomplete
+              v-model="task"
+              :fetch-suggestions="querySearchAsync"
+              placeholder="查看任务日志"
+              @select="taskChanged"
+              size="mini"
+              value="name"
+            ></el-autocomplete>
+          </div>
+          <el-table :data="logs" @row-click="handleSelect" height="calc(100% - 50px)">
+            <el-table-column prop="time" label="日期" width="180"></el-table-column>
+            <el-table-column prop="duration" label="耗时(ms)" width="180"></el-table-column>
+            <el-table-column prop="result" label="结果"></el-table-column>
+          </el-table>
+        </div>
         <div
           style="width:60%;height:calc(100% - 20px);float:right;background:black;color:white;font-size:.8rem;overflow-y:scroll;"
         >
@@ -112,6 +124,8 @@ export default {
   data() {
     let logs = Service.getLogs();
     return {
+      task: '',
+      editMode: true,
       logs,
       showLogPanel: false,
       showLogBtn: true,
@@ -138,11 +152,19 @@ export default {
       return this.state.hasPalette ? this.stepOpts.maximize : true;
     }
   },
-
+  watch: {
+    editMode() {
+      this.store.step.rootEditPart.$emit("vueHandler", vue => {
+        vue.target.type = this.editMode ? 0 : 1;
+      });
+    }
+  },
   mounted() {
     $(this.$refs.logPanel).draggable();
     $(this.$refs.logPanel).resizable({
-      handles: "w,e,s,n,se,ne,sw,nw"
+      handles: "w,e,s,n,se,ne,sw,nw",
+      minHeight: 150,
+      minWidth: 250
     });
   },
   created() {
@@ -160,6 +182,29 @@ export default {
   },
 
   methods: {
+    querySearchAsync(queryString, cb) {
+      var restaurants = Service.getTasks();
+      var results = queryString
+        ? restaurants.filter(this.createStateFilter(queryString))
+        : restaurants;
+
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        cb(results);
+      }, 1000 * Math.random());
+    },
+    createStateFilter(queryString) {
+      return ({value,inputId}) => {
+        return (
+          value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        )&&inputId != this.target.inputId;
+      };
+    },
+    taskChanged(item) {
+      // console.log(item);
+      this.target.inputId=item.inputId;
+    },
+
     convertTimeFormat(ms) {
       if (ms < 1000) return ms + "ms";
       let s = ms / 1000;
@@ -296,40 +341,39 @@ export default {
   }
 }
 
- 
-.aim-shell-content .el-aside .el-transfer-panel{
-    border:none;
+.aim-shell-content .el-aside .el-transfer-panel {
+  border: none;
 }
-.aim-shell-content .el-aside .el-input{
-    height: 28px;
-    align-items: center;
-    border: 1px solid #DADADA;
-    border-radius: 4px;
-    margin: 5px auto;
-    display: flex;
-    flex-direction: row;
-    width: calc(100% - 2px);
+.aim-shell-content .el-aside .el-input {
+  height: 28px;
+  align-items: center;
+  border: 1px solid #dadada;
+  border-radius: 4px;
+  margin: 5px auto;
+  display: flex;
+  flex-direction: row;
+  width: calc(100% - 2px);
 }
-.aim-shell-content .el-aside .el-input input{
-    border: none;
-    box-shadow: none;
-    font-size: 12px;
-    margin: 0;
-    flex: 1;
-    height: 100%;
+.aim-shell-content .el-aside .el-input input {
+  border: none;
+  box-shadow: none;
+  font-size: 12px;
+  margin: 0;
+  flex: 1;
+  height: 100%;
 }
-.aim-shell-content .el-aside .el-input span{
-    font-size: 14px;
-    margin-right: 10px;
-    color: #9B9B9B;
-    position: relative;
-    top: -6px;
+.aim-shell-content .el-aside .el-input span {
+  font-size: 14px;
+  margin-right: 10px;
+  color: #9b9b9b;
+  position: relative;
+  top: -6px;
 }
-.aim-shell-content .el-transfer-panel+.el-transfer-panel{
-    border-top:1px solid #e5e5e5;
-    border-radius:0;
-    margin-top:-5px;
-    padding-top:5px;
+.aim-shell-content .el-transfer-panel + .el-transfer-panel {
+  border-top: 1px solid #e5e5e5;
+  border-radius: 0;
+  margin-top: -5px;
+  padding-top: 5px;
 }
 </style>
 

@@ -1,5 +1,23 @@
 import large from "./largeFlow"
 export default {
+  getTasks() {
+    return [
+      {
+        name: '主机部署',
+        time: '2018/03/12',
+        ip: '112.1.2.41',
+        value: '主机部署(112.1.2.41)',
+        inputId: 0,
+      },
+      {
+        name: '三方部署',
+        time: '2018/03/14',
+        ip: '112.12.2.41',
+        value: 'FTP上传(122.1.2.41)',
+        inputId: 1,
+      },
+    ]
+  },
   getScriptInstanceTree() {
     return [
       {
@@ -45,7 +63,7 @@ export default {
       }]
   },
 
-  getServiceInstanceTree () {
+  getServiceInstanceTree() {
     return [
       {
         type: '1',
@@ -59,69 +77,69 @@ export default {
       }
     ]
   },
-  getServiceInstance () {
-    if(true)
-      return large;
-
-    return {
-      "start": "1",
-      "data": {
-        "1": {
-          "id": "1",
-          "name": "编译交易脚本",
-          "scriptId": "caf41eaf",
-          "ip": "192.168.1.2",
-          "port": "22",
-          "params": {
-            "output": "f:/log/script.log"
+  getServiceInstance(target) {
+    switch (target.inputId) {
+      case 0: return large
+      default: return {
+        "start": "1",
+        "data": {
+          "1": {
+            "id": "1",
+            "name": "编译交易脚本",
+            "scriptId": "caf41eaf",
+            "ip": "192.168.1.2",
+            "port": "22",
+            "params": {
+              "output": "f:/log/script.log"
+            },
+            bounds: [120, 40, 180, 40],
+            "target": {
+              "0": "4",
+              "1": "2"
+            }
           },
-          bounds: [120, 40, 180, 40],
-          "target": {
-            "0": "4",
-            "1": "2"
-          }
-        },
-        "2": {
-          "id": "2",
-          "name": "打包项目",
-          "scriptId": "ahawerw",
-          "ip": "192.168.1.2",
-          "port": "22",
-          bounds: [20, 120, 180, 40],
-          "params": {
-            "output": "f:/log/script.log"
+          "2": {
+            "id": "2",
+            "name": "打包项目",
+            "scriptId": "ahawerw",
+            "ip": "192.168.1.2",
+            "port": "22",
+            bounds: [20, 120, 180, 40],
+            "params": {
+              "output": "f:/log/script.log"
+            },
+            "target": {
+              "0": "4",
+              "1": "3"
+            }
           },
-          "target": {
-            "0": "4",
-            "1": "3"
-          }
-        },
-        "3": {
-          "id": "3",
-          "name": "部署项目",
-          "scriptId": "afagaf",
-          "ip": "192.168.1.122",
-          "port": "22",
-          bounds: [320, 250, 180, 40],
-          "params": {
-            "output": "f:/log/script.log"
+          "3": {
+            "id": "3",
+            "name": "部署项目",
+            "scriptId": "afagaf",
+            "ip": "192.168.1.122",
+            "port": "22",
+            bounds: [320, 250, 180, 40],
+            "params": {
+              "output": "f:/log/script.log"
+            },
+            "target": {
+            }
           },
-          "target": {
-          }
-        },
-        "4": {
-          "id": "4",
-          "name": "脚本执行出错",
-          "scriptId": "dsaf123sd",
-          "ip": "192.168.1.3",
-          "port": "2212",
-          bounds: [20, 250, 180, 40],
-          "params": {
-            "output": "f:/log/script.log",
-            "type": "1"
+          "4": {
+            "id": "4",
+            "name": "脚本执行出错",
+            "scriptId": "dsaf123sd",
+            "ip": "192.168.1.3",
+            "port": "2212",
+            bounds: [20, 250, 180, 40],
+            "params": {
+              "output": "f:/log/script.log",
+              "type": "1"
+            }
           }
         }
-      }
+      };
     }
   },
   getLogs() {
@@ -206,7 +224,8 @@ export default {
   createSerivceCtr() {
     return {
       id: 'a service ctr',
-      type: 0
+      type: 0,
+      inputId: 1,
     }
   },
   save(target, data) {

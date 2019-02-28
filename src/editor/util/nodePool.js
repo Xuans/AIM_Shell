@@ -17,6 +17,7 @@ export default class NodePool {
       this.pool.set(editor.storeId, editor)
     }
   }
+  
 
   getByModel (model) {
     return model != null ? this.pool.get(getUUID(model)) : null
@@ -36,6 +37,13 @@ export default class NodePool {
 
       return node
     }
+  }
+
+  reset(data){
+    this.step.rootEditPart.model.removeAllChildren();
+    this.step.cmdStack.dispose();
+    this.step.rootEditPart.refresh();
+
   }
 
   clear () {

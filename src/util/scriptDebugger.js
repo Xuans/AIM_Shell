@@ -6,12 +6,13 @@
 //假数据
 const socket = {
     listener: null,
+    control: 0,
     send(key, data, flow, onError) {
         onError();
         var func = (index, c) => {
             let log = flow.progress[index];
             if (log) {
-                setTimeout(
+                this.control = setTimeout(
                     function () {
                         console.log("当前节点" + index)
                         // c({ index: (index + 1), prevIndex: index, result: 1, log: "执行完毕:" + data.data[flow[index]].name });
@@ -25,14 +26,17 @@ const socket = {
                             // console.error(index)
                             c({ index: -1, prevIndex: index, result: log.result, log });
                         }
-                    },600);
+                    }, 600);
             }
         }
         func(data.start, this.listener);
     },
     on(listener) {
         this.listener = listener;
-    }
+    },
+    reset() {
+        clearTimeout(this.control);
+    },
 }
 
 let current = -1;
@@ -71,6 +75,8 @@ const start = (emittable, data, flow) => {
     try {
         //当前执行中的节点
 
+        socket.reset();
+
         socket.on(({ index, prevIndex, result, log }) => {
             if (result == -1) {
                 //-1表示上一个节点执行异常
@@ -82,7 +88,7 @@ const start = (emittable, data, flow) => {
                 emittable.$emit('debug-over-node', { index: prevIndex, result, log });
                 //into下一个节点
                 emittable.$emit('debug-into-node', { index, prevIndex });
-                
+
             }
         });
 

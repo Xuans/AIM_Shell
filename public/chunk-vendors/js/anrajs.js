@@ -5942,6 +5942,12 @@
             anra.Store.get(this.storeId, 'node')({ id: model.get('id') }).remove();
             callback && callback(model);
         },
+        removeAllChildren: function () {
+            for(let model of this.getAllChildren()){
+                anra.Store.get(this.storeId, 'node')({ id: model.get('id') }).remove();
+            }
+            this.children={};
+        },
         getChild: function (id) {
             return this.children[id];
         },
