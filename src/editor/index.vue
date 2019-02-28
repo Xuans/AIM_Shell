@@ -11,7 +11,19 @@
         >
           <i class="fa fa-file-text"></i>
           打开日志面板
-        </span> -->
+        </span>-->
+        <span
+          data-role="btn"
+          title="保存编排"
+          v-show="editMode"
+          @click="doSave"
+           v-loading="saving"
+           element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(22, 22, 22, 0.8)"
+        >
+          <i class="fa fa-file-text"></i>
+          保存
+        </span>
         <span data-role="btn" title="切换模式" @click="editMode=!editMode">
           <i class="fa fa-file-text"></i>
           {{editMode?'查看日志':'编排脚本'}}
@@ -57,11 +69,11 @@
           <!-- <span
             style="position:absolute;right:5px;top:-2px;"
             @click="((showLogBtn=true) && (showLogPanel=false))"
-          >x</span> -->
+          >x</span>-->
         </div>
         <div style="width:40%;float:left;height:calc(100% - 20px)">
           <div style="padding:0 10px 0 10px;height:50px;width:100%;">
-            <span style="font-size:.8rem"> 选择任务：</span>
+            <span style="font-size:.8rem">选择任务：</span>
             <el-autocomplete
               v-model="task"
               :fetch-suggestions="querySearchAsync"
@@ -124,12 +136,14 @@ export default {
   data() {
     let logs = Service.getLogs();
     return {
-      task: '',
+      _dirty:false,
+      task: "",
       editMode: true,
       logs,
       showLogPanel: false,
       showLogBtn: true,
       currentLog: {},
+      saving:false,
       nodeOpts: {
         desp: "",
         input: null,
@@ -145,6 +159,15 @@ export default {
   },
 
   computed: {
+    dirty: {
+      get() {
+        if (this.store) this._dirty = this.store.step.isDirty();
+        return this._dirty;
+      },
+      set(v) {
+        this._dirty = v;
+      }
+    },
     stepCfg() {
       return this.propsOfFlow();
     },
@@ -182,6 +205,12 @@ export default {
   },
 
   methods: {
+    doSave() {
+      this.saving=true;
+      Service.doSave(this.store.step,()=>{
+        this.saving=false;
+      });
+    },
     querySearchAsync(queryString, cb) {
       var restaurants = Service.getTasks();
       var results = queryString
@@ -194,15 +223,16 @@ export default {
       }, 1000 * Math.random());
     },
     createStateFilter(queryString) {
-      return ({value,inputId}) => {
+      return ({ value, inputId }) => {
         return (
-          value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-        )&&inputId != this.target.inputId;
+          value.toLowerCase().indexOf(queryString.toLowerCase()) === 0 &&
+          inputId != this.target.inputId
+        );
       };
     },
     taskChanged(item) {
       // console.log(item);
-      this.target.inputId=item.inputId;
+      this.target.inputId = item.inputId;
     },
 
     convertTimeFormat(ms) {

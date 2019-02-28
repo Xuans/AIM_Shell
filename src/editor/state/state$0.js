@@ -111,12 +111,12 @@ export default class State$0 extends State {
 
   input2Config () {
     const target = this.target
-    const serviceInstance = Serivces.getServiceInstance(target)
+    const serviceInstance =await Serivces.getServiceInstance(target)
     const config = {}
 
     config.id = target.id
-    config.palette = Serivces.getScriptInstanceTree(target)
-    config.palette$0 = Serivces.getServiceInstanceTree(target)
+    config.palette =await Serivces.getScriptInstanceTree(target)
+    config.palette$0 =await Serivces.getServiceInstanceTree(target)
 
     State.addDataAndLine(config, serviceInstance.data)
     registerOperations(config)

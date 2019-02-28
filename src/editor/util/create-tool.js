@@ -32,7 +32,7 @@ export function createData ({id}, data = {}) {
       Terminal: [
         {id: '1', dir: 's', offset: 30, max: 1, linkmyself: false, type: 'out'},
         {id: '0', dir: 's', offset: -30, max: 1, linkmyself: false, type: 'out'},
-        {id: 'n', dir: 'n', offset: 0, max: 1, linkmyself: false, type: 'in'}
+        {id: 'n', dir: 'n', offset: 0, linkmyself: false, type: 'in'}
       ]
     },
     data: data
@@ -70,7 +70,7 @@ const Tool$0 = $AG.Tool.CreationTool.extend({
     this.item = item
 
     // const item = this.item
-    const json = Service.getServiceInstance(item)
+    const json = await Service.getServiceInstance(item)
     const nodes = Object.values(json.data)
 
     let left, right, top, bottom

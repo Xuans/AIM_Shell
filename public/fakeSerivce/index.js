@@ -18,6 +18,10 @@ export default {
       },
     ]
   },
+  doSave(editor,callback){
+
+      setTimeout(callback,1000);
+  },
   getScriptInstanceTree() {
     return [
       {
