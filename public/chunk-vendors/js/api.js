@@ -19,9 +19,7 @@
 				})
 			},
 			timeout: 2 * 60 * 1000,
-		}).then(response=>{
-
-		}).fail(err=>{});
+		});
 	};
 	var methods={};
 	[{
