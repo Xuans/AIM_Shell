@@ -3,7 +3,7 @@
     <div class="aim-shell-header">
       <span>任务编排</span>
       <div class="tookit">
-        <span
+        <span 
           data-role="btn"
           title="查看日志"
           v-show="showLogBtn"
