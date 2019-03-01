@@ -6,6 +6,7 @@ import types from "../figure/types";
 import {ReaderListener} from "../util/manhattan-router";
 import {dblfPolicy} from "../util/bind-event";
 import update from "../util/update";
+import layoutPolicy from '../util/layout-policy'
 
 const BaseConfig = {
   children: { node },
@@ -13,6 +14,7 @@ const BaseConfig = {
   types,
   onHooks: [ReaderListener],
   policies: { dblfPolicy },
+  layoutable: layoutPolicy
 }
 
 function registerOperations (config) {
