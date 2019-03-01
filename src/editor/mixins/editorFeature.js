@@ -37,7 +37,7 @@ export default {
       })
     },
     saveOfFlow(editor) {
-      this.state.save(editor)
+      this.state.save(editor, this.target);
     },
     dirtyOfFlow(editor) {
       return editor == null ? false : editor.isDirty()
