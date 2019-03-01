@@ -70,45 +70,47 @@ const Tool$0 = $AG.Tool.CreationTool.extend({
     this.item = item
 
     // const item = this.item
-    const json =  Service.getServiceInstance(item)
-    const nodes = Object.values(json.data)
+    Service.getServiceInstance(item).then(json=>{
+      const nodes = Object.values(json.data)
 
-    let left, right, top, bottom
-
-    left = top = Number.MAX_VALUE
-    right = bottom = Number.MIN_VALUE
-
-    let offset = Array.of()
-
-    this.models = nodes.map(node => {
-      let data = createData(node, node)
-      let model = $AG.Node.create(data)
-      let bounds = model.get('bounds')
-
-      offset.push(bounds)
-
-      left = Math.min(bounds[0], left)
-      top = Math.min(bounds[1], top)
-
-      right = Math.max(bounds[0] + bounds[2], right)
-      bottom = Math.max(bounds[1] + bounds[3], bottom)
-
-      return model
-    })
-
-    let centerX = (right + left) >>> 1
-    let centerY = (top + bottom) >>> 1
-
-    for (let i = 0; i < offset.length; i++) {
-      let bounds = offset[i]
-
-      offset[i] = {
-        x: bounds[0] - centerX,
-        y: bounds[1] - centerY
+      let left, right, top, bottom
+  
+      left = top = Number.MAX_VALUE
+      right = bottom = Number.MIN_VALUE
+  
+      let offset = Array.of()
+  
+      this.models = nodes.map(node => {
+        let data = createData(node, node)
+        let model = $AG.Node.create(data)
+        let bounds = model.get('bounds')
+  
+        offset.push(bounds)
+  
+        left = Math.min(bounds[0], left)
+        top = Math.min(bounds[1], top)
+  
+        right = Math.max(bounds[0] + bounds[2], right)
+        bottom = Math.max(bounds[1] + bounds[3], bottom)
+  
+        return model
+      })
+  
+      let centerX = (right + left) >>> 1
+      let centerY = (top + bottom) >>> 1
+  
+      for (let i = 0; i < offset.length; i++) {
+        let bounds = offset[i]
+  
+        offset[i] = {
+          x: bounds[0] - centerX,
+          y: bounds[1] - centerY
+        }
       }
-    }
-
-    this.offset = offset
+  
+      this.offset = offset
+    })
+   
   },
 
   /*activate () {

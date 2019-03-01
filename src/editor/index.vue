@@ -22,7 +22,7 @@
                         element-loading-background="rgba(22, 22, 22, 0.8)"
                 >
           <i class="fa fa-file-text"></i>
-          保存
+          保存{{ dirty?'*':''}}
         </span>
                 <span data-role="btn" title="切换模式" @click="editMode=!editMode">
           <i class="fa fa-file-text"></i>
@@ -96,7 +96,7 @@
                         >节点: {{i}} 耗时:
                         <span
                                 :style="{color:node.duration>36000?'red':node.duration>10000?'yellow':'green'}"
-                        >{{convertTimeFormat(node.duration)}}</span>
+                        >{{timeFormat(node)}}</span>
                         <br>
                         <span :style="{color: node.result?'green':'red'}">{{node.log}}</span>
                     </div>
@@ -178,7 +178,9 @@
 		},
 		watch: {
 			target: {
-				handler(v) {},
+				handler(v) {
+					this.propsOfFlow();
+				},
 				deep: true
 			},
 			editMode() {
@@ -194,7 +196,7 @@
 				minHeight: 150,
 				minWidth: 250
 			});
-			//this.setServiceId();
+			this.setServiceId();
 		},
 		created() {
 			// 设置快键键
@@ -211,9 +213,13 @@
 		},
 
 		methods: {
+			
+			timeFormat(node){
+				return Service.convertTimeFormat(node.duration);
+			},
 			setServiceId(id=1) {
 				this.target.inputId = id;
-				this.propsOfFlow();
+				// this.propsOfFlow();
 			},
 			querySearchAsync(queryString, cb) {
 				var restaurants = Service.getTasks();
@@ -237,20 +243,7 @@
 			taskChanged(item) {
 				// console.log(item);
 				this.target.inputId = item.inputId;
-				this.propsOfFlow();
-			},
-
-			convertTimeFormat(ms) {
-				if (ms < 1000) return ms + "ms";
-				let s = ms / 1000;
-				if (s < 60) return s + "s";
-				if (s < 3600) return s / 60 + "min";
-
-				var hours = parseInt(ms / 3600000);
-				var minutes = parseInt((ms % 3600000) / (1000 * 60));
-				var seconds = (ms % (1000 * 60)) / 1000;
-
-				return hours + "h " + minutes + "min " + seconds + "s ";
+				// this.propsOfFlow();
 			},
 			handleSelect(row, event, column) {
 				console.log(this.$refs.stepEditor.editor.rootEditPart);

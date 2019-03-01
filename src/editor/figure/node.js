@@ -2,9 +2,8 @@ import { terminalPolicy } from "../util/terminal";
 import selectable from '../util/state-policy'
 import { textPolicy0 } from "../util/text-policy";
 import tooltipPolicy from '../util/tooltip-policy'
-import { debugUIPolicy } from "../util/debug-policy";
 const color = 'gray';
-export default {
+export default (function() {return {
   canDrag: true,
   linkable: $AG.ValidatorConnection,
   selectable: selectable,
@@ -31,10 +30,10 @@ export default {
     't': terminalPolicy({ addAnchor: data => data }),
     'tt': textPolicy0,
     'ttt': tooltipPolicy,
-    'debugUI': debugUIPolicy,
   },
 
   attr: {
     fill: color
   }
 }
+})

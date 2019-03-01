@@ -7,9 +7,13 @@ import { dblfPolicy } from "../util/bind-event";
 import Serivces from "../../../public/fakeSerivce";
 import { debugRootPolicy } from "../util/debug-policy";
 import debuggerRunner from "../../util/scriptDebugger";
+import { debugUIPolicy } from "../util/debug-policy";
 
+
+const n=node();
+n.policies['debugUI']=debugUIPolicy;
 const BaseConfig = {
-  children: { node },
+  children: { node:n },
   lines: { '0': lineOfUnselectable },
   types,
   onHooks: [ReaderListener],

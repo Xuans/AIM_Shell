@@ -123,7 +123,7 @@ export const textPolicy0 = $AG.Policy.extend({
     return $AG.Policy.TextPolicy('data.id', locator, options)
   },
   createDespPolicy () {
-    let duplicate = true
+    let duplicate = false
     let model = this.getHost().model
     // let limit = this.limit
     const fontHeight = this.fontHeight
@@ -139,7 +139,7 @@ export const textPolicy0 = $AG.Policy.extend({
           return toString(model.get('data.name'))
         } else {
           handle.setVisible(false)
-          return `${text}:${model.get('data.port')}`
+          return toString(model.get('data.name'))
         }
       }
     }

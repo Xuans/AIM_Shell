@@ -1,36 +1,56 @@
 import Popper from "popper.js";
 import 'animate.css';
 import $ from 'jquery'
+import Service from '../../../public/fakeSerivce/index'
 
 export const debugRootPolicy = {
     config: {
-        overNode({ index, result, log }) {
-            if(!this.debugging)return;
+        overNode({
+            index,
+            result,
+            log
+        }) {
+            if (!this.debugging) return;
             console.log("over-node", index);
             var part = this.getHost().getEditPartById(index);
             if (part) {
-                part.$emit("debug-over", { result, log });
+                part.$emit("debug-over", {
+                    result,
+                    log
+                });
             }
         },
-        intoNode({ index, prevIndex }) {
-            if(!this.debugging)return;
+        intoNode({
+            index,
+            prevIndex
+        }) {
+            if (!this.debugging) return;
             console.log("into-node", index, prevIndex);
             var part = this.getHost().getEditPartById(index);
             if (part) {
-                part.$emit("debug-into", { prevIndex });
+                part.$emit("debug-into", {
+                    prevIndex
+                });
             }
         },
-        errorNode({ index, result, log }) {
-            if(!this.debugging)return;
+        errorNode({
+            index,
+            result,
+            log
+        }) {
+            if (!this.debugging) return;
             console.log("errornode", index);
             var part = this.getHost().getEditPartById(index);
             if (part) {
-                part.$emit("debug-error", { result, log });
+                part.$emit("debug-error", {
+                    result,
+                    log
+                });
             }
         },
         start() {
             console.log("start");
-            this.debugging=true;
+            this.debugging = true;
             this.cleanChildren();
             this.getHost().$emit("readOnly", 1);
 
@@ -41,7 +61,7 @@ export const debugRootPolicy = {
                 }
         },
         stop() {
-            this.debugging=false;
+            this.debugging = false;
             console.log("stop");
             this.cleanChildren();
             this.getHost().$emit("readOnly", 0);
@@ -56,7 +76,7 @@ export const debugRootPolicy = {
         },
     },
     activate() {
-        this.debugging=false;
+        this.debugging = false;
         console.log("debug policy activate,install listeners");
         this.on("debug-start", this.start);
         this.on("debug-stop", this.stop);
@@ -86,7 +106,7 @@ export const debugUIPolicy = {
             }
 
             let toolong = log.duration > 1000;
-
+            let time = Service.convertTimeFormat(log.duration)
             let pop1 = document.createElement('div');
             pop1.innerHTML = `<div  
             style='pointer-events:none;
@@ -99,18 +119,18 @@ export const debugUIPolicy = {
             overflow-y:auto'>
             
             ${log.time} 
-               <span style='color:${toolong ? 'red' : 'green'}'>${toolong ? (log.duration / 1000) + 's' : log.duration + 'ms'}</span>
+               <span style='color:${toolong ? 'red' : 'green'}'>${time}</span>
                <br> <xmp style="white-space:normal;">${log.log}</xmp></div>`;
             pop1.style['pointer-events'] = 'none';
             pop1.style['margin'] = '10px 10px';
             pop1.classList.add('animated', 'fadeIn');
 
-            const $pop1=$(pop1);
+            const $pop1 = $(pop1);
 
             $(this.getHost().getFigure().domContainer())
-                    .closest('.flow-canvas')
-                    .append($pop1);
-                
+                .closest('.flow-canvas')
+                .append($pop1);
+
 
             //document.body.appendChild();
             var pi = new Popper(this.getHost().getFigure().owner, pop1, {
@@ -118,8 +138,7 @@ export const debugUIPolicy = {
                     console.log(data)
                 },
                 placement: 'right',
-                onUpdate: data => {
-                }
+                onUpdate: data => {}
             });
             let panel = new LogPanel(this.getHost());
 
@@ -146,17 +165,22 @@ export const debugUIPolicy = {
                 }
             this.handles = null;
         },
-        into({ prevIndex }) {
+        into({
+            prevIndex
+        }) {
             this.getHost().refresh();
             $(this.getHost().getFigure().owner).animate({
                 opacity: 1
             })
-            
+
             this.getHost().getFigure().fire('handler', handler => {
                 handler.setOpacity(1);
             });
         },
-        over({ result, log }) {
+        over({
+            result,
+            log
+        }) {
             this.getHost().refresh();
             if (log) {
                 this.addLogPanel(log);
@@ -184,7 +208,8 @@ export const debugUIPolicy = {
             }
 
             //修改执行颜色
-            this.getHost().model.set('color', result ? 'green' : 'red'); this.getHost().refresh();
+            this.getHost().model.set('color', result ? 'green' : 'red');
+            this.getHost().refresh();
         },
         error() {
             this.getHost().refresh();
@@ -202,7 +227,7 @@ export const debugUIPolicy = {
                     //停止正在进行的动画
                     $(conns[i].getFigure().owner).stop();
                 }
-            } 
+            }
             this.getHost().getFigure().setOpacity(1);
             $(this.getHost().getFigure().owner).stop();
             this.getHost().getFigure().fire('handler', handler => {
@@ -223,6 +248,7 @@ export const debugUIPolicy = {
         }
     },
     activate() {
+        console.log("node debug ui activate");
         this.color = this.getHost().model.get('color');
         this.getHost().$on("debug-into", this.into);
         this.getHost().$on("debug-over", this.over);

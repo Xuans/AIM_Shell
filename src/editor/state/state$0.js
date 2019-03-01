@@ -7,8 +7,9 @@ import {ReaderListener} from "../util/manhattan-router";
 import {dblfPolicy} from "../util/bind-event";
 import update from "../util/update";
 
+
 const BaseConfig = {
-  children: { node },
+  children: { node:node() },
   lines: { '0': line },
   types,
   onHooks: [ReaderListener],
