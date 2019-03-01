@@ -13,7 +13,7 @@ export default (function() {return {
   refresh,
   type: 'rect',
   policies: {
-    't': terminalPolicy({ addAnchor: data => data }),
+    't': terminalPolicy,
     'tt': textPolicy0,
     'ttt': tooltipPolicy,
   },

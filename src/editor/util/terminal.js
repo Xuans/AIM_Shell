@@ -3,8 +3,10 @@ const Terminals = 'Terminals'
 
 
 const LinkTool = $AG.LinkLineTool.extend({
-  constructor (callback) {
-    this.base($AG.Line.create({type: 0}))
+  constructor(callback) {
+    this.base($AG.Line.create({
+      type: 0
+    }))
     this.callback = callback
   },
   mouseUp(e, p) {
@@ -16,40 +18,40 @@ const LinkTool = $AG.LinkLineTool.extend({
 })
 
 const colorMap = {
-    '-1': 'black',
-    '0': 'red',
-    '1': 'green',
-    '2': 'yellow',
-    '4': 'greenyellow',
-    '5': 'orange',
-    '6': 'blue',
-    '7': 'purple',
-    '8': 'deeppink'
+  '-1': 'black',
+  '0': 'rgb(244,80,68)',
+  '1': 'rgb(10,124,181)',
+  '2': 'yellow',
+  '4': 'greenyellow',
+  '5': 'orange',
+  '6': 'blue',
+  '7': 'purple',
+  '8': 'deeppink'
 }
 
 const defaultColor = 'grey'
 
 const PinHandle = $AG.Handle.extend($AG.CIRCLE).extend({
   // replacedByHostOnEvnet: true,
-  constructor (editPart, data) {
+  constructor(editPart, data) {
     $AG.Handle.prototype.constructor.call(this, editPart)
     this.anchorId = getID(data)
     this.desp = getDesp(data)
     this.toolListenter = (tool) => {
-      this.evetHost = (tool != null && tool.id === 'link tool')
-          ? editPart
-          : this
+      this.evetHost = (tool != null && tool.id === 'link tool') ?
+        editPart :
+        this
       /*this.replacedByHostOnEvnet = (tool != null && tool.id === 'link tool')
           ? true
           : false*/
     }
     editPart.editor.listenerSupport.add('tool-changed', this.toolListenter)
   },
-  dispose () {
+  dispose() {
     this.editPart.editor.listenerSupport.remove('tool-changed', this.toolListenter)
     this.base()
   },
-  initProp () {
+  initProp() {
     let anchor = this.editPart.getSourceAnchorByTerminal(this.anchorId)
 
     if (anchor) {
@@ -74,7 +76,7 @@ const PinHandle = $AG.Handle.extend($AG.CIRCLE).extend({
       this.enable = true
     }
   },
-  refreshLocation (figure) {
+  refreshLocation(figure) {
     var anchor = figure.getSourceAnchorByTerminal(this.anchorId)
     this.setBounds({
       x: anchor.x,
@@ -82,12 +84,14 @@ const PinHandle = $AG.Handle.extend($AG.CIRCLE).extend({
       width: 10
     })
   },
-  mouseDown (e) {
+  mouseDown(e) {
     let policy = this.editPart.getConnectionPolicy()
     let anchor = this.editPart.figure.anchorMap.get(this.anchorId)
 
     // validator 默认安装ValidatorConnection
-    if (policy.validatorAnchor(anchor, {type: 'connection start'})) {
+    if (policy.validatorAnchor(anchor, {
+        type: 'connection start'
+      })) {
       let editor = this.editPart.editor
       let oldTool = editor.getActiveTool()
       let tool = new LinkTool(() => editor.setActiveTool(oldTool))
@@ -99,15 +103,15 @@ const PinHandle = $AG.Handle.extend($AG.CIRCLE).extend({
   }
 })
 
-function getTerminals (terminls) {
+function getTerminals(terminls) {
   return terminls[Terminal]
 }
 
-function getID (data) {
+function getID(data) {
   return data.id
 }
 
-function getDesp (data) {
+function getDesp(data) {
   return 'about : blank'
 }
 
@@ -116,11 +120,17 @@ class AboutTerminal {
 
   static memoPool = new WeakMap();
 
-  static register (editPart, addHandle) {
+  static register(editPart, addHandle) {
     return this.pool.get(editPart.model) || new AboutTerminal(editPart, addHandle)
   }
 
-  constructor (editPart, addHandle) {
+  static getHandles(editPart) {
+    let instance = this.pool.get(editPart.model)
+    if (instance)
+      return instance.handles;
+  }
+
+  constructor(editPart, addHandle) {
     this.editPart = editPart
     this.handles = new Map()
     this.isListen = false
@@ -130,7 +140,7 @@ class AboutTerminal {
     AboutTerminal.pool.set(editPart.model, this)
   }
 
-  _createPinHandle (data, index, length) {
+  _createPinHandle(data, index, length) {
     this._adjustPinHandle(data, index, length)
 
     let pin = new PinHandle(this.editPart, data)
@@ -146,18 +156,18 @@ class AboutTerminal {
     this.editPart.getRoot().getLayer('Handle_Layer').addChild(pin)
   }
 
-  _destroyPinHandle (name) {
+  _destroyPinHandle(name) {
     let chainCmd = new $AG.ChainedCompoundCommand()
 
     this._findSourceLinesAtTerminal(name)
-        .forEach(line =>
-            chainCmd.chain(new $AG.DeleteLineCommand(this.editPart.getRoot(), this.editPart.findLineEditPart(line)))
-        )
+      .forEach(line =>
+        chainCmd.chain(new $AG.DeleteLineCommand(this.editPart.getRoot(), this.editPart.findLineEditPart(line)))
+      )
 
     this._findTargetLinesAtTerminal(name)
-        .forEach(line =>
-            chainCmd.chain(new $AG.DeleteLineCommand(this.editPart.getRoot(), this.editPart.findLineEditPart(line)))
-        )
+      .forEach(line =>
+        chainCmd.chain(new $AG.DeleteLineCommand(this.editPart.getRoot(), this.editPart.findLineEditPart(line)))
+      )
     chainCmd.execute()
 
     this.editPart.figure.unregistAnchor(name)
@@ -168,45 +178,45 @@ class AboutTerminal {
     AboutTerminal.memoPool.set(this.memo, chainCmd)
   }
 
-  _adjustPinHandle (data, index, length) {
+  _adjustPinHandle(data, index, length) {
     const bounds = this.editPart.model.get('bounds')
     this.editPart.figure.registAnchor(this.add(data, bounds, index, length))
 
     const id = getID(data)
     this._findTargetLinesAtTerminal(id)
-        .forEach(line => {
-          let lineEditPart = this.editPart.findLineEditPart(line)
-          lineEditPart.refreshTargetAnchor()
-          lineEditPart.refreshVisual()
-          lineEditPart.refreshChildren()
-        })
+      .forEach(line => {
+        let lineEditPart = this.editPart.findLineEditPart(line)
+        lineEditPart.refreshTargetAnchor()
+        lineEditPart.refreshVisual()
+        lineEditPart.refreshChildren()
+      })
 
     this._findSourceLinesAtTerminal(id)
-        .forEach(line => {
-          let lineEditPart = this.editPart.findLineEditPart(line)
-          lineEditPart.refreshSourceAnchor()
-          lineEditPart.refreshVisual()
-          lineEditPart.refreshChildren()
-        })
+      .forEach(line => {
+        let lineEditPart = this.editPart.findLineEditPart(line)
+        lineEditPart.refreshSourceAnchor()
+        lineEditPart.refreshVisual()
+        lineEditPart.refreshChildren()
+      })
 
     if (this.handles.has(id)) {
       this.handles.get(id).refreshLocation(this.editPart.figure)
     }
   }
 
-  _findSourceLinesAtTerminal (id) {
+  _findSourceLinesAtTerminal(id) {
     let sourceLines = this.editPart.getModelSourceLines()
 
     return sourceLines.filter(line => line.get('exit') === id)
   }
 
-  _findTargetLinesAtTerminal (id) {
+  _findTargetLinesAtTerminal(id) {
     let targetLines = this.editPart.getModelTargetLines()
 
     return targetLines.filter(line => line.get('entr') === id)
   }
 
-  handle (key, oldValue, newValue) {
+  handle(key, oldValue, newValue) {
     let terminals = getTerminals(newValue)
     let destroies = new Set(this.handles.keys())
     let length = terminals.length
@@ -227,37 +237,38 @@ class AboutTerminal {
     return this
   }
 
-  listen (flag) {
+  listen(flag) {
     if (flag ^ this.isListen) {
       flag
-          ? this.editPart.model.addPropertyListener(this.listener = (...res) => this.handle(...res) || this.listener, Terminals)
-          : this.editPart.model.removePropertyListener(this.listener, Terminals)
+        ?
+        this.editPart.model.addPropertyListener(this.listener = (...res) => this.handle(...res) || this.listener, Terminals) :
+        this.editPart.model.removePropertyListener(this.listener, Terminals)
       this.isListen = flag
     }
     return this
   }
 
-  dispose () {
+  dispose() {
     AboutTerminal.pool.delete(this.editPart.model);
     [...this.handles.entries()]
-        .forEach(([index, handle]) => this.editPart.getRoot().getLayer('Handle_Layer').removeChild(handle))
+    .forEach(([index, handle]) => this.editPart.getRoot().getLayer('Handle_Layer').removeChild(handle))
     AboutTerminal.pool.delete(this.editPart.model)
     this.editPart = null
     this.handles.clear()
     this.handle = null
   }
 
-  static cancel (editPart) {
+  static cancel(editPart) {
     if (AboutTerminal.pool.has(editPart.model)) {
       AboutTerminal.pool.get(editPart.model).listen(false).dispose()
     }
   }
 
-  static getMemo (model) {
+  static getMemo(model) {
     return AboutTerminal.pool.has(model) ? AboutTerminal.pool.get(model).memo : null
   }
 
-  static setMemo (model, memo) {
+  static setMemo(model, memo) {
     if (AboutTerminal.pool.has(model)) {
       AboutTerminal.pool.get(model).toMemo = memo
     }
@@ -265,28 +276,82 @@ class AboutTerminal {
 }
 
 export const terminalCmd = {
-  afterExecute () {
+  afterExecute() {
     this.memo = AboutTerminal.getMemo(this.model)
   },
-  beforeUndo () {
+  beforeUndo() {
     AboutTerminal.setMemo(this.model, this.memo)
   }
 }
 
-export function terminalPolicy ({isListen = false, addAnchor} = {}) {
-  return {
-    activate () {
-      AboutTerminal
-          .register(this.getHost(), addAnchor)
-          .handle(Terminals, null, this.getHost().model.get(Terminals))
-          .listen(isListen)
-    },
-    deactivate () {
-      AboutTerminal.cancel(this.getHost())
+export const terminalPolicy = $AG.TransitionPolicy.extend({
+  activate() {
+    this.base();
+    console.log('active')
+    AboutTerminal
+      .register(this.getHost(), data => data)
+      .handle(Terminals, null, this.getHost().model.get(Terminals))
+      .listen(false)
+    this.handles = AboutTerminal.getHandles(this.getHost());
+    for (let handle of this.handles) {
+      handle[1].setVisible(false);
+      handle[1].on('mousein', () => {
+        this.state_in_handle = true;
+        this.refreshState();
+      });
+      handle[1].on('mouseout', () => {
+        this.state_in_handle = false;
+        this.refreshState();
+      });
     }
-  }
-}
+  },
+  deactivate() {
+    this.base();
+    AboutTerminal.cancel(this.getHost())
+    this.handles = null;
+  },
+  changeOfSelected() {
+    this.setVisible(true);
+  },
+  changeOfnoSelected() {
+    this.setVisible(false);
+  },
+  setVisible(v) {
+    for (let handle of this.handles) {
+      handle[1].setVisible(v);
+    }
+  },
+  enterOfnoSelected({
+    tool
+  }) {
+    this.state_in_figure = true;
+    this.refreshState();
+  },
+  leaveOfnoSelected({
+    tool
+  }) {
+    this.state_in_figure = false;
+    this.refreshState();
+  },
+  refreshState(k, v) {
+    this.setVisible(this.state_in_figure || this.state_in_handle);
+  },
+});
 
-export function getColor (id) {
+// export function terminalPolicy ({isListen = false, addAnchor} = {}) {
+//   return {
+//     activate () {
+//       AboutTerminal
+//           .register(this.getHost(), addAnchor)
+//           .handle(Terminals, null, this.getHost().model.get(Terminals))
+//           .listen(isListen)
+//     },
+//     deactivate () {
+//       AboutTerminal.cancel(this.getHost())
+//     }
+//   }
+// }
+
+export function getColor(id) {
   return colorMap[id] != null ? colorMap[id] : defaultColor
 }

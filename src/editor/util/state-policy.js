@@ -60,6 +60,7 @@ export default $AG.TransitionPolicy.extend({
   },
   show () {
     this.getHandleLayer().addChild(this.getHandle())
+    this.handle.addClass('animated','fadeIn');
   },
   hide () {
     this.handle && this.getHandleLayer().removeChild(this.handle)

@@ -27,7 +27,7 @@ export default {
   },
   style: {
     'stroke': '#323232',
-    'stroke-width': 3,
+    'stroke-width': 2,
     'cursor': 'move'
   },
   type: $AG.CURVE_LINE,
@@ -37,7 +37,7 @@ export default {
   },
   selectable: {
     selected: {
-      'stroke-width': 6
+      'stroke-width': 4
     }
   },
   router,
@@ -69,7 +69,7 @@ export const lineOfUnselectable = {
   },
   style: {
     'stroke': '#323232',
-    'stroke-width': 3,
+    'stroke-width': 2,
     'cursor': 'move'
   },
   type: $AG.CURVE_LINE,

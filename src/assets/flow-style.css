@@ -2,8 +2,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 150%;
-    height: 150%;
+    width: 350%;
+    height: 350%;
 }
 
 .canvas-default g {
@@ -17,12 +17,13 @@
 
 .connection-wrap {
     fill: none;
-    stroke: #8F8FF3;
-    stroke-width: 15;
+    stroke:rgb(22,45,77);
+    stroke-width: 8;
     stroke-linecap: round;
     stroke-linejoin: round;
     opacity: 0;
     cursor: move;
+    transition: opacity .5s
 }
 
 .dashline{
