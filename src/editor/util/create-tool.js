@@ -8,6 +8,15 @@ function checkType$0 (item) {
   return item.type === '1'
 }
 
+function findDesc (sorted, start) {
+  let expect
+
+  start = Number(start)
+  while ((expect = start + 1) <= sorted.length && expect === Number(sorted[start++]));
+
+  return expect.toString()
+}
+
 function descId (arr) {
   for (let [index, id] of arr.entries()) {
     if (id === index + 1) continue
@@ -32,7 +41,7 @@ export function createData ({id}, data = {}) {
       Terminal: [
         {id: '1', dir: 's', offset: 30, max: 1, linkmyself: false, type: 'out'},
         {id: '0', dir: 's', offset: -30, max: 1, linkmyself: false, type: 'out'},
-        {id: 'n', dir: 'n', offset: 0, linkmyself: false, type: 'in'}
+        {id: 'n', dir: 'n', offset: 0, max: 1, linkmyself: false, type: 'in'}
       ]
     },
     data: data
@@ -70,51 +79,6 @@ const Tool$0 = $AG.Tool.CreationTool.extend({
     this.item = item
 
     // const item = this.item
-    Service.getServiceInstance(item).then(json=>{
-      const nodes = Object.values(json.data)
-
-      let left, right, top, bottom
-  
-      left = top = Number.MAX_VALUE
-      right = bottom = Number.MIN_VALUE
-  
-      let offset = Array.of()
-  
-      this.models = nodes.map(node => {
-        let data = createData(node, node)
-        let model = $AG.Node.create(data)
-        let bounds = model.get('bounds')
-  
-        offset.push(bounds)
-  
-        left = Math.min(bounds[0], left)
-        top = Math.min(bounds[1], top)
-  
-        right = Math.max(bounds[0] + bounds[2], right)
-        bottom = Math.max(bounds[1] + bounds[3], bottom)
-  
-        return model
-      })
-  
-      let centerX = (right + left) >>> 1
-      let centerY = (top + bottom) >>> 1
-  
-      for (let i = 0; i < offset.length; i++) {
-        let bounds = offset[i]
-  
-        offset[i] = {
-          x: bounds[0] - centerX,
-          y: bounds[1] - centerY
-        }
-      }
-  
-      this.offset = offset
-    })
-   
-  },
-
-  /*activate () {
-    const item = this.item
     const json = Service.getServiceInstance(item)
     const nodes = Object.values(json.data)
 
@@ -154,7 +118,7 @@ const Tool$0 = $AG.Tool.CreationTool.extend({
     }
 
     this.offset = offset
-  },*/
+  },
 
   show (policy, req) {
     for (let index of this.models.keys()) {
@@ -174,20 +138,33 @@ const Tool$0 = $AG.Tool.CreationTool.extend({
     }
   },
 
-  command (policy, req) {
-    let command
-    let oldEvent = req.event
+  createLineCommand (soruceID, targetID, exit) {
+    return new $AG.CreateLineCommand(
+        this.editor.rootEditPart,
+        $AG.Line.create(createLine({sourceId: soruceID, targetId: targetID, exit: exit, entr: 'n'})),
+        soruceID,
+        targetID
+    )
+  },
 
-    let startId = createID(this.editor)
-    let idMap = new Map()
+  command (policy, req) {
+    let command, newID, oldID
+    let oldEvent = req.event
+    let sortedIdList = this.editor.store.node().order("id logicaladesc").select('id')
+    let
+        let idMap = new Map()
+
+    newID = '0'
 
     for (let index of this.models.keys()) {
       let model = this.models[index]
-      let id = model.get('id')
 
-      idMap.set(id, (id = startId++))
-      model.set('id', id)
-      model.set('data.id', id)
+      newID = findDesc(sortedIdList, newID)
+      oldID = model.get('id')
+
+      idMap.set(oldID, newID)
+      model.set('id', newID)
+      model.set('data.id', newID)
 
       req.event = {
         prop: {
@@ -203,43 +180,14 @@ const Tool$0 = $AG.Tool.CreationTool.extend({
       command = command ? command.chain(cmd) : cmd
     }
 
-    let root = this.editor.rootEditPart
     this.models.forEach(model => {
       let target = model.get('data.target')
       if (target) {
-        let id = model.get('id')
-
         for (let [terminalId, targetId] of Object.entries(target)) {
-
-          let newTargetId=idMap.get(targetId);
-          let lineModel = $AG.Line.create(createLine({
-            sourceId: id,
-            targetId: newTargetId,
-            exit: terminalId,
-            entr: 'n'
-          }))
-
-          if(newTargetId)
-            command = command.chain(new $AG.CreateLineCommand(root, lineModel, id, newTargetId));
+          command = command.chain(this.createLineCommand(model.get('id'),  idMap.get(targetId), terminalId))
         }
       }
     })
-    /*for (let model of this.models) {
-      let id = model.get('data.id')
-      let target = model.get('data.target')
-      /!*if (target) {
-        for (let [terminalId, targetId] of Object.entries(target)) {
-          let id = model.get('id')
-          let lineModel = $AG.Line.create(createLine({
-            sourceId: id,
-            targetId: idMap.get(targetId),
-            exit: terminalId
-          }))
-
-          command.chain(new $AG.CreateLineCommand(root, lineModel, id, idMap.get(id)))
-        }
-      }*!/
-    }*/
 
     req.event = oldEvent
 
