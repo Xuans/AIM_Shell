@@ -17,7 +17,7 @@
                 <div>
                     <el-form label-width="80px" v-if="item.component==='input'">
                         <el-form-item label="名称">
-                            <el-input v-model="item.name" :readonly="true"></el-input>
+                            <el-input v-model="item.name"></el-input>
                         </el-form-item>
                         <el-form-item label="别名">
                             <el-input v-model="item.alais"></el-input>
@@ -34,7 +34,7 @@
                     </el-form>
                     <el-form v-else-if="item.component==='select'">
                         <el-form-item label="名称">
-                            <el-input v-model="item.name" :readonly="true"></el-input>
+                            <el-input v-model="item.name"></el-input>
                         </el-form-item>
                         <el-form-item label="别名">
                             <el-input v-model="item.alais"></el-input>
@@ -81,11 +81,12 @@
 
 <script>
 	import uid from "uid";
+import { debug } from 'util';
 
 	let cursor = 0;
 
 	export default {
-		name: "ConfigForm",
+        name: "ConfigForm",
 		props: {
 			data: Array
 		},

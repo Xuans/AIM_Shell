@@ -26,15 +26,14 @@ import iform from '../dyncForm/index.vue'
 
 export default {
   name: 'app',
+  props:['target'],
   data:function(){
-    return {
-      target: Serivce.createSerivceCtr() || Serivce.getServiceCtr()
-    };
+    return {};
   },
   components:{
     Editor,
     iform
-  }
+  },
 }
 </script>
 

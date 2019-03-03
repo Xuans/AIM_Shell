@@ -1,53 +1,323 @@
 {
-    "output":[{
-        "type":"string",
-        "component":"input",
-        "length":"20",
-        "name":"length",
-        "label":"长度",
-        "value":"hello world"
-    },{
-        "type":"string",
-        "component":"select",
-        "length":"5",
-        "options":[{
-            "value":"1",
-            "label":"1岁"
-        },{
-            "value":"2",
-            "label":"2岁"
-        },{
-            "value":"20",
-            "label":"20岁"
-        }],
-        "name":"age",
-        "label":"年龄",
-        "value":"20"
-    }],
-    "input":[{
-        "uid":"111111111111111111111111111111111111111111111111",
-        "name":"name",
-        "length":20,
-        "alais":"name1",
-        "label":"字典名（英文）",
-        "component":"input",
-        "value":""
-    },{
-        "uid":"111111111111111111111111111111111111111111111112",
-        "name":"age",
-        "alais":"age1",
-        "label":"年龄",
-        "component":"select",
-        "value":"",
-        "options":[{
-            "value":"1",
-            "label":"1岁"
-        },{
-            "value":"2",
-            "label":"2岁"
-        },{
-            "value":"20",
-            "label":"20岁"
-        }]
-    }]
+    "output": [
+        {
+            "type": "object",
+            "name": "info",
+            "alias": "pm2_info",
+            "label":"主机信息",
+            "theme": "aside",
+            "children": [
+                {
+                    "required": true,
+                    "type": "string_input",
+                    "length": "15",
+                    "name": "IP",
+                    "alias": "deployIP",
+                    "label": "部署IP",
+                    "placeholder": "配置主机IP，只能填写单台主机IP。如果需要填写多台，请联系管理员，例如：192.168.1.1"
+                },
+                {
+                    "type": "number_input",
+                    "required": true,
+                    "min": 1,
+                    "max": 65535,
+                    "name": "port",
+                    "alias": "deployPort",
+                    "label": "部署端口",
+                    "link": "error#404",
+                    "placeholder": "目前提供的Nodejs服务器主机端口为：7001、7002、7003、7004和7007，例如：8080"
+                },
+                {
+                    "type": "string_input",
+                    "required": true,
+                    "length": 200,
+                    "name": "desc",
+                    "alias": "deployDesc",
+                    "label": "部署描述",
+                    "placeholder": "部署描述，最大长度为200"
+                }
+            ]
+        },
+        {
+            "type": "object",
+            "label": "PM2 任务详情",
+            "name": "pm2",
+            "alias": "pm2_info",
+            "theme": "aside",
+            "children": [
+                {
+                    "type": "string_input",
+                    "required": true,
+                    "length": 15,
+                    "name": "name",
+                    "alias": "pm2Name",
+                    "label": "任务名称",
+                    "regex": "",
+                    "validateHandler": "",
+                    "placeholder": "例如：”启动 Nodejs 守护进程“"
+                },
+                {
+                    "type": "string_input",
+                    "required": true,
+                    "length": null,
+                    "name": "cwd",
+                    "alias": "pm2Cwd",
+                    "label": "字扩展指令",
+                    "regex": "",
+                    "validateHandler": "",
+                    "placeholder": "例如：\"/srv/node-app/current\""
+                },
+                {
+                    "type": "string_array",
+                    "name": "args",
+                    "alias": "pm2Args",
+                    "label": "参数",
+                    "placeholder": "例如：\"--toto=heya coco\", \"-d\", \"1\"",
+                    "value": [
+                        "--toto=heya coco",
+                        "-d",
+                        "1"
+                    ]
+                },
+                {
+                    "type": "string_input",
+                    "name": "script",
+                    "length": null,
+                    "required": true,
+                    "alias": "pm2Script",
+                    "label": "执行脚本",
+                    "placeholder": "例如：”bin/app.js“"
+                },
+                {
+                    "type": "string_array",
+                    "name": "node_args",
+                    "alias": "pm2_node_args",
+                    "label": "节点参数",
+                    "required": true,
+                    "placeholder": "例如：\"--harmony\", \" --max-stack-size=102400000\"",
+                    "value": [
+                        "--harmony",
+                        " --max-stack-size=102400000"
+                    ]
+                },
+                {
+                    "type": "string_select",
+                    "name": "log_date_format",
+                    "alias": "pm2_log_date_format",
+                    "label": "日志日期格式",
+                    "required": true,
+                    "placeholder": "例如：YYYY-MM-DD HH:mm Z",
+                    "option": [
+                        {
+                            "value": "YYYY-MM-DD HH:mm Z",
+                            "label": "YYYY-MM-DD HH:mm Z"
+                        }
+                    ],
+                    "value": "YYYY-MM-DD HH:mm Z"
+                },
+                {
+                    "type": "string_input",
+                    "name": "error_file",
+                    "alias": "pm2_error_file",
+                    "length": null,
+                    "required": true,
+                    "label": "错误日志文件路径",
+                    "placeholder": "例如：/var/log/node-app/node-app.stderr.log",
+                    "value": "/var/log/node-app/node-app.stderr.log"
+                },
+                {
+                    "type": "string_input",
+                    "name": "out_file",
+                    "alias": "pm2_out_file",
+                    "required": true,
+                    "label": "输出文件路径",
+                    "placeholder": "例如：log/node-app.stdout.log",
+                    "value": "log/node-app.stdout.log"
+                },
+                {
+                    "type": "string_input",
+                    "name": "pid_file",
+                    "alias": "pm2_pid_file",
+                    "length": null,
+                    "required": true,
+                    "label": "PID 文件路径",
+                    "placeholder": "例如：pids/node-geo-api.pid",
+                    "value": "pids/node-geo-api.pid"
+                },
+                {
+                    "type": "slider",
+                    "min": "0",
+                    "max": null,
+                    "name": "instances",
+                    "alias": "pm2_instances",
+                    "required": true,
+                    "label": "实例数",
+                    "value": 0,
+                    "regex": "^(d{1,}|max)$",
+                    "message": "请输入整整数或最大值\"max\"，范围 [0 , max]",
+                    "placeholder": "0 => max"
+                },
+                {
+                    "type": "number_input",
+                    "unit": "s",
+                    "unitLabel": "秒",
+                    "min": 0,
+                    "max": 1000,
+                    "name": "min_uptime",
+                    "alias": "pm2_min_uptime",
+                    "required": true,
+                    "label": "最小更新时间",
+                    "lessTann": "",
+                    "value": "200",
+                    "placeholder": "默认 200 到 1000 秒"
+                },
+                {
+                    "type": "number_input",
+                    "min": 10,
+                    "max": 15,
+                    "name": "max_restarts",
+                    "alias": "pm2_max_restarts",
+                    "required": true,
+                    "label": "最大重启次数",
+                    "value": 10,
+                    "placeholder": "默认 10 到 15 秒"
+                },
+                {
+                    "type": "string_input",
+                    "regex": "^\\d{1,}(?:\\.\\d{1,})?(G|M|K)?B$",
+                    "message": "请输入正数，例如“2GB”、“10MB”、“100KB”、“1024B”",
+                    "name": "max_memory_restart",
+                    "alias": "pm2_max_memory_restart",
+                    "required": true,
+                    "label": "最大重启内存",
+                    "length":"100",
+                    "value": "1M",
+                    "placeholder": "例如“2GB”、“10MB”、“100KB”、“1024B”"
+                },
+                {
+                    "type": "string_input",
+                    "name": "cron_restart",
+                    "alias": "pm2_cron_restart",
+                    "required": true,
+                    "label": "重启服务",
+                    "value": "1 0 * * *",
+                    "placeholder": "例如：1 0 * * *"
+                },
+                {
+                    "type": "boolean",
+                    "name": "watch",
+                    "alias": "pm2_watch",
+                    "label": "是否监听",
+                    "required": true,
+                    "value": false,
+                    "placeholder":"启动监听功能"
+                },
+                {
+                    "type": "string_array",
+                    "name": "ignore_watch",
+                    "alias": "pm2_ignore_watch",
+                    "label": "忽略监听文件",
+                    "value": [
+                        "\\/\\\\\\./", 
+                        "node_modules"
+                    ],
+                    "placeholder": "例如：[\"[\\/\\\\]\\./\", \"node_modules\"]"
+                },
+                {
+                    "type": "boolean",
+                    "name": "merge_logs",
+                    "alias": "pm2_merge_logs",
+                    "label": "合并日志",
+                    "value": true,
+                    "placeholder":"启动合并日志功能"
+                },
+                {
+                    "type": "string_input",
+                    "name": "exec_interpreter",
+                    "alias": "pm2_exec_interpreter",
+                    "label": "编译器",
+                    "value": "node",
+                    "placeholder": "例如：node"
+                },
+                {
+                    "type": "string_select",
+                    "name": "exec_mode",
+                    "alias": "pm2_exec_mode",
+                    "label": "执行模式",
+                    "value": "fork",
+                    "option": [
+                        {
+                            "value": "fork",
+                            "label": "分支（fork）"
+                        }
+                    ]
+                },
+                {
+                    "type": "boolean",
+                    "name": "autorestart",
+                    "alias": "pm2_autorestart",
+                    "label": "自动重启",
+                    "value": false,
+                    "placeholder": "启用/禁用 程序崩溃、退出 自动重启功能。"
+                },
+                {
+                    "type": "boolean",
+                    "name": "vizion",
+                    "alias": "pm2_vizion",
+                    "label": "开启特性",
+                    "placeholder": "启用/禁用版本控制功能"
+                },
+                {
+                    "type": "object",
+                    "name": "env",
+                    "alias": "pm2_env",
+                    "label": "环境变量",
+                    "children": [
+                        {
+                            "type": "string_select",
+                            "name": "NODE_ENV",
+                            "alias": "pm2_NODE_ENV",
+                            "label": "环境",
+                            "value": "production",
+                            "option": [
+                                {
+                                    "value": "production",
+                                    "label": "生产环境"
+                                },
+                                {
+                                    "value": "",
+                                    "label": "测试环境"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "string_input",
+                            "name": "AWESOME_SERVICE_API_TOKEN",
+                            "alias": "pm2_AWESOME_SERVICE_API_TOKEN",
+                            "label": "应用令牌",
+                            "value": "xxx",
+                            "placeholder": "例如：xxx"
+                        }
+                    ]
+                },
+                {
+                    "type": "object",
+                    "name": "env_*",
+                    "alias": "pm2_env_*",
+                    "label": "高级环境变量",
+                    "children": [
+                        {
+                            "type": "boolean",
+                            "name": "SPECIFIC_ENV",
+                            "alias": "pm2_SPECIFIC_ENV",
+                            "label": "特殊环境",
+                            "value": true,
+                            "placeholder":"处于特殊环境下"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "input": []
 }

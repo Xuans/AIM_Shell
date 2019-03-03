@@ -9,11 +9,24 @@ import App from './App.vue'
 
     let isFirst=true;
     const dispay=function(viewId,serviceId){
+      
+      
       let ins=new Vue({
-        render: h => h(App),
+        render () {
+          return <App target={
+            {
+              type:0,
+              inputId:serviceId,
+              id:serviceId,
+            }
+          }></App>
+        },
       }).$mount(`#${viewId}`);
+      
 
-      ins.$children[0].$children[0].setServiceId(serviceId);
+      // ins.$children[0].$children[0].setServiceId(serviceId);
+
+      //ins.setTarget()
 
       window.AIM_SHELL=ins;
     }

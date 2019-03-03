@@ -5,9 +5,9 @@
         <el-container>
           <el-header>
             <span>配置面板</span>
-            <div style="float:right">
+            <!-- <div style="float:right">
                <el-button size="mini" icon="el-icon-edit-outline" circle v-on:click="preview"></el-button>
-            </div>
+            </div>-->
           </el-header>
           <el-main>
             <ConfigForm v-bind:data="input"></ConfigForm>
@@ -19,7 +19,7 @@
           <el-header>
             <span>预览</span>
             <div style="float:right">
-               <el-button size="mini" icon="el-icon-check" circle v-on:click="save"></el-button>
+              <el-button size="mini" icon="el-icon-check" circle v-on:click="save"></el-button>
             </div>
           </el-header>
           <el-main>
@@ -40,38 +40,66 @@ import ConfigForm from "../../../components/ConfigForm.vue";
 
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
+import { debug } from 'util';
 
 Vue.prototype.axios = axios;
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 
+const PRODUCT_ENV = !!(window.app && window.app.dispatcher);
 
-const PRODUCT_ENV=!!(window.app && window.app.dispatcher);
-
-const URL=PRODUCT_ENV?{
-  GET_FORM:'./fakeData/dlPoc/form.json',
-}:{
-  GET_FORM:"../../fakeData/dlPoc/form.json",
-};
-
+const URL = PRODUCT_ENV
+  ? {
+      GET_FORM: "./fakeData/dlPoc/form.json"
+    }
+  : {
+      GET_FORM: "../../fakeData/dlPoc/form.json"
+    };
 
 export default {
   name: "app",
   data: function() {
+    /**
+     * 
+     * {
+     *   ip:
+     *    port:
+     *   name:
+     * 
+     * 
+     * 
+     *    input:[]
+     * 
+     * }
+     * 
+     */
     return {
-      input:[],
-      output:[]
+      input: []
     };
+  },
+  // watch: {
+  //   data() {
+  //     this;
+  //     debugger;
+  //   }
+  // },
+  computed: {
+    output() {
+      return this.input.map(e=>{
+        return e;
+        //debugger;
+      });
+    }
   },
   components: {
     Form,
     ConfigForm
   },
-  methods:{
-    preview(){
-      console.log(JSON.stringify(this.$data));
-    },
-    save(){
+  methods: {
+    // preview(){
+    //   console.log(JSON.stringify(this.$data));
+    // },
+    save() {
       console.log(JSON.stringify(this.$data));
     }
   },
@@ -80,10 +108,10 @@ export default {
       .get(URL.GET_FORM)
       .then(response => {
         const input = response.data.input;
-        const output=response.data.output;
+        const output = response.data.output;
 
-        this.$data.input=input;
-        this.$data.output=output;
+        this.$data.input = input;
+        this.$data.output = output;
       })
       .catch(err => {
         debugger;
@@ -93,38 +121,39 @@ export default {
 </script>
 
 <style lang="less">
-@borderColor:#EFEFEF;
+@borderColor: #efefef;
 .dync-form-ctn-aim-shell {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 15px;
+  bottom: 0;
   background-color: white;
 
   > .el-row {
     height: 100%;
+    margin:0!important;
     overflow: hidden;
 
     > .el-col {
       height: 100%;
 
-      +.el-col{
+      + .el-col {
         border-left: 1px solid @borderColor;
-        margin-left:-1px;
+        margin-left: -1px;
       }
 
       > .el-container {
         height: 100%;
 
-        >.el-header{
+        > .el-header {
           line-height: 60px;
           border-bottom: 1px solid @borderColor;
         }
-        >.el-main{
+        > .el-main {
           padding: 5px;
 
-          >.el-collapse{
+          > .el-collapse {
             border: none;
           }
         }

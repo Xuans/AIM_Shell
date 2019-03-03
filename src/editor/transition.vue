@@ -133,7 +133,7 @@
 <style scoped>
     .custom-aside {
         z-index: 50;
-        top: 0px;
+        top: 42px;
         bottom: 0px;
         right: 0px;
         position: absolute;

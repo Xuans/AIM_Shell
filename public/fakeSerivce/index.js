@@ -233,21 +233,29 @@ export default {
     ]
   },
   getServiceInstance: function (target) {
-    // return new Promise(resolve=>{
-    //   methods.getService([{"service_ename":target.inputId}])
-    //     .then(response=>{
-    //       console.log(response);
-    //       resolve(response);
-    //     })
-    //     .fail((error)=>{
-    //       console.log(error);
-    //       resolve({});
-    //     });
-    // });
+    return new Promise(resolve=>{
+      methods.getService([{"service_ename":target.inputId}])
+        .then(response=>{
+          
+          const ret=response.content.result.data.r.ret;
+          
+          const content=JSON.parse(ret.service_content||"{}");
 
-    return new Promise(revolve => {
-      revolve(flowData[target.inputId]);
+          target.ret=ret;
+          content.data = content.data ||[];
+
+          resolve(content);
+        })
+        .fail((error)=>{
+          console.log(error);
+
+          resolve({data:[]});
+        });
     });
+
+    // return new Promise(revolve => {
+    //   revolve(flowData[target.inputId]);
+    // });
   },
   getLogs() {
 
@@ -337,12 +345,12 @@ export default {
   save(target, data) {
     return new Promise(resolve => {
       methods.updateService([{
-        "service_ename": target.inputId,
-        "service_name": target.inputId,
+        "service_ename": target.ret.service_ename,
+        "service_name": target.ret.service_name,
         "service_content": JSON.stringify(data),
         "service_args": JSON.stringify([]),
-        "tree_p_node_name": target.inputId,
-        "service_id": target.inputId
+        "tree_p_node_name": target.ret.tree_p_node_name,
+        "service_id": target.ret.service_id
       }]).then(response => {
         debugger;
         resolve(true);

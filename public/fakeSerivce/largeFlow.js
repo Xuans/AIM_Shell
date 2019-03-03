@@ -8,9 +8,7 @@ export default [
 				"scriptId": "caf41eaf",
 				"ip": "192.168.1.2",
 				"port": "22",
-				"params": {
-					"output": "f:/log/script.log"
-				},
+				
 				bounds: [120, 40, 180, 40],
 				"target": {
 					"0": "4",

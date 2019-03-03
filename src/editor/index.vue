@@ -196,7 +196,7 @@
 				minHeight: 150,
 				minWidth: 250
 			});
-			this.setServiceId();
+			//this.setServiceId();
 		},
 		created() {
 			// 设置快键键
@@ -205,7 +205,8 @@
 					this.nodeOfSwitch();
 					return false;
 				}
-			});
+      });
+      this.target && this.propsOfFlow();
 		},
 
 		beforeDestroy() {
@@ -259,9 +260,9 @@
 			stepOfSelectionChange(selection) {
 				this.setStoreActive(selection);
 				this.nodeOpts.visible = this.nodeOpts.expand || this.store.active != null;
-				if (this.nodeOpts.expand) {
+				// if (this.nodeOpts.expand) {
 					this.nodeOfOpen();
-				}
+				// }
 			},
 
 			/* about node editor */
