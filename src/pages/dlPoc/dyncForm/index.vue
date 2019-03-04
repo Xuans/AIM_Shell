@@ -4,13 +4,29 @@
       <el-col :span="12">
         <el-container>
           <el-header>
-            <span>配置面板</span>
+            <span>[{{input.name}}]配置</span>
             <!-- <div style="float:right">
                <el-button size="mini" icon="el-icon-edit-outline" circle v-on:click="preview"></el-button>
             </div>-->
           </el-header>
           <el-main>
-            <ConfigForm v-bind:data="inputArr"></ConfigForm>
+            <el-row style="height:20%">
+              <el-form :label-position="labelPosition" label-width="80px" :model="model">
+                <el-form-item label="描述">
+                  <el-input v-model="model.desc" size="mini"></el-input>
+                </el-form-item>
+                <el-form-item label="代理">
+                  <el-autocomplete
+                    v-model="model.agent"
+                    :fetch-suggestions="querySearchAsync"
+                    placeholder="请输入代理名称/IP"
+                  ></el-autocomplete>
+                </el-form-item>
+              </el-form>
+            </el-row>
+            <el-row>
+              <ConfigForm v-bind:data="inputArr"></ConfigForm>
+            </el-row>
           </el-main>
         </el-container>
       </el-col>
@@ -72,9 +88,7 @@ export default {
   // 			"id": "1",
   // 			"name": "编译交易脚本",
   // 			"scriptId": "caf41eaf",
-  // 			"ip": "192.168.1.2",
-  // 			"port": "22",
-
+  // 			"agent":
   // 			bounds: [120, 40, 180, 40],
   // 			"target": {
   // 				"0": "4",
@@ -91,7 +105,6 @@ export default {
       //   scriptId: "caf41eaf",
       //   ip: "192.168.1.2",
       //   port: "22",
-
       //   bounds: [120, 40, 180, 40],
       //   target: {
       //     "0": "4",
@@ -112,6 +125,9 @@ export default {
 
       return this.input.args;
     },
+    model() {
+      return this.input || thie.empty;
+    },
     output() {
       return this.inputArr.map(e => {
         return e;
@@ -121,6 +137,30 @@ export default {
   },
   components: {},
   methods: {
+    querySearchAsync(queryString, cb) {
+      methods
+        .getAgents([{}])
+        .then(response => {
+          const ret = response.content.result.data.r.ret;
+          const content = JSON.parse(ret.service_content || "{}");
+          target.ret = ret;
+          content.data = content.data || [];
+          debugger;
+          cb(content);
+        })
+        .fail(error => {
+          console.log(error);
+          cb({ data: [] });
+        });
+    },
+    createStateFilter(queryString) {
+      return state => {
+        return (
+          state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        );
+      };
+    },
+
     // preview(){
     //   console.log(JSON.stringify(this.$data));
     // },
