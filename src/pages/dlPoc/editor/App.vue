@@ -2,8 +2,8 @@
   <div class="aim-shell-editor">
     <Editor v-bind:target="target">
       <!-- 表单凹槽 -->
-      <template slot="form" slot-scope="input">
-        <iform></iform>
+      <template slot="form" slot-scope="{input}">
+        <iform :input="input"></iform>
       </template>
     </Editor>
   </div>

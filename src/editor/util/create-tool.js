@@ -1,10 +1,12 @@
 import Service from '../../../public/fakeSerivce'
 
 export function checkType(item) {
+  debugger;
   return item.tree_node_type === '2'
 }
 
 function checkType$0(item) {
+  debugger;
   return item.type === '1'
 }
 

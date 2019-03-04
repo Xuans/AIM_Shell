@@ -64,6 +64,8 @@ const copyFile=function(src, dst) {
 const copyCssFile=function(src,dst){
     const file=fs.readFileSync(`${src}`).toString();
 
+    mkdir(dst.replace(/\/[^$\/]+$/,''));
+
     fs.writeFileSync(dst,new Buffer(file.replace(/\.el-/g,`${CLASS_PREFIX} .el-`)));
 }
 

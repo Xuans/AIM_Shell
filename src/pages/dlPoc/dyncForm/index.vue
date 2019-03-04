@@ -10,7 +10,7 @@
             </div>-->
           </el-header>
           <el-main>
-            <ConfigForm v-bind:data="input"></ConfigForm>
+            <ConfigForm v-bind:data="inputArr"></ConfigForm>
           </el-main>
         </el-container>
       </el-col>
@@ -23,7 +23,7 @@
             </div>
           </el-header>
           <el-main>
-            <Form v-bind:data="output"></Form>
+            <Preview v-bind:data="output"></Preview>
           </el-main>
         </el-container>
       </el-col>
@@ -34,17 +34,19 @@
 <script>
 import Vue from "vue";
 import axios from "axios";
-import Form from "../../../components/Form.vue";
+import Preview from "../../../components/Preview/Preview";
 
-import ConfigForm from "../../../components/ConfigForm.vue";
+import ConfigForm from "../../../components/Forms/ConfigForm";
 
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
-import { debug } from 'util';
+import { debug } from "util";
 
 Vue.prototype.axios = axios;
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
+Vue.use(ConfigForm);
+Vue.use(Preview);
 
 const PRODUCT_ENV = !!(window.app && window.app.dispatcher);
 
@@ -56,45 +58,68 @@ const URL = PRODUCT_ENV
       GET_FORM: "../../fakeData/dlPoc/form.json"
     };
 
+const empty = {
+  input: []
+};
+Object.freeze(empty);
+
 export default {
   name: "app",
+  props: ["input"],
+
+  // propsData: {
+  //   input: {
+  // 			"id": "1",
+  // 			"name": "编译交易脚本",
+  // 			"scriptId": "caf41eaf",
+  // 			"ip": "192.168.1.2",
+  // 			"port": "22",
+
+  // 			bounds: [120, 40, 180, 40],
+  // 			"target": {
+  // 				"0": "4",
+  // 				"1": "2"
+  // 			}
+  // 		}
+  // },
+
   data: function() {
-    /**
-     * 
-     * {
-     *   ip:
-     *    port:
-     *   name:
-     * 
-     * 
-     * 
-     *    input:[]
-     * 
-     * }
-     * 
-     */
     return {
-      input: []
+      // input: {
+      //   id: "1",
+      //   name: "编译交易脚本",
+      //   scriptId: "caf41eaf",
+      //   ip: "192.168.1.2",
+      //   port: "22",
+
+      //   bounds: [120, 40, 180, 40],
+      //   target: {
+      //     "0": "4",
+      //     "1": "2"
+      //   },
+      //   input: []
+      // }
     };
   },
-  // watch: {
-  //   data() {
-  //     this;
-  //     debugger;
-  //   }
-  // },
   computed: {
+    inputArr() {
+      console.log(this.input);
+      if (!this.input) {
+        return empty.input;
+      } else if (!this.input.args) {
+        this.$set(this.input, "args", []);
+      }
+
+      return this.input.args;
+    },
     output() {
-      return this.input.map(e=>{
+      return this.inputArr.map(e => {
         return e;
         //debugger;
       });
     }
   },
-  components: {
-    Form,
-    ConfigForm
-  },
+  components: {},
   methods: {
     // preview(){
     //   console.log(JSON.stringify(this.$data));
@@ -104,18 +129,31 @@ export default {
     }
   },
   mounted() {
-    this.axios
-      .get(URL.GET_FORM)
-      .then(response => {
-        const input = response.data.input;
-        const output = response.data.output;
-
-        this.$data.input = input;
-        this.$data.output = output;
-      })
-      .catch(err => {
-        debugger;
-      });
+    // this.$data.input = {
+    //   id: "1",
+    //   name: "编译交易脚本",
+    //   scriptId: "caf41eaf",
+    //   ip: "192.168.1.2",
+    //   port: "22",
+    //   bounds: [120, 40, 180, 40],
+    //   target: {
+    //     "0": "4",
+    //     "1": "2"
+    //   },
+    //   input:[]
+    // };
+    // if (!PRODUCT_ENV) {
+    //   this.axios
+    //     .get(URL.GET_FORM)
+    //     .then(response => {
+    //       const input = response.data.input;
+    //       const output = response.data.output;
+    //       this.$data.output = output;
+    //     })
+    //     .catch(err => {
+    //       debugger;
+    //     });
+    // }
   }
 };
 </script>
@@ -132,7 +170,7 @@ export default {
 
   > .el-row {
     height: 100%;
-    margin:0!important;
+    margin: 0 !important;
     overflow: hidden;
 
     > .el-col {

@@ -28,7 +28,8 @@ export default [
 				"target": {
 					"0": "4",
 					"1": "3"
-				}
+				},
+				"input":[]
 			},
 			"3": {
 				"id": "3",

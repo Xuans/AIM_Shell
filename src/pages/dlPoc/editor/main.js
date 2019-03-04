@@ -29,18 +29,12 @@ import App from './App.vue'
       //ins.setTarget()
 
       window.AIM_SHELL=ins;
+
+      return ins;
     }
 
     app.dlPoc.editor = function (viewId,serviceId) {
-
-      if(isFirst){
-        setTimeout(()=>{
-          dispay(viewId,serviceId);
-        },220);
-        isFirst=false;
-      }else{
-        dispay(viewId,serviceId);
-      }
+      return dispay(viewId,serviceId);
     }
   } else {
     window.AIM_SHELL = new Vue({

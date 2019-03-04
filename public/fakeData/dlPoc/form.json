@@ -1,10 +1,10 @@
 {
-    "output": [
+    "input": [
         {
             "type": "object",
             "name": "info",
             "alias": "pm2_info",
-            "label":"主机信息",
+            "label": "主机信息",
             "theme": "aside",
             "children": [
                 {
@@ -14,7 +14,9 @@
                     "name": "IP",
                     "alias": "deployIP",
                     "label": "部署IP",
-                    "placeholder": "配置主机IP，只能填写单台主机IP。如果需要填写多台，请联系管理员，例如：192.168.1.1"
+                    "placeholder": "配置主机IP，只能填写单台主机IP。如果需要填写多台，请联系管理员，例如：192.168.1.1",
+                    "uid": "DED003006ACD9F6E2932-88A4",
+                    "value": "192.168.1.1"
                 },
                 {
                     "type": "number_input",
@@ -25,7 +27,9 @@
                     "alias": "deployPort",
                     "label": "部署端口",
                     "link": "error#404",
-                    "placeholder": "目前提供的Nodejs服务器主机端口为：7001、7002、7003、7004和7007，例如：8080"
+                    "placeholder": "目前提供的Nodejs服务器主机端口为：7001、7002、7003、7004和7007，例如：8080",
+                    "uid": "7EA067003A64A5AFC646-1288",
+                    "value": "8080"
                 },
                 {
                     "type": "string_input",
@@ -34,9 +38,12 @@
                     "name": "desc",
                     "alias": "deployDesc",
                     "label": "部署描述",
-                    "placeholder": "部署描述，最大长度为200"
+                    "placeholder": "部署描述，最大长度为200",
+                    "uid": "845C7AD33FB17E871E7E-39DF",
+                    "value": "10023"
                 }
-            ]
+            ],
+            "uid": "F1B73CB5D05E6B4F1CEE-75C7"
         },
         {
             "type": "object",
@@ -54,7 +61,9 @@
                     "label": "任务名称",
                     "regex": "",
                     "validateHandler": "",
-                    "placeholder": "例如：”启动 Nodejs 守护进程“"
+                    "placeholder": "例如：”启动 Nodejs 守护进程“",
+                    "uid": "1C20B23A801F651A74A9-EC3C",
+                    "value": "启动 Nodejs 守护进程"
                 },
                 {
                     "type": "string_input",
@@ -65,7 +74,9 @@
                     "label": "字扩展指令",
                     "regex": "",
                     "validateHandler": "",
-                    "placeholder": "例如：\"/srv/node-app/current\""
+                    "placeholder": "例如：\"/srv/node-app/current\"",
+                    "uid": "21032EFCB237731E3020-02F2",
+                    "value": "/srv/node-app/current"
                 },
                 {
                     "type": "string_array",
@@ -77,7 +88,8 @@
                         "--toto=heya coco",
                         "-d",
                         "1"
-                    ]
+                    ],
+                    "uid": "18AD464902B9E3E24AC5-F204"
                 },
                 {
                     "type": "string_input",
@@ -86,7 +98,9 @@
                     "required": true,
                     "alias": "pm2Script",
                     "label": "执行脚本",
-                    "placeholder": "例如：”bin/app.js“"
+                    "placeholder": "例如：”bin/app.js“",
+                    "uid": "5F2F3A0797C63CD5F632-F21A",
+                    "value": "bin/app.js"
                 },
                 {
                     "type": "string_array",
@@ -98,7 +112,8 @@
                     "value": [
                         "--harmony",
                         " --max-stack-size=102400000"
-                    ]
+                    ],
+                    "uid": "70221C5B8FD3FA400159-C03A"
                 },
                 {
                     "type": "string_select",
@@ -113,7 +128,8 @@
                             "label": "YYYY-MM-DD HH:mm Z"
                         }
                     ],
-                    "value": "YYYY-MM-DD HH:mm Z"
+                    "value": "YYYY-MM-DD HH:mm Z",
+                    "uid": "A44C5203969B5BA9B1C3-D811"
                 },
                 {
                     "type": "string_input",
@@ -123,7 +139,8 @@
                     "required": true,
                     "label": "错误日志文件路径",
                     "placeholder": "例如：/var/log/node-app/node-app.stderr.log",
-                    "value": "/var/log/node-app/node-app.stderr.log"
+                    "value": "/var/log/node-app/node-app.stderr.log",
+                    "uid": "3DFC5ABC1C54B60BCB44-97D8"
                 },
                 {
                     "type": "string_input",
@@ -132,7 +149,8 @@
                     "required": true,
                     "label": "输出文件路径",
                     "placeholder": "例如：log/node-app.stdout.log",
-                    "value": "log/node-app.stdout.log"
+                    "value": "log/node-app.stdout.log",
+                    "uid": "CBE266EAF00B41F74273-0DE7"
                 },
                 {
                     "type": "string_input",
@@ -142,7 +160,8 @@
                     "required": true,
                     "label": "PID 文件路径",
                     "placeholder": "例如：pids/node-geo-api.pid",
-                    "value": "pids/node-geo-api.pid"
+                    "value": "pids/node-geo-api.pid",
+                    "uid": "7E472CC01EA60A69F145-C7FE"
                 },
                 {
                     "type": "slider",
@@ -152,10 +171,11 @@
                     "alias": "pm2_instances",
                     "required": true,
                     "label": "实例数",
-                    "value": 0,
+                    "value": "0",
                     "regex": "^(d{1,}|max)$",
                     "message": "请输入整整数或最大值\"max\"，范围 [0 , max]",
-                    "placeholder": "0 => max"
+                    "placeholder": "0 => max",
+                    "uid": "25DF18E6164E6D8EBCB9-D6DB"
                 },
                 {
                     "type": "number_input",
@@ -169,7 +189,8 @@
                     "label": "最小更新时间",
                     "lessTann": "",
                     "value": "200",
-                    "placeholder": "默认 200 到 1000 秒"
+                    "placeholder": "默认 200 到 1000 秒",
+                    "uid": "89D732B3E1025932F46B-FEE6"
                 },
                 {
                     "type": "number_input",
@@ -179,8 +200,9 @@
                     "alias": "pm2_max_restarts",
                     "required": true,
                     "label": "最大重启次数",
-                    "value": 10,
-                    "placeholder": "默认 10 到 15 秒"
+                    "value": "10",
+                    "placeholder": "默认 10 到 15 秒",
+                    "uid": "4E5DC8B91AF867E968D4-50C2"
                 },
                 {
                     "type": "string_input",
@@ -190,9 +212,10 @@
                     "alias": "pm2_max_memory_restart",
                     "required": true,
                     "label": "最大重启内存",
-                    "length":"100",
+                    "length": "100",
                     "value": "1M",
-                    "placeholder": "例如“2GB”、“10MB”、“100KB”、“1024B”"
+                    "placeholder": "例如“2GB”、“10MB”、“100KB”、“1024B”",
+                    "uid": "7514C2A38C34BBF32B9A-2F02"
                 },
                 {
                     "type": "string_input",
@@ -201,7 +224,8 @@
                     "required": true,
                     "label": "重启服务",
                     "value": "1 0 * * *",
-                    "placeholder": "例如：1 0 * * *"
+                    "placeholder": "例如：1 0 * * *",
+                    "uid": "077BBA93CB8B33DBE07E-C7B2"
                 },
                 {
                     "type": "boolean",
@@ -209,8 +233,9 @@
                     "alias": "pm2_watch",
                     "label": "是否监听",
                     "required": true,
-                    "value": false,
-                    "placeholder":"启动监听功能"
+                    "value": true,
+                    "placeholder": "启动监听功能",
+                    "uid": "0C838C4209EC15166DFE-729B"
                 },
                 {
                     "type": "string_array",
@@ -218,10 +243,11 @@
                     "alias": "pm2_ignore_watch",
                     "label": "忽略监听文件",
                     "value": [
-                        "\\/\\\\\\./", 
+                        "\\/\\\\\\./",
                         "node_modules"
                     ],
-                    "placeholder": "例如：[\"[\\/\\\\]\\./\", \"node_modules\"]"
+                    "placeholder": "例如：[\"[\\/\\\\]\\./\", \"node_modules\"]",
+                    "uid": "214CE16A6FE3933DB66F-48F0"
                 },
                 {
                     "type": "boolean",
@@ -229,7 +255,8 @@
                     "alias": "pm2_merge_logs",
                     "label": "合并日志",
                     "value": true,
-                    "placeholder":"启动合并日志功能"
+                    "placeholder": "启动合并日志功能",
+                    "uid": "0038071E9A9736C9A672-20FC"
                 },
                 {
                     "type": "string_input",
@@ -237,7 +264,8 @@
                     "alias": "pm2_exec_interpreter",
                     "label": "编译器",
                     "value": "node",
-                    "placeholder": "例如：node"
+                    "placeholder": "例如：node",
+                    "uid": "202AD8CB10AEE2E6F79E-0C3C"
                 },
                 {
                     "type": "string_select",
@@ -250,22 +278,26 @@
                             "value": "fork",
                             "label": "分支（fork）"
                         }
-                    ]
+                    ],
+                    "uid": "506C8D8E2F5533B50A31-99FC"
                 },
                 {
                     "type": "boolean",
                     "name": "autorestart",
                     "alias": "pm2_autorestart",
                     "label": "自动重启",
-                    "value": false,
-                    "placeholder": "启用/禁用 程序崩溃、退出 自动重启功能。"
+                    "value": true,
+                    "placeholder": "启用/禁用 程序崩溃、退出 自动重启功能。",
+                    "uid": "482435E18278296AFCC0-9175"
                 },
                 {
                     "type": "boolean",
                     "name": "vizion",
                     "alias": "pm2_vizion",
                     "label": "开启特性",
-                    "placeholder": "启用/禁用版本控制功能"
+                    "placeholder": "启用/禁用版本控制功能",
+                    "uid": "C9F43B7D2744553F7300-7F96",
+                    "value": true
                 },
                 {
                     "type": "object",
@@ -288,7 +320,8 @@
                                     "value": "",
                                     "label": "测试环境"
                                 }
-                            ]
+                            ],
+                            "uid": "738A062161C24C519E6C-D15D"
                         },
                         {
                             "type": "string_input",
@@ -296,9 +329,11 @@
                             "alias": "pm2_AWESOME_SERVICE_API_TOKEN",
                             "label": "应用令牌",
                             "value": "xxx",
-                            "placeholder": "例如：xxx"
+                            "placeholder": "例如：xxx",
+                            "uid": "DAE3F4C86F46A630EF46-14A7"
                         }
-                    ]
+                    ],
+                    "uid": "DBE5DF75F609E40FCA67-552A"
                 },
                 {
                     "type": "object",
@@ -312,12 +347,15 @@
                             "alias": "pm2_SPECIFIC_ENV",
                             "label": "特殊环境",
                             "value": true,
-                            "placeholder":"处于特殊环境下"
+                            "placeholder": "处于特殊环境下",
+                            "uid": "03994E5710C3AA5ED70E-A1DD"
                         }
-                    ]
+                    ],
+                    "uid": "A623F90AF2EF726F2081-7EC7"
                 }
-            ]
+            ],
+            "uid": "D9DC12B3AB70C9EC19CC-DC87"
         }
     ],
-    "input": []
+    "output":[]
 }
