@@ -8,6 +8,9 @@ import {dblfPolicy} from "../util/bind-event";
 import update from "../util/update";
 import layoutPolicy from '../util/layout-policy'
 
+/**
+ * 脚本编排编辑器全部写在这里
+ */
 
 const BaseConfig = {
   children: { node:node() },
@@ -138,12 +141,12 @@ export default class State$0 extends State {
 
   save (editor, target) {
     if (editor.isDirty() && this.validate(editor)) {
-
+      this.saving=true;
       update(editor)
 
       Serivces
           .save(target, this.getData(editor))
-          .then(() => editor.doSave())
+          .then(() => {editor._save(); this.saving=false;})
     }
   }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="aim-shell-content">
     <div class="aim-shell-header">
-      <span>脚本编排</span>
+      <span :style="{color:dirty?'red':'black'}">脚本编排</span>
       <div class="tookit">
         <!-- <span
                   data-role="btn"
@@ -125,14 +125,12 @@ export default {
   data() {
     let logs = Service.getLogs();
     return {
-      _dirty: false,
       task: "",
       editMode: true,
       logs,
       showLogPanel: false,
       showLogBtn: true,
       currentLog: {},
-      saving: false,
       nodeOpts: {
         desp: "",
         input: null,
@@ -149,15 +147,6 @@ export default {
   },
 
   computed: {
-    dirty: {
-      get() {
-        if (this.store) this._dirty = this.store.step.isDirty();
-        return this._dirty;
-      },
-      set(v) {
-        this._dirty = v;
-      }
-    },
     // stepCfg() {
     //   return this.propsOfFlow();
     // },
@@ -166,6 +155,9 @@ export default {
     }
   },
   watch: {
+	 dirty(){
+		 console.log(this.dirty,this);
+	 }, 
     target: {
       handler(v) {
         this.propsOfFlow();

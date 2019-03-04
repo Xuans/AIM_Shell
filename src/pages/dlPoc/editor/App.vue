@@ -48,4 +48,8 @@ export default {
   border-radius: 6px;
   border:1px solid #efefef;
 }
+.aim-shell-editor section{
+  border: none;
+  margin:0;
+}
 </style>
