@@ -121,10 +121,13 @@ export default class State$0 extends State {
     const palPromise2 = Serivces.getServiceInstanceTree(target)
 
     Promise.all([promise,palPromise1,palPromise2]).then(response=>{
+
+      debugger;
+      
       const config = {}
       config.id = target.id
       config.palette=response[1];
-      config.palette=response[2];
+      config.palette$0=response[2];
 
       State.addDataAndLine(config, response[0].data)
       registerOperations(config)

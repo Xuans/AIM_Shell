@@ -44,7 +44,8 @@ export default {
     target.tree_node_name=target.tree_node_name||'';
     return new Promise(resolve=>{
       methods.getTreeNodeLoop([{"tree_class":"0001","tree_node_name":target.tree_node_name}]).then(response=>{
-        resolve(response.content.result.data.r.ret);
+        let result=response.content.result.data.r.ret;
+        resolve(result||[]);
       }).fail(error=>{
         resolve([]);
       });

@@ -29,12 +29,13 @@
           style="margin-top: 0.5rem"
           draggable
           :filter-node-method="filter"
-          :load="loadNode1"
+          
+          :data="treeData"
           :props="treeProps"
           :render-content="renderContent"
           :allow-drag="(node) => node.data != null"
           :allow-drop="() => false"
-          lazy
+          
           @node-expand="data => data.expand = true"
           @node-collapse="data => data.expand = false"
           @node-click="handleOfNodeClick"
@@ -165,7 +166,11 @@ export default {
       }
     };
   },
+  mounted(){
+    window.tree1=this.$refs.scriptTree
 
+    window.tree2=this.$refs.serviceTree
+  },
   computed: {
     editor() {
       return this.flowEditor.editor;
@@ -198,17 +203,6 @@ export default {
       if (e.keyCode === 13) {
         e.preventDefault();
       }
-    },
-    loadNode1(node,resolve){
-      debugger;
-      if(node.level==0){
-        return resolve(this.treeData);
-      }
-
-      Service.getScriptIntanceTree(node).then(data=>{
-        resolve(data);
-      });
-
     },
     filter(value, data) {
       // console.log(value);

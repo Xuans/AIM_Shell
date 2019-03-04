@@ -1,7 +1,7 @@
 <template>
   <div class="dync-form-ctn-aim-shell">
     <el-row :gutter="8">
-      <el-col :span="8">
+      <el-col :span="12">
         <el-container>
           <el-header>
             <span>配置面板</span>
@@ -14,7 +14,7 @@
           </el-main>
         </el-container>
       </el-col>
-      <el-col :span="16">
+      <el-col :span="12">
         <el-container>
           <el-header>
             <span>预览</span>
