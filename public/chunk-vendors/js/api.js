@@ -62,6 +62,13 @@
 	},{
 		c:'tc.cama.aweb.shell.service.IShellSerInstanceService',
 		m:'getSchedules'
+	},{
+		//13.查询脚本列表
+		c:'tc.cama.aweb.shell.service.IShellService',
+		m:'getShells'
+	},{
+		c:'tc.cama.aweb.shell.service.IShellInstanceService',
+		m:'getAgents'
 	}].forEach(method=>{
 		methods[method.m]=(function(method){
 			return function(p){
