@@ -116,15 +116,21 @@ export default class State$0 extends State {
     const target = this.target
     const promise = Serivces.getServiceInstance(target)
 
-    promise.then(d=>{
+
+    const palPromise1 = Serivces.getScriptInstanceTree(target)
+    const palPromise2 = Serivces.getServiceInstanceTree(target)
+
+    Promise.all([promise,palPromise1,palPromise2]).then(response=>{
       const config = {}
       config.id = target.id
-      config.palette = Serivces.getScriptInstanceTree(target)
-      config.palette$0 = Serivces.getServiceInstanceTree(target)
-      State.addDataAndLine(config, d.data)
+      config.palette=response[1];
+      config.palette=response[2];
+
+      State.addDataAndLine(config, response[0].data)
       registerOperations(config)
       callback(Object.assign(config, BaseConfig));
-    });
+    })
+
   }
 
   save (editor, target) {

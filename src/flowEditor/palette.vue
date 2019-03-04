@@ -29,11 +29,12 @@
           style="margin-top: 0.5rem"
           draggable
           :filter-node-method="filter"
-          :data="treeData"
+          :load="loadNode1"
           :props="treeProps"
           :render-content="renderContent"
           :allow-drag="(node) => node.data != null"
           :allow-drop="() => false"
+          lazy
           @node-expand="data => data.expand = true"
           @node-collapse="data => data.expand = false"
           @node-click="handleOfNodeClick"
@@ -137,6 +138,7 @@
 
 <script>
 import $ from "jquery";
+import Service from "../../public/fakeSerivce/index.js";
 
 export default {
   inject: ["flowEditor"],
@@ -197,7 +199,17 @@ export default {
         e.preventDefault();
       }
     },
+    loadNode1(node,resolve){
+      debugger;
+      if(node.level==0){
+        return resolve(this.treeData);
+      }
 
+      Service.getScriptIntanceTree(node).then(data=>{
+        resolve(data);
+      });
+
+    },
     filter(value, data) {
       // console.log(value);
       return (
