@@ -44,7 +44,6 @@ import Split from "./split";
 const SHOW_MENU = "showmenu";
 const HIDE_MENU = "hidemenu";
 const INIT = "init";
-const SAVE = "save";
 const COMMAND = "command";
 
 // TODO
@@ -160,7 +159,7 @@ export default {
       this.editor = new this.EditorConstruction($.extend(true, {}, config));
       this.onEditor(this.eventsOnEditor);
       this.$emit(INIT, this.editor);
-      this.editor.doSave = () => this.$emit(SAVE, this.editor);
+      this.editor.doSave = done => this.$emit("save", this.editor,done);
       this.initContextMenu();
       this.initCommandListener();
     },

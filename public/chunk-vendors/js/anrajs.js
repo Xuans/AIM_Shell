@@ -5530,13 +5530,15 @@
             root.activate();
         },
         _save: function () {
-            this.doSave();
-            this.cmdStack.markSaveLocation();
+            this.doSave(()=>{
+                this.cmdStack.markSaveLocation();
+            });
         },
-        doSave: function () {
+        doSave: function (done) {
             //执行保存
             console.log('please override a doSave function', this.isDirty());
-            this.cmdStack.markSaveLocation();
+            // this.cmdStack.markSaveLocation();
+            done&&done();
         },
         isDirty: function () {
             return this.cmdStack.isDirty();

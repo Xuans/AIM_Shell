@@ -6,6 +6,7 @@ export default {
 
   data () {
     return {
+      dirty:false,
       store: null
     }
   },
@@ -19,15 +20,7 @@ export default {
   methods: {
     /* editor hooks */
     isDirty () {
-      if (!this.dirty) {
-        this.dirty |= this.dirtyOfFlow(this.flowOfStep)
-
-        if (!this.dirty && this.store.size > 0) {
-          this.dirty = this.store.nodes
-              .reduce((dirty, node) => dirty | this.dirtyOfFlow(node), this.dirty)
-        }
-      }
-      return this.dirty
+      return this.dirty=this.store.step.isDirty()
     },
     save () {
       this.saveOfFlow(this.store.step)

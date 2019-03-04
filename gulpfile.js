@@ -1,5 +1,5 @@
 //打包目录
-const DEST = '/Users/lijiancheng/Agree/AIM3.0/WebContent';
+const DEST = 'D:\\workspace_xian\\Cama4\\WebContent';
 const SRC_FLODER = 'dist';
 const SRC = `./${SRC_FLODER}`;
 
@@ -64,7 +64,7 @@ const copyFile=function(src, dst) {
 const copyCssFile=function(src,dst){
     const file=fs.readFileSync(`${src}`).toString();
 
-    mkdir(dst.replace(/\/[^$\/]+$/,''));
+    mkdir(path.dirname(dst));
 
     fs.writeFileSync(dst,new Buffer(file.replace(/\.el-/g,`${CLASS_PREFIX} .el-`)));
 }
@@ -81,7 +81,7 @@ const generateModule = function (queue) {
             const moduleName = chunk.dirname.split(diliver)[1];
 
             const moduleDir = path.join(DEST, 'module', moduleName);
-            const upToRootDir = '../'.repeat(moduleDir.replace(DEST, '').split(path.sep).length - 1);
+            const upToRootDir = '../'.repeat(moduleDir.replace(/[\\\/]/g,path.sep).replace(DEST.replace(/[\\\/]/g,path.sep), '').split(path.sep).length - 1);
 
             //防止没有目录报错
             mkdir(moduleDir);
@@ -177,6 +177,7 @@ const generateModule = function (queue) {
 
             for(let i in map){
                 if(map.hasOwnProperty(i)){
+                    console.log(map);
                     copyCssFile(i,map[i]);
                 }
             }
