@@ -1,9 +1,9 @@
 <template>
   <div class="aim-shell-content">
     <div class="aim-shell-header">
-      <span :style="{color:dirty?'red':'black'}">脚本编排</span>
-      <div class="tookit">
-        <!-- <span
+      <span :style="{color:state.dirty?'red':'black'}">脚本编排</span>
+      <!--<div class="tookit">
+        &lt;!&ndash; <span
                   data-role="btn"
                   title="打开日志面板"
                   v-show="showLogBtn&&!editMode"
@@ -11,7 +11,7 @@
                 >
                   <i class="fa fa-file-text"></i>
                   打开日志面板
-        </span>-->
+        </span>&ndash;&gt;
         <span
           data-role="btn"
           title="保存编排"
@@ -22,27 +22,27 @@
           element-loading-background="rgba(22, 22, 22, 0.8)"
         >
           <i class="fa fa-file-text"></i>
-          保存{{ dirty?'*':''}}
+          保存{{ state.dirty?'*':''}}
         </span>
         <span data-role="btn" title="切换模式" @click="editMode=!editMode">
           <i class="fa fa-file-text"></i>
           {{editMode?'查看日志':'编排脚本'}}
         </span>
-      </div>
+      </div>-->
     </div>
     <flow-editor
       ref="stepEditor"
-      v-if="state != null&&stepCfg!=null"
-      v-bind="stepCfg"
+      v-if="state.render"
+      :config="state.config"
+      :eventsOnEditor="{vueHandler: handleOfFlowCallback}"
       :maximize="maximize"
-      @init="handleOfStepInit"
+      @init="handleOfInit"
       @save="handleOfSave"
       @command="handleOfCommand"
     >
       <palette
-        v-if="state.hasPalette"
+        v-if="state.palette"
         slot="palette"
-        @load="handleOfLoadBcpt"
         @create="handleOfCreate"
       ></palette>
     </flow-editor>
@@ -58,7 +58,7 @@
     >
       <slot name="form" :input="nodeOpts.input"></slot>
     </dblf-transition>
-    <transition name="el-fade-in-linear">
+    <!--<transition name="el-fade-in-linear">
       <div
         v-show="!editMode"
         ref="logPanel"
@@ -66,10 +66,10 @@
         style="position:fixed;bottom:5%;right:5%;width:80%;height:300px;box-shadow:0 0 5px gray;"
       >
         <div style="position:relative;height:20px;width:100%;">
-          <!-- <span
+          &lt;!&ndash; <span
                       style="position:absolute;right:5px;top:-2px;"
                       @click="((showLogBtn=true) && (showLogPanel=false))"
-          >x</span>-->
+          >x</span>&ndash;&gt;
         </div>
         <div style="width:40%;float:left;height:calc(100% - 20px)">
           <div style="padding:0 10px 0 10px;height:50px;width:100%;">
@@ -102,7 +102,7 @@
           </div>
         </div>
       </div>
-    </transition>
+    </transition>-->
   </div>
 </template>
 <script type="text/javascript">
@@ -142,32 +142,22 @@ export default {
         maximize: false,
         disable: false
       },
-      stepCfg: null
     };
   },
 
   computed: {
-    // stepCfg() {
-    //   return this.propsOfFlow();
-    // },
     maximize() {
-      return this.state.hasPalette ? this.stepOpts.maximize : true;
+      return this.state.palette ? this.stepOpts.maximize : true;
     }
   },
   watch: {
-	 dirty(){
-		 console.log(this.dirty,this);
-	 }, 
-    target: {
-      handler(v) {
-        this.propsOfFlow();
-      },
-      deep: true
-    },
-    editMode() {
+/*    editMode() {
       this.store.step.rootEditPart.$emit("vueHandler", vue => {
         vue.target.type = this.editMode ? 0 : 1;
       });
+    },*/
+    'state.mode' (mode) {
+      this.store.has(mode) ? this.$refs.stepEditor.replaceEditor(this.store.get(mode)) : this.state.input2Config()
     }
   },
   mounted() {
@@ -177,7 +167,6 @@ export default {
       minHeight: 150,
       minWidth: 250
     });
-    //this.setServiceId();
   },
   created() {
     // 设置快键键
@@ -187,7 +176,6 @@ export default {
         return false;
       }
     });
-    this.target && this.propsOfFlow();
   },
 
   beforeDestroy() {
@@ -200,7 +188,6 @@ export default {
     },
     setServiceId(id = 1) {
       this.target.inputId = id;
-      // this.propsOfFlow();
     },
     querySearchAsync(queryString, cb) {
       var restaurants = Service.getTasks();
@@ -221,10 +208,8 @@ export default {
         );
       };
     },
-    taskChanged(item) {
-      // console.log(item);
+    /*taskChanged(item) {
       this.target.inputId = item.inputId;
-      // this.propsOfFlow();
     },
     handleSelect(row, event, column) {
       console.log(this.$refs.stepEditor.editor.rootEditPart);
@@ -235,7 +220,7 @@ export default {
         json.data[record.id] = record.data;
       });
       debuggerRunner.start(root, json, row);
-    },
+    },*/
     /* about step editor */
     stepOfSelectionChange(selection) {
       this.setStoreActive(selection);
@@ -257,16 +242,6 @@ export default {
     nodeOfCreateOrReplace(model) {
       model && (this.nodeOpts.input = model.get("data"));
     },
-    nodeOfCreateOrReload(model) {
-      if (this.store.containByModel(model)) {
-        if (this.activeOrNot(model)) {
-          this.nodeOfDetach();
-        }
-        this.nodeOfDeleting(model);
-      }
-
-      this.nodeOfOpen(model);
-    },
     nodeOfExpand(model) {
       if (model != null) {
         this.nodeOpts.desp = model.get("Desp") || "";
@@ -281,7 +256,7 @@ export default {
       this.nodeOpts.visible = this.store.active != null;
       this.stepOpts.maximize = false;
       this.stepOpts.disable = false;
-      this.abbreviateWhenClose(this.flowOfStep);
+      this.abbreviateWhenClose(this.store.step);
     },
     nodeOfOpen(model = this.store.active) {
       this.nodeOfCreateOrReplace(model);
@@ -296,7 +271,7 @@ export default {
       }
     },
     nodeOfOpening(el) {
-      this.abbreviateWhenOpen(this.flowOfStep, this.store.active, el);
+      this.abbreviateWhenOpen(this.store.step, this.store.active, el);
     }
   },
 

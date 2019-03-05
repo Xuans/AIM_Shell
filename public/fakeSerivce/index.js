@@ -1,6 +1,10 @@
-import flowData from "./largeFlow"
+import {nodes} from "./largeFlow"
 
 const methods = global.app.shellEditorApi;
+
+function isDeveplment () {
+  return true
+}
 
 export default {
   getAgent(cb){
@@ -259,7 +263,7 @@ export default {
     ]
   },
   getServiceInstance: function (target) {
-    return new Promise(resolve=>{
+    /*return new Promise(resolve=>{
       methods.getService([{"service_ename":target.inputId}])
         .then(response=>{
           
@@ -277,11 +281,9 @@ export default {
 
           resolve({data:[]});
         });
-    });
+    });*/
 
-    // return new Promise(revolve => {
-    //   revolve(flowData[target.inputId]);
-    // });
+    return Promise.resolve(nodes[1])
   },
   getLogs() {
 

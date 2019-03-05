@@ -1,18 +1,18 @@
 <template>
   <div class="aim-shell-editor">
-    <Editor v-bind:target="target">
+    <shell-flow v-bind:target="target">
       <!-- 表单凹槽 -->
       <template slot="form" slot-scope="{input}">
         <iform :input="input"></iform>
       </template>
-    </Editor>
+    </shell-flow>
   </div>
 </template>
 
 
 <script>
 import Vue from 'vue'
-import Editor from '../../../editor/index.vue';
+import ShellFlow from '../../../editor/shell-flow.vue';
 import "element-ui/lib/theme-chalk/index.css";
 import "../../../assets/flow-style.css";
 import "../../../assets/flow1/iconfont.css";
@@ -21,7 +21,6 @@ import ElementUi from 'element-ui'
 Vue.config.productionTip = false
 Vue.use(ElementUi);
 
-import Serivce from '../../../../public/fakeSerivce/index'
 import iform from '../dyncForm/index.vue'
 
 export default {
@@ -31,7 +30,7 @@ export default {
     return {};
   },
   components:{
-    Editor,
+    ShellFlow,
     iform
   },
 }

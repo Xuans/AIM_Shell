@@ -1,44 +1,49 @@
-import {createData, createLine} from "../util/create-tool";
+import getEditorConfig from "../util/editor-config";
 
-export default class State {
-  constructor (target) {
-    this.target = target
-  }
+import Serivces from "../../../public/fakeSerivce"
 
-  input2Config (target) {}
-
-  save (editor, target) {}
-
-  getData (editor) {
-    const json = { data: {} ,start:1}
-    editor.store.node().each(record => {
-      json.data[record.id] = record.data
-    })
-
-    return json
-  }
+const defaults = {
+  render: false,
+  palette: false,
+  mode: 0,
+  dirty: false
+}
 
 
-  static addDataAndLine(config, dataOfService) {
-    let data = []
-    let line = []
+class State {
+  constructor (target, options = defaults) {
 
-    for (let [id, dataOfModel] of Object.entries(dataOfService)) {
-      data.push(createData({ id }, dataOfModel))
-
-      if (dataOfModel.target) {
-        for (let [terminalId, targetId] of Object.entries(dataOfModel.target)) {
-          line.push(createLine({
-            sourceId: id,
-            targetId: targetId,
-            exit: terminalId,
-            entr: 'n'
-          }))
-        }
-      }
+    for (let [key, value] of Object.entries(options)) {
+      this[key] = value
     }
 
-    config.data = data
-    config.line = line
+    this.target = target
+    this.config = null
+
+    this.input2Config()
   }
+
+  input2Config () {
+    Serivces.getServiceInstance(this.target)
+        .then(json => {
+          this.config = getEditorConfig(this.mode, this.target, json) // select it by mode
+          this.render = true
+        })
+  }
+
+  turnToDebug () {
+    this.mode = 1
+  }
+
+  turnToEdit () {
+    this.mode = 0
+  }
+
+  setDirty (editor) {
+    editor && (this.dirty = editor.isDirty())
+  }
+}
+
+export default function makeState (target) {
+  return new State(target)
 }

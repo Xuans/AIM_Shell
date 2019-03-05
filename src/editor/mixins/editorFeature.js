@@ -1,30 +1,21 @@
 import $ from 'jquery'
 import KeyManager from '../../util/keyManager'
-import makeState from '../state'
+import makeState from '../state/state'
 import handleOfCreate from "../util/create-tool";
+import EditorStore from '../util/editor-store'
 
 export default {
-  props: {
-    target:{
-      default(){
-        return {
-          id:1,
-          type:0,
-          inputId:1,
-        }
-      }
-    }
-  },
+  props: ['target'],
 
-  data() {},
-
-  computed: {
-    state() {
-      return makeState(this.target)
+  data () {
+    return {
+      state: makeState(this.target)
     }
   },
 
   created() {
+    this.store = new EditorStore()
+
     this.keyManagerOfFlow = new KeyManager()
     this.keyManager = new KeyManager('global')
     this.keyManager.watchPage('0', this.keyManagerOfFlow)
@@ -32,43 +23,28 @@ export default {
   },
 
   beforeDestroy() {
+    this.store.clear()
+
     this.keyManagerOfFlow.unwatchAllPage()
     this.keyManager.unwatchAllPage()
   },
 
   methods: {
-    /* about flow */
-    propsOfFlow() {
-      this.state.input2Config((config) => {
-        let event = {
-          vueHandler: this.handleOfFlowCallback
-        }
-        this.stepCfg = {
-          config,
-          eventsOnEditor: event,
-          keyManager: this.keyManagerOfFlow
-        };
-      })
-    },
     saveOfFlow(editor) {
       this.state.save(editor, this.target);
-    },
-    dirtyOfFlow(editor) {
-      return editor == null ? false : editor.isDirty()
-    },
-    inputOfFlow(input) {
-      return $.extend(true, {}, input)
     },
 
     /* handlers */
     handleOfCreate: handleOfCreate,
     handleOfSave(editor,done) {
       done();
-      this.handleOfCommand();
+      this.state.setDirty(this.store.step)
     },
-    handleOfLoad: $.noop,
     handleOfCommand() {
-      this.dirty = this.isDirty()
+      this.state.setDirty(this.store.step)
+    },
+    handleOfInit(editor) {
+      this.store.push(this.state.mode, editor)
     },
     handleOfFlowCallback(fn, params = []) {
       if ($.isFunction(fn)) {

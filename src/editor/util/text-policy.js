@@ -70,9 +70,10 @@ export const textPolicy0 = $AG.Policy.extend({
   activate () {
     const host = this.getHost()
     this.fontHeight = $AG.Util.fontHeight(host.editor.canvas.owner) / 2
-    const idPolicy = this.createIdPolicy()
-      const despPolicy = this.createDespPolicy()
-    host.installPolicies({idPolicy, despPolicy})
+    // const idPolicy = this.createIdPolicy()
+    const despPolicy = this.createDespPolicy()
+    // host.installPolicies({idPolicy, despPolicy})
+    host.installPolicies({despPolicy})
   },
   deactivate () {
     if (this.handles != null) {
