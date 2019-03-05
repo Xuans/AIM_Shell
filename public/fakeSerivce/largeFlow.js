@@ -1,4 +1,174 @@
-export default [
+
+export const palette=[
+      {
+        "tree_p_node_name": "文件脚本集",
+        "tree_node_type": "1",
+        "tree_class": "1",
+        "tree_node_table": "",
+        "tree_node_desc": "文件脚本集",
+        "tree_node_name": "fileOpSet",
+        "children": [{
+          "tree_p_node_name": "FTP上传",
+          "tree_node_type": "2",
+          "tree_class": "1",
+          "tree_node_table": "",
+          "tree_node_desc": "FTP上传",
+          "tree_node_name": "FTP上传"
+        },
+        {
+          "tree_p_node_name": "文件编译",
+          "tree_node_type": "2",
+          "tree_class": "1",
+          "tree_node_table": "",
+          "tree_node_desc": "文件编译",
+          "tree_node_name": "文件编译"
+        },
+        {
+          "tree_p_node_name": "文件部署",
+          "tree_node_type": "2",
+          "tree_class": "1",
+          "tree_node_table": "",
+          "tree_node_desc": "文件部署",
+          "tree_node_name": "文件部署"
+        },
+        {
+          "tree_p_node_name": "文件下载",
+          "tree_node_type": "2",
+          "tree_class": "1",
+          "tree_node_table": "",
+          "tree_node_desc": "文件下载",
+          "tree_node_name": "文件下载"
+        }],
+      },
+      {
+        "tree_p_node_name": "",
+        "tree_node_type": "1",
+        "tree_class": "1",
+        "tree_node_table": "",
+        "tree_node_desc": "数据库脚本集",
+        "tree_node_name": "dbOpSet",
+        "children": [{
+            "tree_p_node_name": "创建表",
+            "tree_node_type": "2",
+            "tree_class": "1",
+            "tree_node_table": "",
+            "tree_node_desc": "创建表",
+            "tree_node_name": "创建表"
+          },
+          {
+            "tree_p_node_name": "删除表",
+            "tree_node_type": "2",
+            "tree_class": "1",
+            "tree_node_table": "",
+            "tree_node_desc": "删除表",
+            "tree_node_name": "删除表"
+          },
+          {
+            "tree_p_node_name": "执行SQL",
+            "tree_node_type": "2",
+            "tree_class": "1",
+            "tree_node_table": "",
+            "tree_node_desc": "执行SQL",
+            "tree_node_name": "执行SQL"
+          },
+          {
+            "tree_p_node_name": "增加字段",
+            "tree_node_type": "2",
+            "tree_class": "1",
+            "tree_node_table": "",
+            "tree_node_desc": "增加字段",
+            "tree_node_name": "增加字段"
+          }
+        ],
+      },
+      {
+        "tree_p_node_name": "",
+        "tree_node_type": "1",
+        "tree_class": "1",
+        "tree_node_table": "",
+        "tree_node_desc": "代码同步工具脚本",
+        "tree_node_name": "codeSyncToolSet",
+        "children": [{
+            "tree_p_node_name": "Git提交",
+            "tree_node_type": "2",
+            "tree_class": "1",
+            "tree_node_table": "",
+            "tree_node_desc": "Git提交",
+            "tree_node_name": "Git提交"
+          },
+          {
+            "tree_p_node_name": "Git拉取",
+            "tree_node_type": "2",
+            "tree_class": "1",
+            "tree_node_table": "",
+            "tree_node_desc": "Git拉取",
+            "tree_node_name": "Git拉取"
+          },
+          {
+            "tree_p_node_name": "SVN提交",
+            "tree_node_type": "2",
+            "tree_class": "1",
+            "tree_node_table": "",
+            "tree_node_desc": "SVN提交",
+            "tree_node_name": "SVN提交"
+          },
+          {
+            "tree_p_node_name": "CVS提交",
+            "tree_node_type": "2",
+            "tree_class": "1",
+            "tree_node_table": "",
+            "tree_node_desc": "CVS提交",
+            "tree_node_name": "CVS提交"
+          }
+        ],
+      },
+
+      {
+
+        "tree_p_node_name": "",
+        "tree_node_type": "1",
+        "tree_class": "1",
+        "tree_node_table": "",
+        "tree_node_desc": "错误处理脚本",
+        "tree_node_name": "errorSyncToolSet",
+        "children": [{
+            "tree_p_node_name": "通知管理员",
+            "tree_node_type": "2",
+            "tree_class": "1",
+            "tree_node_table": "",
+            "tree_node_desc": "通知管理员",
+            "tree_node_name": "通知管理员"
+          },
+          {
+            "tree_p_node_name": "回滚数据库",
+            "tree_node_type": "2",
+            "tree_class": "1",
+            "tree_node_table": "",
+            "tree_node_desc": "回滚数据库",
+            "tree_node_name": "回滚数据库"
+          },
+          {
+            "tree_p_node_name": "生成日志",
+            "tree_node_type": "2",
+            "tree_class": "1",
+            "tree_node_table": "",
+            "tree_node_desc": "生成日志",
+            "tree_node_name": "生成日志"
+          },
+          {
+            "tree_p_node_name": "上报异常",
+            "tree_node_type": "2",
+            "tree_class": "1",
+            "tree_node_table": "",
+            "tree_node_desc": "上报异常",
+            "tree_node_name": "上报异常"
+          }
+        ]
+
+      }
+
+    ]
+export const nodes= [
 	{
 		"start": "1",
 		"data": {

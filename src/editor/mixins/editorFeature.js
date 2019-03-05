@@ -4,7 +4,17 @@ import makeState from '../state'
 import handleOfCreate from "../util/create-tool";
 
 export default {
-  props: ['target'],
+  props: {
+    target:{
+      default(){
+        return {
+          id:1,
+          type:0,
+          inputId:1,
+        }
+      }
+    }
+  },
 
   data() {},
 

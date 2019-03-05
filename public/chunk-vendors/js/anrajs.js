@@ -744,39 +744,54 @@
         },
         getRelativeLocation(event) {
             var ev = event || window.event, x = 0, y = 0;
+            let {top,left}=this.getOffset(this.element);
             if (typeof ev.clientX === 'number') {
-                x = ev.clientX - this.getX(this.element) + Math.floor(window.pageXOffset);
+                x = ev.clientX - left ;
             }
             if (typeof ev.clientY === 'number') {
-                y = ev.clientY - this.getY(this.element) + Math.floor(window.pageYOffset);
+                y = ev.clientY - top;
             }
 
             return [x, y];
         },
-        getX(obj) {
-            //        if (this.left != null)
-            //            return this.left - obj.scrollLeft;
-            var parObj = obj;
-            var left = parObj.offsetLeft;
-            while (parObj = parObj.offsetParent) {
-                left += parObj.offsetLeft;
+        getOffset(elem){
+            if ( !elem.getClientRects().length ) {
+                return { top: 0, left: 0 };
             }
-            //        this.left = left;
-            return left - obj.scrollLeft;
+    
+            // Get document-relative position by adding viewport scroll to viewport-relative gBCR
+           let rect = elem.getBoundingClientRect();
+            let win = elem.ownerDocument.defaultView;
+            return {
+                top: rect.top + win.pageYOffset,
+                left: rect.left + win.pageXOffset
+            };
         },
-        getY(obj) {
-            /*在外框发生变化时，top也应该随时变化，当然，可以考虑监听外部元素的位置变化来实现*/
-            //        if (this.top != null)
-            //            return this.top - obj.scrollTop;
-            var parObj = obj;
-            var top = obj.offsetTop;
-            while (parObj = parObj.offsetParent) {
-                top += parObj.offsetTop;
-            }
-            //        this.top = top;
-            /*scrollTop是为了考虑滚动条位置*/
-            return top - obj.scrollTop;
-        }
+
+        // getX(obj) {
+        //     //        if (this.left != null)
+        //     //            return this.left - obj.scrollLeft;
+        //     var parObj = obj;
+        //     var left = parObj.offsetLeft;
+        //     while (parObj = parObj.offsetParent) {
+        //         left += parObj.offsetLeft;
+        //     }
+        //     //        this.left = left;
+        //     return left - obj.scrollLeft-document.body.clientLeft;
+        // },
+        // getY(obj) {
+        //     /*在外框发生变化时，top也应该随时变化，当然，可以考虑监听外部元素的位置变化来实现*/
+        //     //        if (this.top != null)
+        //     //            return this.top - obj.scrollTop;
+        //     var parObj = obj;
+        //     var top = obj.offsetTop;
+        //     while (parObj = parObj.offsetParent) {
+        //         top += parObj.offsetTop;
+        //     }
+        //     //        this.top = top;
+        //     /*scrollTop是为了考虑滚动条位置*/
+        //     return top - obj.scrollTop-document.body.clientLeft;
+        // }
     };
     anra.Display = Base_1.extend(anra._Display).extend(anra._EventTable);
 
@@ -7437,9 +7452,17 @@
                 let wrap = this.editor.element;
                 let canvas = this.editor.canvas;
 
+
+                // Util.apply(this.el.style, {
+                //     top: canvas.getY(wrap),
+                //     left: canvas.getX(wrap),
+                //     width: wrap.clientWidth,
+                //     height: wrap.clientHeight,
+                //     display: 'block'
+                // });
+
                 Util.apply(this.el.style, {
-                    top: canvas.getY(wrap),
-                    left: canvas.getX(wrap),
+                    ...canvas.getOffset(wrap),
                     width: wrap.clientWidth,
                     height: wrap.clientHeight,
                     display: 'block'
