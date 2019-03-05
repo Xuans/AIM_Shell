@@ -138,20 +138,7 @@ export default {
   components: {},
   methods: {
     querySearchAsync(queryString, cb) {
-      methods
-        .getAgents([{}])
-        .then(response => {
-          const ret = response.content.result.data.r.ret;
-          const content = JSON.parse(ret.service_content || "{}");
-          target.ret = ret;
-          content.data = content.data || [];
-          debugger;
-          cb(content);
-        })
-        .fail(error => {
-          console.log(error);
-          cb({ data: [] });
-        });
+      Service.getAgent(queryString,cb);
     },
     createStateFilter(queryString) {
       return state => {
