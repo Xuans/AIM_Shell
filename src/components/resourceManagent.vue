@@ -10,61 +10,80 @@
 			<span>前进</span>
 		</div>
 		<div class="right-bottom-btn" data-id="addFile">
-			<i class="icon icon-wenjian"></i>
+			<i class="el-icon-circle-plus"></i>
 			<span @click.stop="$emit('create',list.length==1?list[0]:null,1)">新增目录</span>
 		</div>
 		<div class="right-bottom-btn" data-id="refreshModal">
 			<i class="fa fa-refresh"></i>
 			<span>刷新</span>
 		</div>
-		<div class="right-bottom-btn right-absolute" data-id="searchModal" @click.stop="showSearchPanel=!showSearchPanel">
-			<i class="fa fa-search" ></i>
+    <div class="right-absolute right-bottom-btn" style="width:100px;display:flex;">
+    <div class="right-bottom-btn" style="margin-right:20px;" @click.stop="showDetailPanel=!showDetailPanel;showSearchPanel=false;">
+			<i class="el-icon-document" ></i>
 		</div>
+		<div class="right-bottom-btn" data-id="searchModal" @click.stop="showSearchPanel=!showSearchPanel;showDetailPanel=false;">
+			<i class="el-icon-search" ></i>
+		</div>
+    </div>
 	</div>
-	<div class="data-file-search active animated fadeIn" v-show="showSearchPanel">
-		<div class="search-input-content">
-			<i class="fa fa-search"></i>
-			<input type="text" id="searchInfoModal" v-model="queryString" placeholder="请输入关键字进行搜索" />
-		</div>
-		<div class="data-file-content" ref="fileContent">
-      <div @dblclick.stop="reveal(item)" v-show="filter(item)" v-for='(item,index) in searchable' :key='index'   class="search-list" :data-type="item.tree_node_type" :data-name="item.tree_node_desc" :data-id="item.tree_node_name">
-                      <i :class="item.tree_node_type==='1' ? 'fa fa-briefcase':'icon icon-LC_icon_file_line1'"></i>
+		
+	
+    <div style="width:100%;height:calc(100% - 35px);display:flex;position:relative;">
+      <div class="data-file-list">
+        <div class="bi-button-group bi-card bi-vertical-layout bi-computer" v-for="(item,index) of list" :key="index">
+          <div class="bi-pane bi-computer-list" :data-id="item.tree_node_name">
+            <div class="bi-computer-title-content">
+              <div class="bi-computer-list-title-icon">
+                <i class="fa fa-caret-down"></i>
+              </div>
+              <div class="bi-computer-list-title" data-parent="0" :data-id="item.tree_node_name">
+                <div class="title-name-computer"><span class="file-name">{{item.tree_node_desc}}</span></div>
+              </div>
+            </div>
+            <div class="bi-computer-card-content">
+              <div class="bi-computer-card-item"  @click.stop="$emit('create',item,1)" data-id="addcate1" :data-operate="id">
+                <div class="card-content-text">新增{{id === "0" ? '文件夹':"业务模型"}}</div>
+                <div class="card-content-icon">
+                  <i class="el-icon-circle-plus-outline" style="color:#2ad285"></i>
+                </div>
+              </div>
+              <div @dblclick.stop="reveal(child)" v-for="(child,ind) of item.children" :class="{'bi-computer-card-item': child.tree_node_type === '1' ? 'cate-file':'file'}" :data-parent="item.tree_node_name" :data-id="child.tree_node_name">
+                <div class="card-content-text"><span class="file-name">{{child.tree_node_desc}}</span></div>
+                <div class="card-content-icon">
+                  <i :class="child.tree_node_type === '1' ? 'fa fa-briefcase':'icon icon-LC_icon_file_line1'"></i>
+                </div>
+                <div class="card-content-number">
+                  {{child.children&&child.children.length}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <div class="data-file-search active animated fadeIn" v-show="showSearchPanel">
+            <div class="search-input-content">
+              <i class="fa fa-search"></i>
+              <input type="text" id="searchInfoModal" v-model="queryString" placeholder="请输入关键字进行搜索" />
+            </div>
+            <div class="data-file-content" ref="fileContent">
+                  <div @dblclick.stop="reveal(item)" v-show="filter(item)" v-for='(item,index) in searchable' :key='index'   class="search-list" :data-type="item.tree_node_type" :data-name="item.tree_node_desc" :data-id="item.tree_node_name">
+                    <i :class="item.tree_node_type==='1' ? 'fa fa-briefcase':'el-icon-tickets'"></i>
                       <span>{{item.tree_node_desc}}</span>
                   </div>
-		</div>
-	</div>
-	<div class="data-file-list">
-		<div class="bi-button-group bi-card bi-vertical-layout bi-computer" v-for="(item,index) of list" :key="index">
-			<div class="bi-pane bi-computer-list" :data-id="item.tree_node_name">
-				<div class="bi-computer-title-content">
-					<div class="bi-computer-list-title-icon">
-						<i class="fa fa-caret-down"></i>
-					</div>
-					<div class="bi-computer-list-title" data-parent="0" :data-id="item.tree_node_name">
-						<div class="title-name-computer"><span class="file-name">{{item.tree_node_desc}}</span></div>
-					</div>
-				</div>
-				<div class="bi-computer-card-content">
-					<div class="bi-computer-card-item"  @click.stop="$emit('create',item,1)" data-id="addcate1" :data-operate="id">
-						<div class="card-content-text">新增{{id === "0" ? '文件夹':"业务模型"}}</div>
-						<div class="card-content-icon">
-							<i class="icon icon-file-add" style="color:#2ad285"></i>
-						</div>
-					</div>
-					<div @dblclick.stop="reveal(child)" v-for="(child,ind) of item.children" :class="{'bi-computer-card-item': child.tree_node_type === '1' ? 'cate-file':'file'}" :data-parent="item.tree_node_name" :data-id="child.tree_node_name">
-						<div class="card-content-text"><span class="file-name">{{child.tree_node_desc}}</span></div>
-						<div class="card-content-icon">
-							<i :class="child.tree_node_type === '1' ? 'fa fa-briefcase':'icon icon-LC_icon_file_line1'"></i>
-						</div>
-						<div class="card-content-number">
-							{{child.children&&child.children.length}}
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-  </div>
+            </div>
+        </div>
+
+        <div class="data-file-detail animated fadeIn" v-show="showDetailPanel">
+            <el-tabs v-model="activeTag">
+              <el-tab-pane label="基本信息" name="info">基本信息</el-tab-pane>
+              <el-tab-pane label="文档" name="document">文档</el-tab-pane>
+              <el-tab-pane label="画像" name="second">配置管理</el-tab-pane>
+            </el-tabs>
+        </div>
+
+    </div>
+</div>
 </template>
 <script>
 import iresource from "./resource";
@@ -101,9 +120,11 @@ export default {
   data() {
     
     return {
+      activeTag:'info',
       id: '0',
       list:[],
       searchable:[],
+      showDetailPanel:false,
       showSearchPanel:false,
       queryString:null,
     };
@@ -112,6 +133,45 @@ export default {
 </script>
 
 <style scope>
+
+.data-file-list{
+  flex: 2;
+  height: 100%;
+  position:relative;
+  overflow:auto;
+}
+
+.data-file-detail{
+    flex:1;
+    width: 350px;
+    height:100%;
+    position:relative;
+    box-shadow: 0 2px 8px 0 rgba(61,77,102,.15);
+}
+.data-file-search{
+    flex:1;
+    width: 300px;
+    height:100%;
+    background: #FFF;
+    box-shadow: 0 2px 8px 0 rgba(61,77,102,.15);
+    /* right: -300px;
+    transition: right .5s linear; */
+    position:relative;
+}
+
+.data-file-content{
+  position:relative;
+  height:calc(100% - 52px);;
+  overflow:auto;
+}
+
+.search-input-content{
+    border-bottom: 1px solid #ccc;
+    padding: 5px 10px;
+    height:50px;
+    box-sizing: border-box;
+}
+
 .data-base-operate-btn{
 	display: flex;
     background: #EBEBEB;
@@ -139,10 +199,6 @@ export default {
 .data-base-right-bottom .table-content-panel, .data-base-right-bottom .db-tab-contents .tab-content {
 	height:  100%;
 }
-.data-file-list{
-	position: relative;
-	height: 100%;
-}
 .bi-button-content{
 	position: relative;
 	height: 100%;
@@ -167,7 +223,7 @@ export default {
     min-height: 25px;
 }
 .bi-computer-title-content{
-	height: 30px;
+	  height: 30px;
     position: relative;
     display: flex;
     flex-direction: row;
@@ -241,16 +297,7 @@ export default {
 	display: flex;
 	flex-wrap: wrap;
 }
-.data-file-search{
-	position: absolute;
-    width: 300px;
-    height: 100%;
-    z-index: 10;
-    background: #FFF;
-    box-shadow: 0 2px 8px 0 rgba(61,77,102,.15);
-    right: -300px;
-    transition: right .5s linear;
-}
+
 .search-list{
 	height: 30px;
     padding: 0 10px;
@@ -271,9 +318,6 @@ export default {
 .search-list>.icon {
 	color: #3685F2;
 }
-.data-file-search.active{
-	right: 0;
-}
 .data-file-search input {
 	width: 85%;
     border: none;
@@ -281,13 +325,8 @@ export default {
     height: 22px;
     text-indent: 10px;
 }
-.data-file-search .search-input-content{
-	border-bottom: 1px solid #ccc;
-    padding: 5px 10px;
-}
-.data-file-search .data-file-content{
-	height: calc(100% - 32px);
-}
+
+
 .bi-computer-card-content>.bi-computer-card-item {
 	width: 150px;
     height: 130px;
