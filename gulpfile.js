@@ -106,7 +106,7 @@ const generateModule = function (queue) {
                         //拷贝页面js
                         copyFile(path.join(chunk.dirname,JS_FILE_NAME),path.join(moduleDir,JS_FILE_NAME));
 
-                        return `"./${path.join('./', script.replace(path.join(PAGES_FLODER, moduleName), './'))}"`;
+                        return `"./${path.join('./', script.replace(path.join(PAGES_FLODER, moduleName).replace(/\\/g,'/'), './'))}"`;
                     }else{
                         return `"${path.join(upToRootDir, script)}"`
                     }
@@ -123,7 +123,7 @@ const generateModule = function (queue) {
                          //拷贝页面style
                          copyFile(path.join(chunk.dirname,STYLE_FILE_NAME),path.join(moduleDir,STYLE_FILE_NAME));
 
-                        return `"requireCss!./${path.join('./', link.replace(path.join(PAGES_FLODER, moduleName), './'))}"` ;
+                        return `"requireCss!./${path.join('./', link.replace(path.join(PAGES_FLODER, moduleName).replace(/\\/g,'/'), './'))}"` ;
                     }else{
                         //特殊处理公用样式，加类名前缀
                         cssList.push({
@@ -137,7 +137,7 @@ const generateModule = function (queue) {
                     }
                 });
             const jsExports = '';
-            const deps = jsDeps.concat(cssDeps);
+            const deps = jsDeps.concat(cssDeps).map(e=>e.replace(/\\/g,'/'));
             const js = `define([${deps.join(',\n\t\t')}],function(${jsExports}){
     return {
         load:function($el,scope,handler){

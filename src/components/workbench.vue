@@ -11,13 +11,18 @@
       </el-col>
       <el-col :span="5">
         <!-- 展示path用的面包屑 -->
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item v-for="(path,index) in model.paths" :key="index">{{path}}</el-breadcrumb-item>
-        </el-breadcrumb>
+        <div class="breadcrumb" style="width:100%;height:100%;">
+            <span  v-for="(path,index) in model.paths"  :key="index">
+                <span @click.stop="pathTo(path)">{{path.name}}</span>
+                <i class="el-icon-arrow-right" v-if="index<model.paths.length-1"></i>
+            </span>
+        </div>
       </el-col>
       <el-col :span="9">
         <!-- 中心工具栏 -->
-        <slot name="centerTool"></slot>
+        <slot name="centerTool">
+
+        </slot>
       </el-col>
       <el-col :span="5">
         <!-- 右侧工具栏 -->
@@ -54,12 +59,18 @@ export default {
       default() {
         return {
             name:'页面名称',
-            paths:['path','to','me'],
+            paths:[{name:'path'},{to:'to'},{me:'me'}],
         };
       }
     }
   },
-  data() {}
+  data() {},
+  methods:{
+      pathTo(path){
+          //点击面包屑时的跳转
+          this.$emit('pathTo',path);
+      }
+  },
 };
 </script>
 <style></style>
