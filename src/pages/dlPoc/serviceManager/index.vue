@@ -1,14 +1,13 @@
 <template>
-  <div>
-    <iworkbench :model="servceModel" :mapping="serviceMapping" >
+  <div class="stm">
+    <iworkbench @reveal="reveal" :model="serviceConfig" :mapping="serviceMapping" >
       <div slot="leftPage" style="position:relative;width:100%;height:100%;">
-        <itree ref="tree" @delete="deleteItem" @create="createItem" @edit="editCategory" :mapping="serviceMapping"  @select="selectChanged"></itree>
+        <itree ref="tree" @delete="deleteItem" @create="createItem" @edit="editCategory" :mapping="serviceMapping"  @reveal="reveal"></itree>
       </div>
       <div slot="centerPage" style="position:relative;width:100%;height:100%;">
-        <el-col :span="17" style="height:100%;">
-          <iresourceManager ref='resourceManager' :model="selected" :mapping="serviceMapping"></iresourceManager>
+        <el-col :span="24" style="height:100%;">
+          <iresourceManager @reveal="reveal"  @create="createItem" ref='resourceManager' :model="selected" :mapping="serviceMapping"></iresourceManager>
         </el-col>
-        <el-col :span="7" style="height:100%;">详情</el-col>
       </div>
        <div slot="leftTool">
         <el-button type="success" icon="el-icon-plus" size="mini" @click="createItem"></el-button>
@@ -75,10 +74,11 @@ export default {
     return {
       _ctype:0,
       newNode:{},
-      servceModel: {
+      serviceConfig: {
         name: "服务管理",
         paths:[],
       },
+      cache:{},
       selected:{
         children:[],
       },
@@ -91,6 +91,7 @@ export default {
       treeData: null,
     };
   },
+
   components: {
     iworkbench,
     itree,
@@ -177,12 +178,27 @@ export default {
       //重新加载树结构 
       this.$refs.tree.setLoading(true);
         api.getServiceInstanceTree().then(data=>{
-            console.log('serivce tree',data);
             this.$refs.tree.setModel(data);
+            this.$refs.resourceManager.setModel(data);
               this.$refs.tree.setLoading(false);
+
+              this.buildIndex(data);
+            this.$refs.resourceManager.setSearchable(this.cache);
         }).catch(()=>{
             this.$refs.tree.setLoading(false);
         });
+    },
+    /**
+     * 构建索引
+     */
+    buildIndex(data){
+      // console.log('buildIndex',data)
+      if(data)
+        for(let v of data){
+          this.cache[v[this.serviceMapping.id]]=v;
+          if(v.children)
+           this.buildIndex(v.children);
+        }
     },
     showAddCatModal ({$el}){
         this.showCreateDialog=true;
@@ -190,17 +206,31 @@ export default {
 				$('[name="serviceCatName"]', $el)
         [ this._ctype ? 'attr' : 'removeAttr']('disabled', 'disabled');
 
-			},
-    selectChanged(selection,type){
-      this.selected=selection[0];
-      this.$refs.resourceManager.setModel(this.selected);
-      this.servceModel.paths=selection.reverse();
-      if(type){
-
+      },
+    reveal(target){
+      if(target){
+        this.selected=target;
+        this.$refs.resourceManager.setModel([this.selected]);
+        this.refreshBreadCrumb();
       }else{
-
+        this.selected=null;
+         this.$refs.resourceManager.setModel(this.$refs.tree.model);
+         this.refreshBreadCrumb();
       }
-    }
+    },
+    refreshBreadCrumb(){
+      let paths=[];
+      if(this.selected){
+          let target=this.selected;
+          let pNode;
+          paths=[target];
+          while(pNode =this.cache[target.tree_p_node_name]){
+              paths.push(pNode);
+              target=pNode;
+          }
+      }
+      this.serviceConfig.paths=paths.reverse();
+    },
   },
   mounted() {
     window.ss=this;
@@ -224,7 +254,18 @@ export default {
 </script>
 
 <style lang="less">
-.example {
-  color: green;
-}
+	/* 容器 Start */
+	.stm {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 15px;
+		background: white;
+		overflow: auto;
+		border: 1px solid #e5e5e5;
+		border-radius: 4px;
+		display: flex;
+		flex-direction: column;
+	}
 </style>

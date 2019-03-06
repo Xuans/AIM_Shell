@@ -1,19 +1,23 @@
 <template>
   <el-container style="height: 500px; border: 1px solid #eee">
-    <el-header>
-      <el-col :span="2">
+    <el-header height="2rem">
+      <el-col :span="2" @click.stop="reveal()">
         <!-- 页面名称 -->
         {{model.name}}
       </el-col>
-      <el-col :span="2">
+      <el-col :span="1">
         <!-- 页面actionBar -->
         <slot name="leftTool"></slot>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="7">
         <!-- 展示path用的面包屑 -->
-        <div class="breadcrumb" style="width:100%;height:100%;">
+        <div class="ibreadcrumb" style="width:100%;height:100%;">
+            <span  :key="index">
+                <span @click.stop="reveal()">{{model.name}}</span>
+                <i class="el-icon-arrow-right" v-if=" model.paths&& model.paths.length>0"></i>
+            </span>
             <span  v-for="(path,index) in model.paths"  :key="index">
-                <span @click.stop="pathTo(path)">{{path[mapping.label]}}</span>
+                <span @click.stop="reveal(path)">{{path[mapping.label]}}</span>
                 <i class="el-icon-arrow-right" v-if="index<model.paths.length-1"></i>
             </span>
         </div>
@@ -35,7 +39,7 @@
         <el-aside width="200px">
           <slot name="leftPage"></slot>
         </el-aside>
-        <el-main>
+        <el-main style="padding:0 0;">
           <slot name="centerPage"></slot>
         </el-main>
       </slot>
@@ -74,9 +78,13 @@ export default {
   },
   data() {},
   methods:{
-      pathTo(path){
+      calPath(index){
+          this.model.paths.splice(index+1);
+          return this.model.paths.reverse();
+      },
+      reveal(selected){
           //点击面包屑时的跳转
-          this.$emit('pathTo',path);
+          this.$emit('reveal',selected);
       }
   },
 };

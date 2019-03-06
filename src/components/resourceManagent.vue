@@ -1,5 +1,6 @@
 <template>
-  <div class="data-base-operate-btn">
+<div style="position:relative;width:100%;height:100%;">
+  <div class="data-base-operate-btn" ref="test">
 		<div class="right-bottom-btn" data-id="left">
 			<i class="fa fa-arrow-left"></i>
 			<span>后退</span>
@@ -10,63 +11,60 @@
 		</div>
 		<div class="right-bottom-btn" data-id="addFile">
 			<i class="icon icon-wenjian"></i>
-			<span>新增目录</span>
-		</div>
-		<div class="right-bottom-btn" data-id="delFile">
-			<i class="fa fa-trash-o"></i>
-			<span>删除分类</span>
-		</div>
-		<div class="right-bottom-btn" data-id="delModal">
-			<i class="fa fa-trash-o"></i>
-			<span>删除模型</span>
+			<span @click.stop="$emit('create',list.length==1?list[0]:null,1)">新增目录</span>
 		</div>
 		<div class="right-bottom-btn" data-id="refreshModal">
 			<i class="fa fa-refresh"></i>
 			<span>刷新</span>
 		</div>
-		<div class="right-bottom-btn right-absolute" data-id="searchModal">
-			<i class="fa fa-search"></i>
+		<div class="right-bottom-btn right-absolute" data-id="searchModal" @click.stop="showSearchPanel=!showSearchPanel">
+			<i class="fa fa-search" ></i>
 		</div>
 	</div>
-	<div class="data-file-search active">
+	<div class="data-file-search active animated fadeIn" v-show="showSearchPanel">
 		<div class="search-input-content">
 			<i class="fa fa-search"></i>
-			<input type="text" id="searchInfoModal" placeholder="请输入关键字进行搜索" />
+			<input type="text" id="searchInfoModal" v-model="queryString" placeholder="请输入关键字进行搜索" />
 		</div>
-		<div class="data-file-content">
+		<div class="data-file-content" ref="fileContent">
+      <div @dblclick.stop="reveal(item)" v-show="filter(item)" v-for='(item,index) in searchable' :key='index'   class="search-list" :data-type="item.tree_node_type" :data-name="item.tree_node_desc" :data-id="item.tree_node_name">
+                      <i :class="item.tree_node_type==='1' ? 'fa fa-briefcase':'icon icon-LC_icon_file_line1'"></i>
+                      <span>{{item.tree_node_desc}}</span>
+                  </div>
 		</div>
 	</div>
 	<div class="data-file-list">
 		<div class="bi-button-group bi-card bi-vertical-layout bi-computer" v-for="(item,index) of list" :key="index">
-			<div class="bi-pane bi-computer-list" :data-id="item.cate1.id">
+			<div class="bi-pane bi-computer-list" :data-id="item.tree_node_name">
 				<div class="bi-computer-title-content">
 					<div class="bi-computer-list-title-icon">
 						<i class="fa fa-caret-down"></i>
 					</div>
-					<div class="bi-computer-list-title" data-parent="0" :data-id="item.cate1.id">
-						<div class="title-name-computer"><span class="file-name">{{item.cate1.name}}</span></div>
+					<div class="bi-computer-list-title" data-parent="0" :data-id="item.tree_node_name">
+						<div class="title-name-computer"><span class="file-name">{{item.tree_node_desc}}</span></div>
 					</div>
 				</div>
 				<div class="bi-computer-card-content">
-					<div class="bi-computer-card-item" data-id="addcate1" :data-operate="id">
+					<div class="bi-computer-card-item"  @click.stop="$emit('create',item,1)" data-id="addcate1" :data-operate="id">
 						<div class="card-content-text">新增{{id === "0" ? '文件夹':"业务模型"}}</div>
 						<div class="card-content-icon">
 							<i class="icon icon-file-add" style="color:#2ad285"></i>
 						</div>
 					</div>
-					<div v-for="(child,ind) of item.child" :class="{'bi-computer-card-item': child.tree_node_type === "1" ? 'cate-file':'file'}" :data-parent="item.cate1.id" :data-id="child.id">
-						<div class="card-content-text"><span class="file-name">{{child.name}}</span></div>
+					<div @dblclick.stop="reveal(child)" v-for="(child,ind) of item.children" :class="{'bi-computer-card-item': child.tree_node_type === '1' ? 'cate-file':'file'}" :data-parent="item.tree_node_name" :data-id="child.tree_node_name">
+						<div class="card-content-text"><span class="file-name">{{child.tree_node_desc}}</span></div>
 						<div class="card-content-icon">
-							<i :class="child.tree_node_type === "1" ? 'fa fa-briefcase':'icon icon-LC_icon_file_line1'"></i>
+							<i :class="child.tree_node_type === '1' ? 'fa fa-briefcase':'icon icon-LC_icon_file_line1'"></i>
 						</div>
 						<div class="card-content-number">
-							12
+							{{child.children&&child.children.length}}
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+  </div>
 </template>
 <script>
 import iresource from "./resource";
@@ -77,26 +75,37 @@ export default {
     }
   },
   methods:{
+    setModel(model){
+      this.list=model;
+    },
+    setSearchable(searchable){
+      this.searchable=searchable;
+    },
+    filter(item){
+      if(!this.queryString||this.queryString.length==0)
+        return true;
+      if(!item||!item.tree_node_desc)
+        return true;
+      return item.tree_node_desc.toLowerCase().match(this.queryString.toLowerCase()) != null;
+    },
+    reveal(item){
+      this.selected=item;
+      this.$emit('reveal',item)
+    }
   },
   computed: {
   },
   mounted(){
-    	 var treeData = JSON.parse(`[{"id":"j9qCVWgBI_Ka3bnB4Y5w","pId":"0","name":"demo数据","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},{"id":"kNqDVWgBI_Ka3bnBLI54","pId":"j9qCVWgBI_Ka3bnB4Y5w","name":"用户信息","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},{"id":"mjrr92cBtyHGwXGDq9Jv","pId":"0","name":"功能数据","tree_node_type":"1","tree_node_icon":"agree-icon-206","iconSkin":"fa fa-database _demo"},{"id":"14UgUWgB3oSmSUNDvRqY","pId":"mjrr92cBtyHGwXGDq9Jv","name":"新建文件夹","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},{"id":"sf3PUWkB7NVTgHc7z2p0","pId":"14UgUWgB3oSmSUNDvRqY","name":"sf3PUWkB7NVTgHc7z2p0","tree_node_type":"1","iconSkin":"fa fa-database _demo"},{"id":"vjGgNWgBY4fis8O0YUun","pId":"mjrr92cBtyHGwXGDq9Jv","name":"性能统计数据","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},{"id":"Wf_sNmgB4vukcqgqdaeL","pId":"mjrr92cBtyHGwXGDq9Jv","name":"报表数据","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},{"id":"WP_sNmgB4vukcqgqJ6fl","pId":"mjrr92cBtyHGwXGDq9Jv","name":"基线分析数据","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},{"id":"PBXPTGkBTQtL2cIOdhJl","name":"PBXPTGkBTQtL2cIOdhJl","tree_node_type":"1","iconSkin":"fa fa-database _demo"},{"id":"W__wNmgB4vukcqgqZ6es","pId":"0","name":"行业数据","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},{"id":"Zf8EN2gB4vukcqgqs6fj","pId":"0","name":"广发证券","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},{"id":"I6wQUGgBHb-TpZU5C_JO","pId":"Zf8EN2gB4vukcqgqs6fj","name":"个人工作台","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},{"id":"OxXPTGkBTQtL2cIOVhIl","pId":"Zf8EN2gB4vukcqgqs6fj","name":"OxXPTGkBTQtL2cIOVhIl","tree_node_type":"1","iconSkin":"fa fa-database _demo"},{"id":"QGuZnWgB-ImXLiaJfowr","pId":"Zf8EN2gB4vukcqgqs6fj","name":"test","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},{"id":"kdqEVWgBI_Ka3bnBO45X","pId":"kNqDVWgBI_Ka3bnBLI54","name":"用户总览信息","tree_node_type":"2","tree_node_icon":"icon-view-mode","iconSkin":"fa agree-icon-206 _demo"},{"id":"mdqFVWgBI_Ka3bnBvo7_","pId":"kNqDVWgBI_Ka3bnBLI54","name":"用户工资信息","tree_node_type":"2","tree_node_icon":"icon-view-mode","iconSkin":"fa agree-icon-206 _demo"},{"id":"ffIlJ2gBgFXXNRq-IuqM","pId":"mjrr92cBtyHGwXGDq9Jv","name":"hostinfo","tree_node_type":"2","tree_node_icon":"icon-view-mode","iconSkin":"fa agree-icon-206 _demo"},{"id":"kUb1JWgBW9007TE1-Ekh","pId":"mjrr92cBtyHGwXGDq9Jv","name":"模型-1","tree_node_type":"2","tree_node_icon":"icon-view-mode","iconSkin":"fa agree-icon-206 _demo"},{"id":"RRLyJmgB6VchtN-7tPYW","pId":"mjrr92cBtyHGwXGDq9Jv","name":"2-2","tree_node_type":"2","tree_node_icon":"icon-view-mode","iconSkin":"fa agree-icon-206 _demo"},{"id":"uzFYMWgBY4fis8O0NkvM","pId":"mjrr92cBtyHGwXGDq9Jv","name":"服务器运行情况","tree_node_type":"2","tree_node_icon":"icon-view-mode","iconSkin":"fa agree-icon-206 _demo"},{"id":"uzo_E2gBMQSfNcvDdhK6","pId":"mjrr92cBtyHGwXGDq9Jv","name":"组合模型","tree_node_type":"2","tree_node_icon":"icon-view-mode","iconSkin":"fa agree-icon-206 _demo"},{"id":"c_8NN2gB4vukcqgqa6fA","pId":"vjGgNWgBY4fis8O0YUun","name":"11111","tree_node_type":"2","tree_node_icon":"icon-view-mode","iconSkin":"fa agree-icon-206 _demo"},{"id":"ZhV_fWgBOczfmyGtSpG-","pId":"I6wQUGgBHb-TpZU5C_JO","name":"项目信息模型","tree_node_type":"2","tree_node_icon":"icon-view-mode","iconSkin":"fa agree-icon-206 _demo"}]`)
-      var html = '';
-      treeData.forEach(item => {
-          html += `<div class="search-list" data-type="${item.tree_node_type}" data-name="${item.name}" data-id="${item.id}">
-                      <i class="${item.tree_node_type==='1' ? 'fa fa-briefcase':'icon icon-LC_icon_file_line1'}"></i>
-                      <span>${item.name}</span>
-                  </div>`
-      })
-      $(".data-file-content").html(html);
+    window.resMgr=this;
   },
   data() {
-    var data = JSON.parse(`[{"cate1":{"id":"j9qCVWgBI_Ka3bnB4Y5w","pId":"0","name":"demo数据","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},"child":[{"id":"kNqDVWgBI_Ka3bnBLI54","pId":"j9qCVWgBI_Ka3bnB4Y5w","name":"用户信息","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"}]},{"cate1":{"id":"mjrr92cBtyHGwXGDq9Jv","pId":"0","name":"功能数据","tree_node_type":"1","tree_node_icon":"agree-icon-206","iconSkin":"fa fa-database _demo"},"child":[{"id":"14UgUWgB3oSmSUNDvRqY","pId":"mjrr92cBtyHGwXGDq9Jv","name":"新建文件夹","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},{"id":"vjGgNWgBY4fis8O0YUun","pId":"mjrr92cBtyHGwXGDq9Jv","name":"性能统计数据","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},{"id":"Wf_sNmgB4vukcqgqdaeL","pId":"mjrr92cBtyHGwXGDq9Jv","name":"报表数据","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},{"id":"WP_sNmgB4vukcqgqJ6fl","pId":"mjrr92cBtyHGwXGDq9Jv","name":"基线分析数据","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"}]},{"cate1":{"id":"W__wNmgB4vukcqgqZ6es","pId":"0","name":"行业数据","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},"child":[]},{"cate1":{"id":"Zf8EN2gB4vukcqgqs6fj","pId":"0","name":"广发证券","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},"child":[{"id":"I6wQUGgBHb-TpZU5C_JO","pId":"Zf8EN2gB4vukcqgqs6fj","name":"个人工作台","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"},{"id":"OxXPTGkBTQtL2cIOVhIl","pId":"Zf8EN2gB4vukcqgqs6fj","name":"OxXPTGkBTQtL2cIOVhIl","tree_node_type":"1","iconSkin":"fa fa-database _demo"},{"id":"QGuZnWgB-ImXLiaJfowr","pId":"Zf8EN2gB4vukcqgqs6fj","name":"test","tree_node_type":"1","tree_node_icon":"","iconSkin":"fa fa-database _demo"}]}]`)
-     
+    
     return {
       id: '0',
-      list:data,
+      list:[],
+      searchable:[],
+      showSearchPanel:false,
+      queryString:null,
     };
   }
 };
@@ -144,7 +153,7 @@ export default {
     right: 0px;
     top: 10px;
     bottom: 10px;
-    position: absolute;
+    position: relative;
 }
 .bi-card {
     background-color: #fff;

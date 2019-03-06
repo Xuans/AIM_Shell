@@ -9,7 +9,7 @@
           :data-id="cat1[mapping['id']]"
           :title="cat1[mapping['label']]"
           @dblclick.stop="expand(cat1)"
-          @click.stop="selectChanged([cat1],0)"
+          @click.stop="reveal(cat1)"
            :class="{selected:cat1==selectedItem}"
         >
           {{cat1[mapping['label']]}}
@@ -37,7 +37,7 @@
                   :data-id="cat2[mapping['id']]"
                   :title="cat2[mapping['label']]"
                   @dblclick.stop="expand(cat2)"
-                  @click.stop="selectChanged([cat2,cat1],0)"
+                  @click.stop="reveal(cat2)"
                 >
                   {{cat2[mapping['label']]}}
                   <i
@@ -62,7 +62,7 @@
                           :data-p-name="cat2[mapping['label']]"
                           :data-id="item[mapping['id']]"
                           :title="item[mapping['label']]"
-                          @click.stop="selectChanged([item,cat2,cat1],1)"
+                          @click.stop="reveal(item)"
                         >{{item[mapping['label']]}}
                         
                                           <div class="tookit">
@@ -128,9 +128,9 @@ export default {
       this.model=m;
       this.$forceUpdate();
     },
-    selectChanged(selection, type) {
-      this.$emit("select", selection, type);
-      this.selectedItem=selection[0];
+    reveal(selection) {
+      this.$emit("reveal", selection);
+      this.selectedItem=selection;
     },
     expand(category){
       if(category.expanded==null){
