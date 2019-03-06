@@ -10,12 +10,12 @@ export const dblfPolicy = {
     }
   },
   activate () {
-    // this.getHost().addEditPartListener('removingChild', this.removingChild)
+    this.getHost().addEditPartListener('removingChild', this.removingChild)
     this.getHost().addEditPartListener('selectionChanged', this.selectionChanged)
   },
 
   deactivate () {
-    // this.getHost().removeEditPartListener('removingChild', this.removingChild)
+    this.getHost().removeEditPartListener('removingChild', this.removingChild)
     this.getHost().removeEditPartListener('selectionChanged', this.selectionChanged)
   }
 }

@@ -1,22 +1,19 @@
 <template>
   <div class="aim-shell-content">
-    <div class="aim-shell-header">
-      <span :style="{color:state.dirty?'red':'black'}">脚本编排</span>
-    </div>
     <flow-editor
-      ref="stepEditor"
-      v-if="state.render"
-      :config="state.config"
-      :eventsOnEditor="{vueHandler: handleOfFlowCallback}"
-      :maximize="maximize"
-      @init="handleOfInit"
-      @save="handleOfSave"
-      @command="handleOfCommand"
+            ref="stepEditor"
+            v-if="state.render"
+            :config="state.config"
+            :eventsOnEditor="{vueHandler: handleOfFlowCallback}"
+            :maximize="maximize"
+            @init="handleOfInit"
+            @save="handleOfSave"
+            @command="handleOfCommand"
     >
       <palette
-        v-if="state.palette"
-        slot="palette"
-        @create="handleOfCreate"
+              v-if="state.palette"
+              slot="palette"
+              @create="handleOfCreate"
       ></palette>
 
       <mutil-panel slot="canvasUnder" :store="store"></mutil-panel>
@@ -25,16 +22,16 @@
 
 
     <dblf-transition
-      ref="transition"
-      :visible="nodeOpts.visible"
-      :expand.sync="nodeOpts.expand"
-      :desp="nodeOpts.desp"
-      @click-control="nodeOfOpen"
-      @click-back="nodeOfCollapse"
-      @editor-open="nodeOfOpening"
+            ref="transition"
+            :visible="nodeOpts.visible"
+            :expand.sync="nodeOpts.expand"
+            @click-control="nodeOfOpen"
+            @click-back="nodeOfCollapse"
+            @editor-open="nodeOfOpening"
     >
       <slot name="form" :store="store"></slot>
     </dblf-transition>
+
   </div>
 </template>
 <script type="text/javascript">
@@ -53,17 +50,8 @@ export default {
   mixins: [editorFeature, contextmenu, abbreviate],
 
   data () {
-    let logs = this.getLogs()
     return {
-      task: '',
-      editMode: true,
-      logs,
-      showLogPanel: false,
-      showLogBtn: true,
-      currentLog: {},
       nodeOpts: {
-        desp: '',
-        input: null,
         editable: true,
         expand: false,
         visible: false
@@ -82,7 +70,11 @@ export default {
   },
   watch: {
     'state.mode' (mode) {
-      this.store.has(mode) ? this.$refs.stepEditor.replaceEditor(this.store.getAndApplyCurrent(mode)) : this.state.input2Config()
+      this.store.has(mode) ? this.$refs.stepEditor.replaceEditor(this.store.getAndApplyCurrent(mode)) : this.state.refresh()
+    },
+    'state.version'(vision) {
+      this.store.has(vision) ? this.$refs.stepEditor.replaceEditor(this.store.getAndApplyCurrent(vision)) : this.state.refresh()
+      // this.state.refresh()
     }
   },
 
@@ -97,22 +89,19 @@ export default {
     },
 
     /* about node editor */
-    nodeOfBeforeDelete (model, done) {
-      if (!this.activeOrNot(model)) return done()
-      this.nodeOfCollapse()
-      this.$refs.transition.$once('editor-closed', () => {
-        this.nodeOfDetach()
-        done()
-      })
-    },
-    nodeOfCreateOrReplace (model) {
-      model && (this.nodeOpts.input = model.get('data'))
+    nodeOfBeforeDelete (model) {
+      if (this.activeOrNot(model)) {
+        this.$refs.transition.$once('editor-closed', () => {
+          this.nodeOfDetach()
+          this.store.active = null
+        })
+      }
+
     },
     nodeOfExpand (model) {
       if (model != null) {
         this.nodeOpts.desp = model.get('Desp') || ''
         this.nodeOpts.expand = this.nodeOpts.visible = true
-        this.nodeOpts.editable = this.editableOrNot(model)
         this.stepOpts.maximize = true
         this.stepOpts.disable = true
       }
@@ -125,7 +114,6 @@ export default {
       this.abbreviateWhenClose(this.store.activeEditor)
     },
     nodeOfOpen (model = this.store.active) {
-      this.nodeOfCreateOrReplace(model)
       this.nodeOfExpand(model)
     },
     nodeOfDetach () {

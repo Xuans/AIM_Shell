@@ -3,6 +3,7 @@
         <el-tab-pane label="脚本参数配置" name="first">
             <props-card header="脚本参数配置" style="margin: 10px;">
                 <el-table
+                        v-if="store.active"
                         ref="multipleTable"
                         :data="tableData"
                         border

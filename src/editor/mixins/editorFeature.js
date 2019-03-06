@@ -43,7 +43,7 @@ export default {
       this.state.setDirty(this.store.activeEditor)
     },
     handleOfInit(editor) {
-      this.store.push(this.state.mode, editor)
+      this.store.push(this.state.version, editor)
     },
     handleOfFlowCallback(fn, params = []) {
       if ($.isFunction(fn)) {

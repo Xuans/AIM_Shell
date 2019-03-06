@@ -139,6 +139,7 @@
         position: absolute;
         border: solid 1px #ebebeb;
         border-radius: 2px;
+        background-color: white;
     }
 
     .custom-aside--control {

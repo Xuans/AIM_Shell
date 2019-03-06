@@ -47,7 +47,7 @@ export class EditorConfig {
     this.children = { node: editNode() }
     this.lines = { '0': line }
     this.types = types
-    this.layoutPolicy = layoutPolicy
+    this.layoutable = layoutPolicy
     this.onHooks = Array.of(ReaderListener)
     this.policies = {
       dblfPolicy
@@ -133,6 +133,30 @@ export class EditorConfig {
           key: 'f11',
           run () {
             this.editor.rootEditPart.$emit('vueHandler', vue => vue.state.turnToDebug())
+          }
+        },
+        {
+          id: 'change0',
+          name: '切换版本0',
+          type: 2,
+          run () {
+            this.editor.rootEditPart.$emit('vueHandler', vue => vue.state.version = 0)
+          }
+        },
+        {
+          id: 'change1',
+          name: '切换版本1',
+          type: 2,
+          run () {
+            this.editor.rootEditPart.$emit('vueHandler', vue => vue.state.version = 1)
+          }
+        },
+        {
+          id: 'change2',
+          name: '切换版本2',
+          type: 2,
+          run () {
+            this.editor.rootEditPart.$emit('vueHandler', vue => vue.state.version = 2)
           }
         })
 

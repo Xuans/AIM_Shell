@@ -5,7 +5,8 @@ const defaults = {
   palette: true,
   mode: 0,
   dirty: false,
-  config: null
+  config: null,
+  version: null
 }
 
 class State {
@@ -16,13 +17,13 @@ class State {
 
     this.target = target
 
-    this.input2Config()
+    this.refresh()
   }
 
-  input2Config () {
+  refresh () {
     const {getServiceInstance, getScriptInstanceTree, getServiceInstanceTree} = Vue
 
-    Promise.all(Array.of(getServiceInstance(this.target), getScriptInstanceTree(this.target), getServiceInstanceTree(this.target)))
+    Promise.all(Array.of(getServiceInstance(this.target, this.version), getScriptInstanceTree(this.target), getServiceInstanceTree(this.target)))
         .then(([json, scriptTree, serviceTree]) => {
           this.config = getEditorConfig(this.mode, this.target, json)
 
