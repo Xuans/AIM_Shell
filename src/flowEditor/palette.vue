@@ -31,7 +31,7 @@
                :allow-drop="() => false"
                @node-expand="data => data.expand = true"
                @node-collapse="data => data.expand = false"
-               @node-click="handleOfNodeClick"></el-tree>
+               @node-click="handleOfClickInSearch"></el-tree>
 
     </el-tab-pane>
     <el-tab-pane label="服务" name="second">
@@ -64,7 +64,7 @@
                :allow-drop="() => false"
                @node-expand="data => data.expand = true"
                @node-collapse="data => data.expand = false"
-               @node-click="handleOfNodeClick"></el-tree>
+               @node-click="handleOfClickInSearch"></el-tree>
     </el-tab-pane>
   </el-tabs>
 </template>

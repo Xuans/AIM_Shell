@@ -238,8 +238,8 @@ export default {
       }
     ])
   },
-  getServiceInstance: function (target, version) {
-    return version ? Promise.resolve(nodes[version]) : Promise.resolve(nodes[0])
+  getServiceInstance: function (target) {
+    return Promise.resolve(nodes[target.head])
   },
   getLogs () {
     return [{

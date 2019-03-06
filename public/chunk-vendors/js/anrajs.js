@@ -8151,7 +8151,7 @@
             this.exec(new anra.gef.CreateNodeCommand(this.rootEditPart, Node.create(data)));
         },
         removeNode: function (node) {
-            if (!(node instanceof anra.gef.NodeModel)) { node = this.find(node); }
+            if (node instanceof anra.gef.NodeModel) { node = this.find(node); }
             if (node == null) { throw 'can not find node' }
             this.exec(new anra.gef.DeleteNodeAndLineCommand(this.rootEditPart, node));
         },
@@ -8162,7 +8162,7 @@
             this.exec(new anra.gef.DeleteLineCommand(this.rootEditPart, line));
         },
         find: function (id) {
-            var model = this.rootEditPart.model.getChild(id);
+            var model = typeof id === 'string' ? this.rootEditPart.model.getChild(id) : id;
             return this.rootEditPart.getEditPart(model)
         },
         exec: function (cmd) {

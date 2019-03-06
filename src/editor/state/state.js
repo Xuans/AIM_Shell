@@ -5,8 +5,7 @@ const defaults = {
   palette: true,
   mode: 0,
   dirty: false,
-  config: null,
-  version: null
+  config: null
 }
 
 class State {
@@ -23,23 +22,16 @@ class State {
   refresh () {
     const {getServiceInstance, getScriptInstanceTree, getServiceInstanceTree} = Vue
 
-    Promise.all(Array.of(getServiceInstance(this.target, this.version), getScriptInstanceTree(this.target), getServiceInstanceTree(this.target)))
+    Promise.all(Array.of(getServiceInstance(this.target), getScriptInstanceTree(this.target), getServiceInstanceTree(this.target)))
         .then(([json, scriptTree, serviceTree]) => {
-          this.config = getEditorConfig(this.mode, this.target, json)
+          this.config = getEditorConfig(this.target, json)
 
           this.config.scriptTree = scriptTree
           this.config.serviceTree = serviceTree
 
           this.render = true
+          this.palette = this.target.lastest
         })
-  }
-
-  turnToDebug () {
-    this.mode = 1
-  }
-
-  turnToEdit () {
-    this.mode = 0
   }
 
   setDirty (editor) {

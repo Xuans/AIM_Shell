@@ -1,7 +1,7 @@
 <template>
   <div class="aim-shell-content">
     <flow-editor
-            ref="stepEditor"
+            ref="editor"
             v-if="state.render"
             :config="state.config"
             :eventsOnEditor="{vueHandler: handleOfFlowCallback}"
@@ -10,16 +10,9 @@
             @save="handleOfSave"
             @command="handleOfCommand"
     >
-      <palette
-              v-if="state.palette"
-              slot="palette"
-              @create="handleOfCreate"
-      ></palette>
-
+      <palette v-if="state.palette" slot="palette" @create="handleOfCreate"></palette>
       <mutil-panel slot="canvasUnder" :store="store"></mutil-panel>
     </flow-editor>
-
-
 
     <dblf-transition
             ref="transition"
@@ -27,8 +20,7 @@
             :expand.sync="nodeOpts.expand"
             @click-control="nodeOfOpen"
             @click-back="nodeOfCollapse"
-            @editor-open="nodeOfOpening"
-    >
+            @editor-open="nodeOfOpening">
       <slot name="form" :store="store"></slot>
     </dblf-transition>
 
@@ -69,12 +61,13 @@ export default {
     }
   },
   watch: {
-    'state.mode' (mode) {
-      this.store.has(mode) ? this.$refs.stepEditor.replaceEditor(this.store.getAndApplyCurrent(mode)) : this.state.refresh()
-    },
-    'state.version'(vision) {
-      this.store.has(vision) ? this.$refs.stepEditor.replaceEditor(this.store.getAndApplyCurrent(vision)) : this.state.refresh()
-      // this.state.refresh()
+    'target.head'(vision) {
+      if (this.store.has(vision)) {
+        this.$refs.editor.replaceEditor(this.store.getAndApplyCurrent(vision))
+        this.state.palette = false
+      } else {
+        this.state.refresh()
+      }
     }
   },
 
@@ -117,7 +110,7 @@ export default {
       this.nodeOfExpand(model)
     },
     nodeOfDetach () {
-      this.$refs['nodeEditor'].detachEditor()
+      // this.$refs['nodeEditor'].detachEditor()
     },
     nodeOfSwitch () {
       if (this.nodeOpts.visible) {
@@ -139,7 +132,6 @@ export default {
 </script>
 <style lang="less">
 .aim-shell-content {
-  position: absolute;
   top: 0;
   left: 0;
   right: 0;
