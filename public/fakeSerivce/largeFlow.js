@@ -178,52 +178,8 @@ export const nodes = [
         'scriptId': 'caf41eaf',
         'ip': '192.168.1.2',
         'port': '22',
-
         bounds: [120, 40, 180, 40],
-        'target': {
-          '0': '4',
-          '1': '2'
-        }
-      },
-      '2': {
-        'id': '2',
-        'name': '打包项目',
-        'scriptId': 'ahawerw',
-        'ip': '192.168.1.2',
-        'port': '22',
-        bounds: [20, 120, 180, 40],
-        'params': {
-          'output': 'f:/log/script.log'
-        },
-        'target': {
-          '0': '4',
-          '1': '3'
-        },
-        'input': []
-      },
-      '3': {
-        'id': '3',
-        'name': '部署项目',
-        'scriptId': 'afagaf',
-        'ip': '192.168.1.122',
-        'port': '22',
-        bounds: [320, 250, 180, 40],
-        'params': {
-          'output': 'f:/log/script.log'
-        },
-        'target': {}
-      },
-      '4': {
-        'id': '4',
-        'name': '脚本执行出错',
-        'scriptId': 'dsaf123sd',
-        'ip': '192.168.1.3',
-        'port': '2212',
-        bounds: [20, 250, 180, 40],
-        'params': {
-          'output': 'f:/log/script.log',
-          'type': '1'
-        }
+        params: {}
       }
     }
   },

@@ -104,4 +104,12 @@ export default class EditorStore {
   get activeId () {
     return this.active ? this.active.get('id') : null
   }
+
+  delelteActive () {
+    this.activeEditor && this.activeEditor.removeNode(this.active)
+  }
+
+  save () {
+    //
+  }
 }

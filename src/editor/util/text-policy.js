@@ -84,9 +84,9 @@ export const textPolicy0 = $AG.Policy.extend({
       }
     }
     /* TODO 全选 */
-    this.getHost().policies.get('idPolicy').deactivate()
+    // this.getHost().policies.get('idPolicy').deactivate()
     this.getHost().policies.get('despPolicy').deactivate()
-    this.getHost().removeEditPolicy('idPolicy')
+    // this.getHost().removeEditPolicy('idPolicy')
     this.getHost().removeEditPolicy('despPolicy')
   },
   computeCenter (f) {
