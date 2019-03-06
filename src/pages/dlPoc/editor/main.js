@@ -1,44 +1,39 @@
 import Vue from 'vue'
 import App from './App.vue'
 
+class Target {
+  constructor ({serviceId} = {serviceId: 0}) {
+    this.inputId = this.id = serviceId
+    this.type = 0
+  }
+}
 
 (function () {
-  const app=window.app;
+  window.Vue = Vue
+
+  const app = window.app
+  const AppCtr = Vue.extend(App)
+
   if (app && app.dispatcher) {
-    app.dlPoc = app.dlPoc || {};
+    app.dlPoc = app.dlPoc || {}
 
-    let isFirst=true;
-    const dispay=function(viewId,serviceId){
-      
-      
-      let ins=new Vue({
-        render () {
-          return <App target={
-            {
-              type:0,
-              inputId:serviceId,
-              id:serviceId,
-            }
-          }></App>
-        },
-      }).$mount(`#${viewId}`);
-      
+    let isFirst = true
+    const dispay = function (viewId, serviceId) {
+      let ins = new AppCtr({
+        propsData: {
+          target: new Target({serviceId})
+        }
+      }).$mount(`#${viewId}`)
 
-      // ins.$children[0].$children[0].setServiceId(serviceId);
+      window.AIM_SHELL = ins
 
-      //ins.setTarget()
-
-      window.AIM_SHELL=ins;
-
-      return ins;
+      return ins
     }
 
-    app.dlPoc.editor = function (viewId,serviceId) {
-      return dispay(viewId,serviceId);
+    app.dlPoc.editor = function (viewId, serviceId) {
+      return dispay(viewId, serviceId)
     }
   } else {
-    window.AIM_SHELL = new Vue({
-      render: h => h(App),
-    }).$mount('#app');
+    window.AIM_SHELL = new AppCtr({propsData: { target: new Target() }}).$mount('#app')
   }
-}());
+}())

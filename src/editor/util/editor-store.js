@@ -16,11 +16,10 @@ export default class EditorStore {
     editor && this.pool.set(mode, editor)
   }
 
-  reset(data){
-    this.step.rootEditPart.model.removeAllChildren();
-    this.step.cmdStack.dispose();
-    this.step.rootEditPart.refresh();
-
+  reset (data) {
+    this.step.rootEditPart.model.removeAllChildren()
+    this.step.cmdStack.dispose()
+    this.step.rootEditPart.refresh()
   }
 
   clear () {
