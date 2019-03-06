@@ -134,30 +134,6 @@ export class EditorConfig {
           run () {
             this.editor.rootEditPart.$emit('vueHandler', vue => vue.state.turnToDebug())
           }
-        },
-        {
-          id: 'change0',
-          name: '切换版本0',
-          type: 2,
-          run () {
-            this.editor.rootEditPart.$emit('vueHandler', vue => vue.state.version = 0)
-          }
-        },
-        {
-          id: 'change1',
-          name: '切换版本1',
-          type: 2,
-          run () {
-            this.editor.rootEditPart.$emit('vueHandler', vue => vue.state.version = 1)
-          }
-        },
-        {
-          id: 'change2',
-          name: '切换版本2',
-          type: 2,
-          run () {
-            this.editor.rootEditPart.$emit('vueHandler', vue => vue.state.version = 2)
-          }
         })
 
     addDataAndLine(this, json.data)
@@ -174,14 +150,6 @@ class DebugEditorConfig {
     this.onHooks = Array.of(ReaderListener)
     this.policies = { dblfPolicy, debugRootPolicy }
     this.operations = Array.of(
-        {
-          id: 'edit',
-          name: '编辑模式',
-          type: 2,
-          run() {
-            this.editor.rootEditPart.$emit('vueHandler', vue => vue.state.turnToEdit())
-          }
-        },
         {
           id: 'debugger',
           name: '关闭Log',
@@ -200,13 +168,6 @@ class DebugEditorConfig {
   }
 }
 
-export default function getEditorConfig (mode, target, json) {
-  switch (mode) {
-    case 0:
-      return new EditorConfig(target, json)
-    case 1:
-      return new DebugEditorConfig(target, json)
-    default:
-      return null
-  }
+export default function getEditorConfig (target, json) {
+  return target.lastest ? new EditorConfig(target, json) : new DebugEditorConfig(target, json)
 }

@@ -14,6 +14,12 @@ export default {
     }
   },
 
+  computed: {
+    head () {
+      return this.target.head
+    }
+  },
+
   created() {
     this.keyManagerOfFlow = new KeyManager()
     this.keyManager = new KeyManager('global')
@@ -43,7 +49,7 @@ export default {
       this.state.setDirty(this.store.activeEditor)
     },
     handleOfInit(editor) {
-      this.store.push(this.state.version, editor)
+      this.store.push(this.head, editor)
     },
     handleOfFlowCallback(fn, params = []) {
       if ($.isFunction(fn)) {
