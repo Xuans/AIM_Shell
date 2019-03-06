@@ -1,7 +1,7 @@
 <template>
   <el-container style="height: 500px; border: 1px solid #eee">
     <el-header>
-      <el-col :span="3">
+      <el-col :span="2">
         <!-- 页面名称 -->
         {{model.name}}
       </el-col>
@@ -9,11 +9,11 @@
         <!-- 页面actionBar -->
         <slot name="leftTool"></slot>
       </el-col>
-      <el-col :span="5">
+      <el-col :span="6">
         <!-- 展示path用的面包屑 -->
         <div class="breadcrumb" style="width:100%;height:100%;">
             <span  v-for="(path,index) in model.paths"  :key="index">
-                <span @click.stop="pathTo(path)">{{path.name}}</span>
+                <span @click.stop="pathTo(path)">{{path[mapping.label]}}</span>
                 <i class="el-icon-arrow-right" v-if="index<model.paths.length-1"></i>
             </span>
         </div>
@@ -59,10 +59,18 @@ export default {
       default() {
         return {
             name:'页面名称',
-            paths:[{name:'path'},{to:'to'},{me:'me'}],
+            paths:[],
         };
       }
-    }
+    },
+    mapping:{
+       default(){
+           return {
+                id:'tree_node_name',
+            label:'tree_node_desc',
+           }
+       }
+      },
   },
   data() {},
   methods:{

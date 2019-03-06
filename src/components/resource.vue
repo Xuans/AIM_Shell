@@ -1,6 +1,6 @@
 <template>
     <div class="pl-resource">
-        {{model.name}}
+        {{model[mapping['label']]}}
     </div>
 </template>
 <script>
@@ -9,6 +9,14 @@
             model:{
                 default(){
                     return {}
+                }
+            },
+            mapping:{
+                default(){
+                    return {
+                    id:'id',
+                    label:'name',
+                    }
                 }
             }
         },
