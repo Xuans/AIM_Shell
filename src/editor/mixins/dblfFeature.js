@@ -6,7 +6,7 @@ export default {
   methods: {
     /* editor hooks */
     save() {
-      this.saveOfFlow(this.store.step)
+      this.saveOfFlow(this.store.activeEditor)
     },
 
     /* node pool manage */

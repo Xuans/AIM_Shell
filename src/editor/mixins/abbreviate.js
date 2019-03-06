@@ -44,7 +44,7 @@ const AbbreviationTool = $AG.Tool.scrollByDragTool.extend({
     $(this.editor.element).css('overflow', 'hidden')
 
     const root = this.editor.rootEditPart
-    root.scale(0.6, 0.6)
+    root.scale(0.8, 0.8)
     this.target = root.getEditPart(this.target) // incorrect
     this.locate(this.target)
     root.setSelection(this.target)

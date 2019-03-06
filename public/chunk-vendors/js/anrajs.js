@@ -5795,11 +5795,18 @@
                     val = this._findProps(key_list);
 
                 if (this.store) {
-                    this.props = this.store.update(
+                    this.props = this.store.update(function () {
+                        let obj = this, i = 0;
+                        for (; i < key_list.length - 1; i++) obj = obj[key_list[i]];
+
+                        obj[key_list[i]] = value;
+                        return this
+                    }) .first() || this.props;
+ /*                   this.props = this.store.update(
                         key_list.reduceRight(
                             (_tj, key) => ({ [key]: _tj }), value
                         ))
-                        .first() || this.props;
+                        .first() || this.props;*/
                 } else {
                     let obj = this.props, i = 0;
                     for (; i < key_list.length - 1; i++) obj = obj[key_list[i]];

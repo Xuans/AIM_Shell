@@ -5,6 +5,7 @@ import Split from 'split.js'
 const splitMap = new WeakMap()
 
 function collapse (needTransition = true) {
+  this.state = true
   this.flag = needTransition
   this.sizes = this.split.getSizes()
   this.split.setSizes([0, 100])
@@ -13,6 +14,7 @@ function collapse (needTransition = true) {
 }
 
 function expand (needTransition = true) {
+  this.state = false
   this.flag = needTransition
   this.split.setSizes(this.sizes)
   this.icon.className = 'el-icon-caret-left'
@@ -35,9 +37,10 @@ export default {
       sizes: [15, 85],
       collapse,
       expand,
-      flag: false
+      flag: false,
+      state: false
     }
-    const split = Split([flowEditor.$refs.palette.$el, flowEditor.$refs.canvas.$el], {
+    const split = Split([flowEditor.$refs.palette.$el, flowEditor.$refs.main.$el], {
       sizes: cache.sizes,
       gutterSize: 4,
       gutter (index, direction) {
@@ -58,6 +61,7 @@ export default {
         return gutter
       },
       elementStyle (dimension, size, gutterSize) {
+        size = cache.state ? 0 : size
         return {
           'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)',
           'transition': `${cache.flag ? '.5' : '0'}s`

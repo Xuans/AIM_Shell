@@ -31,6 +31,15 @@ function addDataAndLine(config, dataOfService) {
   config.line = line
 }
 
+function addServiceParas (config, params) {
+  config.serviceParams = Array.of(/*{
+    'id': '1',
+    'name': 'sadsa',
+    'key': 'agent',
+    'alias': 'Agent'
+  }*/)
+}
+
 
 export class EditorConfig {
   constructor (target, json) {
@@ -128,6 +137,7 @@ export class EditorConfig {
         })
 
     addDataAndLine(this, json.data)
+    addServiceParas(this, json.params)
   }
 }
 

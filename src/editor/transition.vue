@@ -27,9 +27,9 @@
                 <el-aside ref="split" width="4px" class="gutter gutter-horizontal" style="background-color: rgb(206, 206, 206);box-shadow:  0px 3px 3px 3px #888888"></el-aside>
 
                 <el-container>
-                    <el-header height="3rem" class="custom-aside--header">
+<!--                    <el-header height="3rem" class="custom-aside&#45;&#45;header">
                         <span>{{desp}}</span>
-                    </el-header>
+                    </el-header>-->
 
                     <slot><!-- flowEditor --></slot>
 
@@ -155,7 +155,7 @@
     }
 
     .custom-aside--editor {
-        left: 25%;
+        left: 65%;
     }
 
     .custom-aside--control:hover {
