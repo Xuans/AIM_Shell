@@ -1,7 +1,6 @@
 import Popper from "popper.js";
 import 'animate.css';
 import $ from 'jquery'
-import Service from '../../../public/fakeSerivce/index'
 
 export const debugRootPolicy = {
     config: {
@@ -106,7 +105,7 @@ export const debugUIPolicy = {
             }
 
             let toolong = log.duration > 1000;
-            let time = Service.convertTimeFormat(log.duration)
+            let time = Vue.convertTimeFormat(log.duration)
             let pop1 = document.createElement('div');
             pop1.innerHTML = `<div  
             style='pointer-events:none;

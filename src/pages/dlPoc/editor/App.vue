@@ -12,27 +12,29 @@
 
 <script>
 import Vue from 'vue'
-import ShellFlow from '../../../editor/shell-flow.vue';
-import "element-ui/lib/theme-chalk/index.css";
-import "../../../assets/flow-style.css";
-import "../../../assets/flow1/iconfont.css";
+import ShellFlow from '../../../editor/shell-flow.vue'
+import 'element-ui/lib/theme-chalk/index.css'
+import '../../../assets/flow-style.css'
+import '../../../assets/flow1/iconfont.css'
 import ElementUi from 'element-ui'
+import ExternalApi from '../../../plugin/externalApi'
 
 Vue.config.productionTip = false
-Vue.use(ElementUi);
+Vue.use(ElementUi)
+Vue.use(ExternalApi)
 
 import iform from '../dyncForm/index.vue'
 
 export default {
   name: 'app',
-  props:['target'],
-  data:function(){
-    return {};
+  props: ['target'],
+  data: function () {
+    return {}
   },
-  components:{
+  components: {
     ShellFlow,
     iform
-  },
+  }
 }
 </script>
 

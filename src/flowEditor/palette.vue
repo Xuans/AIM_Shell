@@ -139,7 +139,6 @@
 
 <script>
 import $ from "jquery";
-import Service from "../../public/fakeSerivce/index.js";
 
 export default {
   inject: ["flowEditor"],

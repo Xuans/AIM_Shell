@@ -1,7 +1,5 @@
 import getEditorConfig from "../util/editor-config";
 
-import Serivces from "../../../public/fakeSerivce"
-
 const defaults = {
   render: false,
   palette: false,
@@ -24,7 +22,7 @@ class State {
   }
 
   input2Config () {
-    Serivces.getServiceInstance(this.target)
+    Vue.getServiceInstance(this.target)
         .then(json => {
           this.config = getEditorConfig(this.mode, this.target, json) // select it by mode
           this.render = true

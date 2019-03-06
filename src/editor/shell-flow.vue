@@ -114,7 +114,6 @@ import editorFeature from "./mixins/dblfFeature";
 import contextmenu from "./mixins/contextmenu";
 import abbreviate from "./mixins/abbreviate";
 
-import Service from "./../../public/fakeSerivce/index.js";
 import debuggerRunner from "../util/scriptDebugger.js";
 
 export default {
@@ -123,7 +122,7 @@ export default {
   mixins: [editorFeature, contextmenu, abbreviate],
 
   data() {
-    let logs = Service.getLogs();
+    let logs = this.getLogs();
     return {
       task: "",
       editMode: true,
@@ -184,13 +183,13 @@ export default {
 
   methods: {
     timeFormat(node) {
-      return Service.convertTimeFormat(node.duration);
+      return this.convertTimeFormat(node.duration);
     },
     setServiceId(id = 1) {
       this.target.inputId = id;
     },
     querySearchAsync(queryString, cb) {
-      var restaurants = Service.getTasks();
+      var restaurants = this.getTasks();
       var results = queryString
         ? restaurants.filter(this.createStateFilter(queryString))
         : restaurants;
