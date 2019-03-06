@@ -18,6 +18,19 @@ export function editNode () {
       't': terminalPolicy,
       'tt': textPolicy0,
       'ttt': tooltipPolicy,
+      'tttt': {
+        config: {
+          switch () {
+            this.emit('vueHandler', vue => vue.nodeOfSwitch())
+          }
+        },
+        activate () {
+          this.getHostFigure().on('dblclick', this.switch)
+        },
+        deactivate () {
+          this.getHostFigure().off('dblclick', this.switch)
+        }
+      }
     },
     attr: {
       fill: color

@@ -1,12 +1,17 @@
 <template>
   <el-container :class="{'cant-edit': !canEdit}" style="height: 100%">
-    <el-aside ref="palette" width="264px" class="flow-palette">
+    <el-aside ref="palette" width="0px" class="flow-palette">
       <slot name="palette"></slot>
     </el-aside>
 
-    <el-main ref="canvas" :id="editorId" class="flow-canvas">
-      <slot name="canvas"></slot>
-    </el-main>
+    <el-container ref="main" direction="vertical">
+      <el-main ref="canvas" :id="editorId" class="flow-canvas">
+        <slot name="canvas"></slot>
+      </el-main>
+
+      <slot name="canvasUnder"></slot>
+    </el-container>
+
   </el-container>
 </template>
 

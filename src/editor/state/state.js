@@ -1,30 +1,34 @@
-import getEditorConfig from "../util/editor-config";
+import getEditorConfig from '../util/editor-config'
 
 const defaults = {
   render: false,
-  palette: false,
+  palette: true,
   mode: 0,
-  dirty: false
+  dirty: false,
+  config: null
 }
-
 
 class State {
   constructor (target, options = defaults) {
-
     for (let [key, value] of Object.entries(options)) {
       this[key] = value
     }
 
     this.target = target
-    this.config = null
 
     this.input2Config()
   }
 
   input2Config () {
-    Vue.getServiceInstance(this.target)
-        .then(json => {
-          this.config = getEditorConfig(this.mode, this.target, json) // select it by mode
+    const {getServiceInstance, getScriptInstanceTree, getServiceInstanceTree} = Vue
+
+    Promise.all(Array.of(getServiceInstance(this.target), getScriptInstanceTree(this.target), getServiceInstanceTree(this.target)))
+        .then(([json, scriptTree, serviceTree]) => {
+          this.config = getEditorConfig(this.mode, this.target, json)
+
+          this.config.scriptTree = scriptTree
+          this.config.serviceTree = serviceTree
+
           this.render = true
         })
   }

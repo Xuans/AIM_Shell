@@ -9,13 +9,12 @@ export default {
 
   data () {
     return {
-      state: makeState(this.target)
+      state: makeState(this.target),
+      store: new EditorStore()
     }
   },
 
   created() {
-    this.store = new EditorStore()
-
     this.keyManagerOfFlow = new KeyManager()
     this.keyManager = new KeyManager('global')
     this.keyManager.watchPage('0', this.keyManagerOfFlow)
@@ -38,10 +37,10 @@ export default {
     handleOfCreate: handleOfCreate,
     handleOfSave(editor,done) {
       done();
-      this.state.setDirty(this.store.step)
+      this.state.setDirty(this.store.activeEditor)
     },
     handleOfCommand() {
-      this.state.setDirty(this.store.step)
+      this.state.setDirty(this.store.activeEditor)
     },
     handleOfInit(editor) {
       this.store.push(this.state.mode, editor)

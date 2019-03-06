@@ -2,8 +2,8 @@
   <div class="aim-shell-editor">
     <shell-flow v-bind:target="target">
       <!-- 表单凹槽 -->
-      <template slot="form" slot-scope="{input}">
-        <iform :input="input"></iform>
+      <template slot="form" slot-scope="{store}">
+        <shell-flow-panel :store="store"></shell-flow-panel>
       </template>
     </shell-flow>
   </div>
@@ -13,6 +13,7 @@
 <script>
 import Vue from 'vue'
 import ShellFlow from '../../../editor/shell-flow.vue'
+import ShellFlowPanel from '../../../components/Panel/ShellFlowPanel.vue'
 import 'element-ui/lib/theme-chalk/index.css'
 import '../../../assets/flow-style.css'
 import '../../../assets/flow1/iconfont.css'
@@ -23,8 +24,6 @@ Vue.config.productionTip = false
 Vue.use(ElementUi)
 Vue.use(ExternalApi)
 
-import iform from '../dyncForm/index.vue'
-
 export default {
   name: 'app',
   props: ['target'],
@@ -33,7 +32,7 @@ export default {
   },
   components: {
     ShellFlow,
-    iform
+    ShellFlowPanel
   }
 }
 </script>
