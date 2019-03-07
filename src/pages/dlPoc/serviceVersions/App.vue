@@ -1,25 +1,46 @@
 <template>
   <workbench :model="model">
 
-    <el-button-group slot="centerTool">
-      <el-button icon="el-icon-delete" :disabled="!target.lastest" @click="editorHandle('delete')"></el-button>
-      <el-button icon="el-icon-edit-outline" :disabled="!target.lastest" @click="editorHandle('save')"></el-button>
-      <el-button icon="el-icon-upload2" :disabled="!target.lastest" @click="editorHandle('upload')"></el-button>
-    </el-button-group>
+    <el-row slot="rightTool">
+      <el-select v-model="target.head"
+                 placeholder="待发布"
+                 :disabled="compareVersions.length > 0">
+        <el-option
+                v-for="item in target.versions"
+                :key="item.name"
+                :label="`v${item.name}.0`"
+                :value="item.name">
+        </el-option>
+      </el-select>
+      <el-button icon="el-icon-circle-close-outline"></el-button>
+    </el-row>
 
-    <el-select slot="centerTool"
-               v-model="target.head"
-               placeholder="待发布"
-    >
-      <el-option
-              v-for="item in target.versions"
-              :key="item.name"
-              :label="`v${item.name}.0`"
-              :value="item.name">
-      </el-option>
-    </el-select>
+    <el-row slot="centerTool">
 
-    <shell-versions ref="editor" slot="mainPage" :target="target"></shell-versions>
+      <el-select placeholder="版本对比" :value="null" @change="handleOfChange">
+        <el-option v-for="item in versionsLeft"
+                   :key="item.name"
+                   :label="versionForm(item.name)"
+                   :value="item.name">
+        </el-option>
+      </el-select>
+
+      <el-tag v-for="version in compareVersions"
+              :key="version.name"
+              closable
+              @close="() => handleOfClose(version)">
+        {{versionForm(version.name)}}
+      </el-tag>
+    </el-row>
+
+    <el-row slot="mainPage" class="sv-ctn">
+
+      <shell-versions ref="editor" :target="target"></shell-versions>
+
+      <shell-versions v-for="version in compareVersions"  :target="target.cloneByVersion(version)"></shell-versions>
+
+    </el-row>
+
   </workbench>
 </template>
 
@@ -46,13 +67,41 @@
         model: {
           name: '服务编排',
           paths: [{name: 'path'}, {to: 'to'}, {me: 'me'}]
-        }
+        },
+        compareVersions: Array.of()
+      }
+    },
+
+    computed: {
+      versionsLeft () {
+        return this.target.versions.filter(version => version.name !== this.target.head)
       }
     },
 
     methods: {
+      versionForm (version) {
+        return `v${version}.0`
+      },
       editorHandle (action) {
         this.$refs.editor.request(action)
+      },
+      handleOfChange (versionName) {
+        for (let i = 0; i < this.versionsLeft.length; i++) {
+          if (this.versionsLeft[i].name === versionName) {
+            this.compareVersions.push(this.versionsLeft[i])
+            this.versionsLeft.splice(i, 1)
+            break
+          }
+        }
+      },
+      handleOfClose (version) {
+        let index = this.compareVersions.indexOf(version)
+
+        this.compareVersions.splice(index, 1)
+        this.versionsLeft.push(version)
+      },
+      cloneTarget (version) {
+        return
       }
     },
 
@@ -78,4 +127,13 @@
   border: none;
   margin:0;
 }
+  .sv-ctn{
+    display: flex;
+    flex-direction: row;
+    flex-wrap:nowrap;
+    flex: 1;
+  }
+  .sv-ctn>.aim-shell-content{
+    flex: 1;
+  }
 </style>

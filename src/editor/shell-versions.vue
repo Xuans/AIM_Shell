@@ -4,19 +4,25 @@
         <shell-flow ref="shell-flow"
                     :target="target"
                     :maximize="true"
-                    @selection-change="handleOfSelectionChange"
-                    @selection-remove="handleOfSelectionRemove">
+                    :make-state="makeState">
         </shell-flow>
 
     </div>
 </template>
 <script type="text/javascript">
   import shellFlow from './shell-flow.vue'
+  import makeState from './state/versions-state'
 
   export default {
     name: 'shell-design',
 
     props: ['target'],
+
+    computed: {
+      makeState () { // for no reactive
+        return makeState
+      }
+    },
 
     components: {
       shellFlow
