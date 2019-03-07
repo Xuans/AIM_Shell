@@ -26,11 +26,11 @@
 
 <script>
   export default {
-    name: "ServiceParams",
+    name: 'ServiceParams',
     inject: ['store'],
 
     computed: {
-      params() {
+      params () {
         return this.store.serviceParams
       }
     }
