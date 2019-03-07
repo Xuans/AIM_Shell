@@ -12,6 +12,8 @@
 
       <slot slot="canvasUnder" name="panels" :store="store"></slot>
 
+      <slot slot="canvas" name="canvass"></slot>
+
   </flow-editor>
 </template>
 <script type="text/javascript">

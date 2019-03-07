@@ -7,9 +7,21 @@
                     @selection-change="handleOfSelectionChange"
                     @selection-remove="handleOfSelectionRemove">
             <mutil-panel slot="panels" :store="store"></mutil-panel>
+
+            <dblf-transition
+                    slot="canvass"
+                    ref="transition"
+                    :visible="visible"
+                    :expand.sync="expand"
+                    @click-control="handleOfExpand"
+                    @click-back="handleOfCollapse"
+                    @editor-open="handleOfOpening">
+                <slot name="form" :store="store"></slot>
+            </dblf-transition>
+
         </shell-flow>
 
-        <dblf-transition
+        <!--<dblf-transition
                 ref="transition"
                 :visible="visible"
                 :expand.sync="expand"
@@ -17,7 +29,7 @@
                 @click-back="handleOfCollapse"
                 @editor-open="handleOfOpening">
             <slot name="form" :store="store"></slot>
-        </dblf-transition>
+        </dblf-transition>-->
 
     </div>
 </template>
