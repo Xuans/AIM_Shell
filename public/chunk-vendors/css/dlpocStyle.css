@@ -128,6 +128,102 @@
     top: -1px;
 }
 
+/* 左侧树 Start */
+.ssm-tree-list {
+    flex: 1;
+    overflow: auto;
+    margin-top: .5em;
+}
+
+.ssm-tree-list ul {
+    margin: 0 -1em 0 10px;
+    padding-top:5px;
+    border-left: 1px solid #000;
+}
+.ssm-tree-list ul li{
+    position:relative;
+    padding-left:30px;
+}
+.ssm-tree-list ul li:first-child{
+    margin-top:0;
+}
+.ssm-tree-list ul li:last-child{
+    margin-bottom:5px;
+}
+.ssm-tree-list ul li::before {
+    content: '';
+    background: black;
+    width: 30px;
+    display: block;
+    height: 1px;
+    position: absolute;
+    top: 12px;
+    left: 0;
+}
+
+.ssm-tree-list>ul {
+    padding: 0 0 0 1em;
+    margin: 0;
+    border-left:none;
+}
+.ssm-tree-list>ul>li{
+    padding-left:0;
+}
+.ssm-tree-list>ul>li::before{
+    display:none;
+}
+
+.ssm-tree-list .ssm-tree-header>span {
+    display:inline-block;
+    line-height: 22px;
+    border: 1px solid #CACACA;
+    display: inline-block;
+    padding: 0 10px;
+    min-width:80px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.ssm-tree-list .ssm-tree-header.active>span{
+    background: #13B1F5;
+    color: #FFF;
+    border: none;
+}
+
+.ssm-tree-list .ssm-tree-header>span.fa-caret-up,
+.ssm-tree-list .ssm-tree-header>span.fa-caret-down {
+    font-size: 1.5em;
+}
+
+.ssm-tree-list .ssm-tree-header .fa {
+    padding: 0 3px;
+    font-size: 1em;
+    line-height: 20px;
+    
+}
+.ssm-tree-list .ssm-tree-header>span .fa{
+    float:right;
+}
+.ssm-tree-list .ssm-tree-header.active>span .fa{
+    transform: rotate(180deg);
+}
+
+.ssm-tree-list .ssm-tree-header>.tookit {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.ssm-tree-list .ssm-tree-header:hover {
+    color: #1DB4F5;
+}
+.ssm-tree-list .ssm-tree-header+ul{
+    display:none;
+}
+.ssm-tree-list .ssm-tree-header.active+ul{
+    display:block;
+}
+/* 左侧树 End */
+
 /* 左侧任务列表 End */
 /* 新增任务分类 Start */
 
@@ -190,7 +286,7 @@
 
 .stm-right-ctn-backdrop-ctt {
     display: none;
-    background: url('../../../img/echarts/workitem.png') center center no-repeat;
+    background: url('../../img/echarts/workitem.png') center center no-repeat;
     width: 148px;
     height: 88px;
     background-size: contain;
