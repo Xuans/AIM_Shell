@@ -1,7 +1,15 @@
 <template>
   <div class="stm">
     <iworkbench @reveal="reveal" :model="serviceConfig" :mapping="serviceMapping" >
-      <div slot="leftPage" style="position:relative;width:100%;height:100%;">
+      <div slot="leftPage" class="stm-left-ctn">
+        <div class="stm-header">
+                <span>服务列表</span>
+                <div class="stm-tookit" style="float: right">
+                    <span data-role="btn" @click="createItem"  title="新增分类">
+                        <i class="fa fa-plus"></i> 新增分类
+                    </span>
+                </div>
+            </div>
         <itree ref="tree" @delete="deleteItem" @create="createItem" @edit="editCategory" :mapping="serviceMapping"  @reveal="reveal"></itree>
       </div>
       <div slot="centerPage" style="position:relative;width:100%;height:100%;">
@@ -9,9 +17,9 @@
           <iresourceManager @reveal="reveal"  @create="createItem" ref='resourceManager' :model="selected" :mapping="serviceMapping"></iresourceManager>
         </el-col>
       </div>
-       <div slot="leftTool">
+       <!-- <div slot="leftTool">
         <el-button type="success" icon="el-icon-plus" size="mini" @click="createItem"></el-button>
-       </div>
+       </div> -->
     </iworkbench>
 
 

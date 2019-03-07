@@ -157,7 +157,7 @@ export default {
 .ssm-tree-list {
   flex: 1;
   overflow: auto;
-  margin-top: 0.5em;
+  margin-top: 0em;
 }
 
 .ssm-tree-list > ul {

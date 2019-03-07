@@ -36,10 +36,10 @@
     <el-container>
       <!-- 主页内容 -->
       <slot name="mainPage">
-        <el-aside width="200px">
+        <el-aside>
           <slot name="leftPage"></slot>
         </el-aside>
-        <el-main style="padding:0 0;">
+        <el-main>
           <slot name="centerPage"></slot>
         </el-main>
       </slot>
