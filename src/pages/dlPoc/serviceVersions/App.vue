@@ -22,7 +22,7 @@
 
       <shell-versions ref="editor" :target="target"></shell-versions>
 
-      <shell-versions v-for="version in compareVersions"  :target="target.cloneByVersion(version)"></shell-versions>
+      <shell-versions v-for="version in compareVersions" :key="version.name" :target="target.cloneByVersion(version)"></shell-versions>
 
     </el-row>
 

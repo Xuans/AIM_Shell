@@ -1,15 +1,13 @@
 <template>
-    <div class="aim-shell-content">
-
-        <shell-flow ref="shell-flow"
-                    :target="target"
-                    :maximize="target.lastest ? maximize : true"
-                    @selection-change="handleOfSelectionChange"
-                    @selection-remove="handleOfSelectionRemove">
-            <mutil-panel slot="panels" :store="store"></mutil-panel>
-        </shell-flow>
+    <shell-flow ref="shell-flow"
+                :target="target"
+                :maximize="target.lastest ? maximize : true"
+                @selection-change="handleOfSelectionChange"
+                @selection-remove="handleOfSelectionRemove">
+        <mutil-panel slot="panels" :store="store"></mutil-panel>
 
         <dblf-transition
+                slot="canvass"
                 ref="transition"
                 :visible="visible"
                 :expand.sync="expand"
@@ -19,7 +17,7 @@
             <slot name="form" :store="store"></slot>
         </dblf-transition>
 
-    </div>
+    </shell-flow>
 </template>
 <script type="text/javascript">
   import dblfTransition from './transition.vue'

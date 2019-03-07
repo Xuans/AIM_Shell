@@ -1,18 +1,14 @@
 <template>
-    <div class="aim-shell-content">
+    <shell-flow ref="shell-flow"
+                :target="target"
+                :maximize="true"
+                :make-state="makeState">
 
-        <shell-flow ref="shell-flow"
-                    :target="target"
-                    :maximize="true"
-                    :make-state="makeState">
+        <template slot="panels" slot-scope="{store}">
+            <mutil-panel :store="store"></mutil-panel>
+        </template>
 
-            <template slot="panels" slot-scope="{store}">
-                <mutil-panel :store="store"></mutil-panel>
-            </template>
-
-        </shell-flow>
-
-    </div>
+    </shell-flow>
 </template>
 <script type="text/javascript">
   import shellFlow from './shell-flow.vue'
