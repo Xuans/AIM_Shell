@@ -8199,6 +8199,9 @@
         },
         setTool: function (toolConfig) {
             this.setActiveTool(anra.gef.Tool.init(toolConfig));
+        },
+        save () {
+            this._save()
         }
     };
 

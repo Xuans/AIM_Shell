@@ -242,7 +242,7 @@ export default {
     refreshTree(forceReload=true){
       //重新加载树结构 
       this.loading=true;
-        api.getServiceInstanceTree().then(data=>{
+        api.$getServiceInstanceTree().then(data=>{
             // this.$refs.tree.setModel(data);
             // this.$refs.resourceManager.setModel(data);
             this.treeData=data;

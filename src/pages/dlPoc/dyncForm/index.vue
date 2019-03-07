@@ -138,7 +138,7 @@ export default {
   components: {},
   methods: {
     querySearchAsync(queryString, cb) {
-      Service.getAgent(queryString,cb);
+      this.$getAgent(queryString,cb);
     },
     createStateFilter(queryString) {
       return state => {

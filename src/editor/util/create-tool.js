@@ -79,7 +79,7 @@ const Tool$0 = $AG.Tool.CreationTool.extend({
     this.item = item
 
     // const item = this.item
-    Vue.getServiceInstance(item).then(json => {
+    Vue.$getServiceInstance(item).then(json => {
       const nodes = Object.values(json.data)
 
       let left, right, top, bottom

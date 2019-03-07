@@ -1,9 +1,9 @@
 import {nodes} from './largeFlow'
 
 export default {
-  getAgent (cb) {
+  $getAgent (cb) {
   },
-  convertTimeFormat (ms) {
+  $convertTimeFormat (ms) {
     if (ms < 1000) return ms + 'ms'
     let s = ms / 1000
     if (s < 60) return s + 's'
@@ -15,7 +15,7 @@ export default {
 
     return hours + 'h ' + minutes + 'min ' + seconds + 's '
   },
-  getTasks () {
+  $getTasks () {
     return [{
       name: '主机部署',
       time: '2018/03/12',
@@ -39,7 +39,7 @@ export default {
     }
     ]
   },
-  getScriptInstanceTree (target = {}) {
+  $getScriptInstanceTree (target = {}) {
     return Promise.resolve([
       {
         'tree_p_node_name': '文件脚本集',
@@ -211,7 +211,7 @@ export default {
     ])
   },
 
-  getServiceInstanceTree () {
+  $getServiceInstanceTree () {
     return Promise.resolve([{
       type: '1',
       service_id: 'start',
@@ -238,10 +238,10 @@ export default {
       }
     ])
   },
-  getServiceInstance: function (target) {
+  $getServiceInstance: function (target) {
     return Promise.resolve(nodes[target.head])
   },
-  getLogs () {
+  $getLogs () {
     return [{
       time: '2019/2/25 12:11:01',
       duration: '100',
@@ -317,33 +317,20 @@ export default {
 
     ]
   },
-  getServiceCtr () {},
-  createSerivceCtr () {
+  $createSerivceCtr () {
     return {
       id: 'a service ctr',
       type: 0,
       inputId: -1
     }
   },
-  save (target, data) {
-    return new Promise(resolve => {
-      methods.updateService([{
-        'service_ename': target.ret.service_ename,
-        'service_name': target.ret.service_name,
-        'service_content': JSON.stringify(data),
-        'service_args': JSON.stringify([]),
-        'tree_p_node_name': target.ret.tree_p_node_name,
-        'service_id': target.ret.service_id
-      }]).then(response => {
-        debugger
-        resolve(true)
-      }).fail(response => {
-        debugger
-        resolve(false)
-      })
-    })
+  $saveSerivce (target, data) {
+
+    console.log('保存: target: ' + target + " data:" + data)
+
+    return Promise.resolve()
   },
-  field: {
+  $field: {
     scriptTree: {
       label: 'tree_node_desc',
       children: 'children'
@@ -354,7 +341,7 @@ export default {
     }
   },
 
-  scriptField: [
+  $scriptField: [
     {
       key: 'id',
       name: 'ID',
@@ -396,37 +383,5 @@ export default {
       default() {
         return ''
       }
-    }
-  ],
-
-  shellPaneAtBottom: [
-    {
-      name: '任务参数',
-      component: 'ElInput',
-    },
-    {
-      name: '日志',
-      component: 'ElInput'
-    },
-    {
-      name: '任务列表',
-      component: 'ElInput'
-    }
-  ],
-
-  getNode () {
-    return {
-      'id': '1',
-      'name': '编译交易脚本',
-      'scriptId': 'caf41eaf',
-      'ip': '192.168.1.2',
-      'port': '22',
-
-      bounds: [120, 40, 180, 40],
-      'target': {
-        '0': '4',
-        '1': '2'
-      }
-    }
-  }
+    }]
 }

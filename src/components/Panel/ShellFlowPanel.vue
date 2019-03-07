@@ -53,7 +53,7 @@
         if (input = this.store.activeInput) {
 
           id = this.store.activeId
-          for (let option of this.scriptField) {
+          for (let option of this.$scriptField) {
             item = {
               id: id,
               name: option.name,

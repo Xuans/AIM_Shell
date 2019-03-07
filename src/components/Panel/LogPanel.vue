@@ -51,7 +51,7 @@
 
     data () {
       return {
-        logs: this.getLogs(this.store.target),
+        logs: this.$getLogs(this.store.target),
         showLogPanel: false,
         showLogBtn: true,
         currentLog: {},
@@ -64,10 +64,10 @@
         this.target.inputId = item.inputId
       },
       timeFormat (node) {
-        return this.convertTimeFormat(node.duration)
+        return this.$convertTimeFormat(node.duration)
       },
       querySearchAsync (queryString, cb) {
-        let restaurants = this.getTasks()
+        let restaurants = this.$getTasks()
         let results = queryString
             ? restaurants.filter(this.createStateFilter(queryString))
             : restaurants

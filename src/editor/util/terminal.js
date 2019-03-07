@@ -292,7 +292,7 @@ export const terminalCmd = {
 export const terminalPolicy = $AG.TransitionPolicy.extend({
   activate() {
     this.base();
-    console.log('active')
+    // console.log('active')
     AboutTerminal
       .register(this.getHost(), data => data)
       .handle(Terminals, null, this.getHost().model.get(Terminals))
