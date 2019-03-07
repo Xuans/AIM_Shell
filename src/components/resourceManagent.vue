@@ -23,7 +23,7 @@
           @click.stop="$emit('create',currentNode,currentNodeType)"
         >新增{{currentNodeType==2?'文件':'目录'}}</span>
       </div>
-      <div class="right-bottom-btn" data-id="refreshModal">
+      <div class="right-bottom-btn" data-id="refreshModal" @click.stop="refresh()">
         <i class="fa fa-refresh"></i>
         <span>刷新</span>
       </div>
@@ -66,7 +66,7 @@
             <div class="bi-computer-card-content">
               <div
                 class="bi-computer-card-item"
-                @click.stop="$emit('create',item,1)"
+                @click.stop="$emit('create',item,currentNodeType)"
                 data-id="addcate1"
                 :data-operate="id"
               >
@@ -105,7 +105,7 @@
           <div
             @dblclick.stop="doubleclick(item)"
             v-show="filter(item)"
-            v-for="(item,index) in searchable"
+            v-for="(item,index) in parent.cache"
             :key="index"
             class="search-list"
             :data-type="item.tree_node_type"
@@ -132,17 +132,17 @@
 import iresource from "./resource";
 export default {
   inject: ['parent'],
-  props: {
-    model: {}
-  },
   watch:{
     'parent.selection'(s){
         this.expand(s);
-    }
+    },
   },
   methods: {
     setModel(model) {
       this.expand(model);
+    },
+    refresh(){
+      this.expand(this.parent.selection);
     }, 
     expand(s){
        if(!this.stacking){
@@ -152,8 +152,6 @@ export default {
        }
        this.stacking=false;
        this.list = s?[s]:this.parent.treeData;
-
-      console.error('list.length',this.list,this.parent.treeData);
 
       if (this.list.length > 1) {
         //最外层
@@ -176,9 +174,6 @@ export default {
       }
       this.$emit("refresh");
     },
-    setSearchable(searchable) {
-      this.searchable = searchable;
-    },
     filter(item) {
       if (!this.queryString || this.queryString.length == 0) return true;
       if (!item || !item.tree_node_desc) return true;
@@ -192,8 +187,11 @@ export default {
       // this.selected = item;
       if (item.tree_node_type == "1") {
         // this.$emit("reveal", item);
-        this.parent.selection=item;
+        this.parent.selection=this.getRealItem(item);
       } else this.$emit("open", item);
+    },
+    getRealItem(item){
+      return this.parent.cache[item.tree_node_name];
     },
     moveBack() {
       let b = this.backStack.splice(-1);
@@ -206,7 +204,7 @@ export default {
         console.log('moveback',b[0])
         let len=b[0].length;
         if(len==1)
-          this.parent.selection=b[0][0];
+          this.parent.selection=this.getRealItem(b[0][0]);
         else if(len>1)
           this.parent.selection=null;
       }
@@ -220,7 +218,7 @@ export default {
         // this.expand(b[0]);
         let len=b[0].length;
         if(len==1)
-          this.parent.selection=b[0][0];
+          this.parent.selection=this.getRealItem(b[0][0]);
         else if(len>1)
           this.parent.selection=null;
       }
@@ -240,7 +238,6 @@ export default {
       activeTag: "info",
       id: "0",
       list: [],
-      searchable: [],
       showDetailPanel: false,
       showSearchPanel: false,
       queryString: null

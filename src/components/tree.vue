@@ -9,10 +9,9 @@
             :data-id="cat1[mapping['id']]"
             :title="cat1[mapping['label']]"
             @dblclick.stop="expand(cat1)"
-            @click.stop="selectionChanged(cat1)"
             :class="{selected:cat1==selectedItem}"
           >
-            <span>
+            <span  @click.stop="selectionChanged(cat1)">
               {{cat1[mapping['label']]}}
               <i
                 data-role="expand"
@@ -39,9 +38,9 @@
                     :data-id="cat2[mapping['id']]"
                     :title="cat2[mapping['label']]"
                     @dblclick.stop="expand(cat2)"
-                    @click.stop="selectionChanged(cat2)"
                   >
-                    <span>
+                    <span 
+                    @click.stop="selectionChanged(cat2)">
                     {{cat2[mapping['label']]}}
                     <i
                       class="fa fa-caret-down"

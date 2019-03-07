@@ -15,7 +15,7 @@
       </div>
       <div slot="centerPage" style="position:relative;width:100%;height:100%;">
         <el-col :span="24" style="height:100%;">
-          <iresourceManager @refresh="refreshBreadCrumb"  @open="openFile"   @create="createItem" ref='resourceManager' :model="selection" :mapping="serviceMapping"></iresourceManager>
+          <iresourceManager @refresh="refreshBreadCrumb"  @open="openFile"   @create="createItem" ref='resourceManager' :mapping="serviceMapping"></iresourceManager>
         </el-col>
       </div>
       <!-- <div slot="leftTool">
@@ -129,9 +129,8 @@ export default {
         },
       },
       cache:{},
-      selection:{
-        children:[],
-      },
+      selection:{},
+      ready:false,
       showCreateDialog: false,
       serviceMapping: {
         type: "tree_node_type",
@@ -194,7 +193,7 @@ export default {
               if (response && response.content.result.data.r.ret === true) {
                 app.alert(`删除(${desc})成功！`);
 
-                _self.refreshTree();
+                _self.refreshTree(false);
               } else {
                 console.error(response.content.result.hdead.errorMessage);
               }
@@ -219,7 +218,7 @@ export default {
         methods
           .updateTreeNode([this.newNode])
           .then(response => {
-            this.refreshTree();
+            this.refreshTree(false);
             this.showCreateDialog = false;
           })
           .fail(error => {
@@ -231,7 +230,7 @@ export default {
           .addTreeNode([this.newNode])
           .then(response => {
             console.log("创建节点成功");
-            this.refreshTree();
+            this.refreshTree(false);
             this.showCreateDialog = false;
           })
           .fail(error => {
@@ -240,7 +239,7 @@ export default {
       }
     },
     
-    refreshTree(){
+    refreshTree(forceReload=true){
       //重新加载树结构 
       this.loading=true;
         api.getServiceInstanceTree().then(data=>{
@@ -249,9 +248,15 @@ export default {
             this.treeData=data;
 
             this.buildIndex(data);
-            this.selection=null;
             this.loading=false;
 
+            if(this.selection){
+              console.log('selection1',this.selection);
+              this.selection = this.cache[this.selection[this.serviceMapping.id]];
+              console.log('selection2',this.selection);
+            }else
+              this.selection=null;
+            this.$forceUpdate();
             // this.$refs.resourceManager.setSearchable(this.cache);
         }).catch(()=>{
             this.loading=false;
