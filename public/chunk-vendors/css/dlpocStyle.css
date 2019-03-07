@@ -135,25 +135,31 @@
     flex: 1;
     overflow: auto;
     margin-top: .5em;
+    position: relative;
 }
 
 .ssm-tree-list ul {
     margin: 0 -1em 0 10px;
     padding-top: 5px;
+    padding-bottom: 5px;
     border-left: 1px solid #000;
 }
 
 .ssm-tree-list ul li {
-    position: relative;
+    /* position: relative; */
     padding-left: 30px;
 }
 
 .ssm-tree-list ul li:first-child {
     margin-top: 0;
+    padding-top: 2px;
 }
 
 .ssm-tree-list ul li:last-child {
-    margin-bottom: 5px;
+    /* margin-bottom: 5px; */
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* width: 20px; */
 }
 
 .ssm-tree-list ul li::before {
@@ -162,9 +168,9 @@
     width: 30px;
     display: block;
     height: 1px;
-    position: absolute;
-    top: 12px;
-    left: 0;
+    position: relative;
+    top: 10px;
+    left: -31px;
 }
 
 .ssm-tree-list>ul {
@@ -218,8 +224,10 @@
 
 .ssm-tree-list .ssm-tree-header>.tookit {
     position: absolute;
-    top: 0;
+    /* top: 0; */
     right: 0;
+    display: inline;
+    /* float: left; */
 }
 
 .ssm-tree-list .ssm-tree-header:hover {
