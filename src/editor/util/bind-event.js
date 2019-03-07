@@ -4,7 +4,6 @@ export const dblfPolicy = {
       this.emit('vueHandler', 'removing', [child])
     },
     selectionChanged (selection) {
-      if (selection instanceof Array && selection.length === 1) selection = selection[0]
       this.emit('vueHandler', 'selectionChange', [selection])
     }
   },

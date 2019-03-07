@@ -3,7 +3,7 @@
         <el-tab-pane label="脚本参数配置" name="first">
             <props-card header="脚本参数配置" style="margin: 10px;">
                 <el-table
-                        v-if="store && store.active"
+                        v-if="store.active"
                         ref="multipleTable"
                         :data="tableData"
                         border
@@ -30,7 +30,7 @@
                             label="对外暴露"
                             width="100">
                         <template slot-scope="scope">
-                            <el-checkbox v-if="scope.row.exposure" v-model="scope.row.isExposure" @change="val => handleOfExposure(val, scope.row)"></el-checkbox>
+                            <el-checkbox v-if="store.target.lastest || scope.row.exposure" v-model="scope.row.isExposure" @change="val => handleOfExposure(val, scope.row)"></el-checkbox>
                         </template>
                     </el-table-column>
                 </el-table>
