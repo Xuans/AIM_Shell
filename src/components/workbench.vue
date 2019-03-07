@@ -13,7 +13,7 @@
       </el-col>
       <el-col :span="5">
         <!-- 展示path用的面包屑 -->
-        <div class="ibreadcrumb" style="width:100%;height:100%;">
+        <div class="ibreadcrumb" style="width:100%;height:100%;overflow:auto;">
             <span  :key="index">
                 <span @click.stop="reveal()">{{model.name}}</span>
                 <i class="el-icon-arrow-right" v-if=" paths&& paths.length>0"></i>
