@@ -27,7 +27,7 @@
     watch: {
       'target.head' (vision) {
         if (this.store.has(vision)) {
-          this.$refs.editor.replaceEditor(this.store.get(vision))
+          this.$refs.editor.replaceEditor(this.store.getAndApplyCurrent(vision))
         } else {
           this.state.refresh()
         }
