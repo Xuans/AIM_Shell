@@ -26,8 +26,10 @@ class State {
         .then(([json, scriptTree, serviceTree]) => {
           this.config = getEditorConfig(this.target, json)
 
-          this.config.scriptTree = scriptTree
-          this.config.serviceTree = serviceTree
+          if (this.target.lastest) {
+            this.config.scriptTree = scriptTree
+            this.config.serviceTree = serviceTree
+          }
 
           this.render = true
           this.palette = this.target.lastest

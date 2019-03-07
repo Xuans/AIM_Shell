@@ -7,7 +7,7 @@
       <el-button icon="el-icon-upload2" :disabled="!target.lastest" @click="editorHandle('upload')"></el-button>
     </el-button-group>
 
-    <el-select slot="rightTool"
+    <el-select slot="centerTool"
                v-model="target.head"
                placeholder="待发布"
     >
@@ -19,25 +19,19 @@
       </el-option>
     </el-select>
 
-    <shell-design ref="editor" slot="mainPage" :target="target">
-      <template slot="form" slot-scope="{store}">
-        <shell-flow-panel :store="store"></shell-flow-panel>
-      </template>
-    </shell-design>
+    <shell-versions ref="editor" slot="mainPage" :target="target"></shell-versions>
   </workbench>
 </template>
 
 
 <script>
   import Vue from 'vue'
-  import ShellDesign from '../../../editor/shell-design.vue'
-  import ShellFlowPanel from '../../../components/Panel/ShellFlowPanel.vue'
+  import ShellVersions from '../../../editor/shell-versions.vue'
   import 'element-ui/lib/theme-chalk/index.css'
   import '../../../assets/flow-style.css'
   import '../../../assets/flow1/iconfont.css'
   import ElementUi from 'element-ui'
   import ExternalApi from '../../../plugin/externalApi'
-
   import workbench from '../../../components/workbench.vue'
 
   Vue.config.productionTip = false
@@ -63,8 +57,7 @@
     },
 
     components: {
-      ShellDesign,
-      ShellFlowPanel,
+      ShellVersions,
       workbench
     }
   }
