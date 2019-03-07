@@ -1,5 +1,5 @@
 import {createData, createLine} from './create-tool'
-import {editNode, noeditNode} from '../figure/node'
+import {editNode, noeditNode, versionNode} from '../figure/node'
 import line, {lineOfUnselectable} from '../figure/line'
 import types from '../figure/types'
 import {ReaderListener} from '../util/manhattan-router'
@@ -161,7 +161,7 @@ export class VersionsEditorConfig {
   constructor (target, json) {
     this.id = `version-${target.id}-${target.head}`
     this.background = 'lightgrey'
-    this.children = { node: noeditNode() }
+    this.children = { node: versionNode() }
     this.lines = { '0': lineOfUnselectable }
     this.types = types
     this.onHooks = Array.of(ReaderListener)

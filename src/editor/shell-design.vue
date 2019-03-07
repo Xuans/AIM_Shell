@@ -3,7 +3,7 @@
 
         <shell-flow ref="shell-flow"
                     :target="target"
-                    :maximize="maximize"
+                    :maximize="target.lastest ? maximize : true"
                     @selection-change="handleOfSelectionChange"
                     @selection-remove="handleOfSelectionRemove">
         </shell-flow>
@@ -79,6 +79,9 @@
       },
       handleOfOpening (el) {
         this.abbreviateWhenOpen(this.store.activeEditor, this.store.active, el)
+      },
+      request (action) {
+        this.store[action]()
       }
     },
 

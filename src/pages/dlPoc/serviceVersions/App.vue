@@ -1,37 +1,22 @@
 <template>
-  <workbench :model="model">
+  <workbench>
 
     <el-row slot="rightTool">
-      <el-select v-model="target.head"
-                 placeholder="待发布"
-                 :disabled="compareVersions.length > 0">
-        <el-option
-                v-for="item in target.versions"
-                :key="item.name"
-                :label="`v${item.name}.0`"
-                :value="item.name">
-        </el-option>
-      </el-select>
+
+      <version-select v-model="target.head"
+                      :versions="target.versions"
+                      :disabled="compareVersions.length > 0">
+      </version-select>
+
       <el-button icon="el-icon-circle-close-outline"></el-button>
+
     </el-row>
 
-    <el-row slot="centerTool">
-
-      <el-select placeholder="版本对比" :value="null" @change="handleOfChange">
-        <el-option v-for="item in versionsLeft"
-                   :key="item.name"
-                   :label="versionForm(item.name)"
-                   :value="item.name">
-        </el-option>
-      </el-select>
-
-      <el-tag v-for="version in compareVersions"
-              :key="version.name"
-              closable
-              @close="() => handleOfClose(version)">
-        {{versionForm(version.name)}}
-      </el-tag>
-    </el-row>
+    <version-compare-select slot="centerTool"
+                            :head="target.head"
+                            :compareVersions="compareVersions"
+                            :versions="target.versions">
+    </version-compare-select>
 
     <el-row slot="mainPage" class="sv-ctn">
 
@@ -55,6 +40,9 @@
   import ExternalApi from '../../../plugin/externalApi'
   import workbench from '../../../components/workbench.vue'
 
+  import VersionSelect from '../../../components/Tool/VersionSelect.vue'
+  import VersionCompareSelect from '../../../components/Tool/VersionCompareSelect.vue'
+
   Vue.config.productionTip = false
   Vue.use(ElementUi)
   Vue.use(ExternalApi)
@@ -62,50 +50,15 @@
   export default {
     name: 'app',
     props: ['target'],
-    data: function () {
+    data () {
       return {
-        model: {
-          name: '服务编排',
-          paths: [{name: 'path'}, {to: 'to'}, {me: 'me'}]
-        },
         compareVersions: Array.of()
       }
     },
 
-    computed: {
-      versionsLeft () {
-        return this.target.versions.filter(version => version.name !== this.target.head)
-      }
-    },
-
-    methods: {
-      versionForm (version) {
-        return `v${version}.0`
-      },
-      editorHandle (action) {
-        this.$refs.editor.request(action)
-      },
-      handleOfChange (versionName) {
-        for (let i = 0; i < this.versionsLeft.length; i++) {
-          if (this.versionsLeft[i].name === versionName) {
-            this.compareVersions.push(this.versionsLeft[i])
-            this.versionsLeft.splice(i, 1)
-            break
-          }
-        }
-      },
-      handleOfClose (version) {
-        let index = this.compareVersions.indexOf(version)
-
-        this.compareVersions.splice(index, 1)
-        this.versionsLeft.push(version)
-      },
-      cloneTarget (version) {
-        return
-      }
-    },
-
     components: {
+      VersionSelect,
+      VersionCompareSelect,
       ShellVersions,
       workbench
     }

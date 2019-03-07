@@ -5,7 +5,7 @@
     </el-aside>
 
     <el-container ref="main" direction="vertical">
-      <el-main ref="canvas" :id="editorId" class="flow-canvas">
+      <el-main ref="canvas" class="flow-canvas">
         <slot name="canvas"></slot>
       </el-main>
 
@@ -161,6 +161,8 @@ export default {
 
   methods: {
     initEditor(config) {
+      this.$refs.canvas.$el.setAttribute('id', this.editorId)
+
       this.editor = new this.EditorConstruction($.extend(true, {}, config));
       this.onEditor(this.eventsOnEditor);
       this.$emit(INIT, this.editor);

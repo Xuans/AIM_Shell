@@ -4,7 +4,7 @@
           v-if="state.render"
           :config="state.config"
           :eventsOnEditor="{vueHandler: handleOfFlowCallback}"
-          :maximize="maximize === undefined ? state.palette : maximize"
+          :maximize="maximize === undefined ? !state.palette : maximize"
           @init="handleOfInit"
           @save="handleOfSave"
           @command="handleOfCommand">
@@ -23,6 +23,16 @@
 
   export default {
     extends: editorFeature,
+
+    watch: {
+      'target.head' (vision) {
+        if (this.store.has(vision)) {
+          this.$refs.editor.replaceEditor(this.store.get(vision))
+        } else {
+          this.state.refresh()
+        }
+      }
+    },
 
     props: {
       maximize: Boolean
