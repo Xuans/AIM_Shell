@@ -3,7 +3,7 @@ import {nodes} from './largeFlow'
 const methods = global.app.shellEditorApi
 
 export default {
-  getAgent (cb) {
+  $getAgent (cb) {
     methods
         .getAgents([{}])
         .then(response => {
@@ -19,7 +19,7 @@ export default {
           cb({ data: [] })
         })
   },
-  convertTimeFormat (ms) {
+  $convertTimeFormat (ms) {
     if (ms < 1000) return ms + 'ms'
     let s = ms / 1000
     if (s < 60) return s + 's'
@@ -31,7 +31,7 @@ export default {
 
     return hours + 'h ' + minutes + 'min ' + seconds + 's '
   },
-  getTasks () {
+  $getTasks () {
     return [{
       name: '主机部署',
       time: '2018/03/12',
@@ -55,7 +55,7 @@ export default {
     }
     ]
   },
-  getScriptInstanceTree (target = {}) {
+  $getScriptInstanceTree (target = {}) {
     target.tree_node_name = target.tree_node_name || ''
     return new Promise(resolve => {
       methods.getTreeNodeLoop([{'tree_class': '0001', 'tree_node_name': target.tree_node_name}]).then(response => {
@@ -67,7 +67,7 @@ export default {
     })
   },
 
-  getServiceInstanceTree (target = {}) {
+  $getServiceInstanceTree (target = {}) {
     target.tree_node_name = target.tree_node_name || ''
     return new Promise(resolve => {
       methods.getTreeNodeLoop([{'tree_class': '0002', 'tree_node_name': target.tree_node_name}]).then(response => {
@@ -78,7 +78,7 @@ export default {
       })
     })
   },
-  getServiceInstance: function (target) {
+  $getServiceInstance: function (target) {
     return new Promise(resolve=>{
       methods.getService([{"service_ename":target.inputId}])
         .then(response=>{
@@ -101,7 +101,7 @@ export default {
 
     // return Promise.resolve(nodes[1])
   },
-  getLogs () {
+  $getLogs () {
     return [{
       time: '2019/2/25 12:11:01',
       duration: '100',
@@ -177,15 +177,7 @@ export default {
 
     ]
   },
-  getServiceCtr () {},
-  createSerivceCtr () {
-    return {
-      id: 'a service ctr',
-      type: 0,
-      inputId: -1
-    }
-  },
-  save (target, data) {
+  $saveSerivce (target, data) {
     return new Promise(resolve => {
       methods.updateService([{
         'service_ename': target.ret.service_ename,
@@ -203,7 +195,7 @@ export default {
       })
     })
   },
-  field: {
+  $field: {
 
   }
 }

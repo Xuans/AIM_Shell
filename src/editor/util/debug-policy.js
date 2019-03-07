@@ -10,7 +10,7 @@ export const debugRootPolicy = {
             log
         }) {
             if (!this.debugging) return;
-            console.log("over-node", index);
+            // console.log("over-node", index);
             var part = this.getHost().getEditPartById(index);
             if (part) {
                 part.$emit("debug-over", {
@@ -24,7 +24,7 @@ export const debugRootPolicy = {
             prevIndex
         }) {
             if (!this.debugging) return;
-            console.log("into-node", index, prevIndex);
+            // console.log("into-node", index, prevIndex);
             var part = this.getHost().getEditPartById(index);
             if (part) {
                 part.$emit("debug-into", {
@@ -38,7 +38,7 @@ export const debugRootPolicy = {
             log
         }) {
             if (!this.debugging) return;
-            console.log("errornode", index);
+            // console.log("errornode", index);
             var part = this.getHost().getEditPartById(index);
             if (part) {
                 part.$emit("debug-error", {
@@ -48,7 +48,7 @@ export const debugRootPolicy = {
             }
         },
         start() {
-            console.log("start");
+            // comsole.log("start");
             this.debugging = true;
             this.cleanChildren();
             this.getHost().$emit("readOnly", 1);
@@ -61,7 +61,7 @@ export const debugRootPolicy = {
         },
         stop() {
             this.debugging = false;
-            console.log("stop");
+            // comsole.log("stop");
             this.cleanChildren();
             this.getHost().$emit("readOnly", 0);
             // TODO 把所有children状态清空
@@ -76,7 +76,7 @@ export const debugRootPolicy = {
     },
     activate() {
         this.debugging = false;
-        console.log("debug policy activate,install listeners");
+        // comsole.log("debug policy activate,install listeners");
         this.on("debug-start", this.start);
         this.on("debug-stop", this.stop);
         this.on("debug-into-node", this.intoNode);
@@ -85,7 +85,7 @@ export const debugRootPolicy = {
     },
 
     deactivate() {
-        console.log("debug policy deactivate");
+        // comsole.log("debug policy deactivate");
         this.off("debug-start", this.start);
         this.off("debug-stop", this.stop);
         this.off("debug-into-node", this.intoNode);
@@ -105,7 +105,7 @@ export const debugUIPolicy = {
             }
 
             let toolong = log.duration > 1000;
-            let time = Vue.convertTimeFormat(log.duration)
+            let time = Vue.$convertTimeFormat(log.duration)
             let pop1 = document.createElement('div');
             pop1.innerHTML = `<div  
             style='pointer-events:none;
@@ -134,7 +134,7 @@ export const debugUIPolicy = {
             //document.body.appendChild();
             var pi = new Popper(this.getHost().getFigure().owner, pop1, {
                 onCreate: data => {
-                    console.log(data)
+                    // comsole.log(data)
                 },
                 placement: 'right',
                 onUpdate: data => {}
@@ -149,7 +149,7 @@ export const debugUIPolicy = {
                 pi.destroy();
                 $pop1.remove();
                 dip.call(panel);
-                console.log("dispose");
+                // comsole.log("dispose");
             }
             this.handles.push(panel);
             for (let i = 0; i < this.handles.length; i++) {
@@ -247,7 +247,7 @@ export const debugUIPolicy = {
         }
     },
     activate() {
-        console.log("node debug ui activate");
+        // comsole.log("node debug ui activate");
         this.color = this.getHost().model.get('color');
         this.getHost().$on("debug-into", this.into);
         this.getHost().$on("debug-over", this.over);
@@ -257,7 +257,7 @@ export const debugUIPolicy = {
     },
 
     deactivate() {
-        console.log("node debug ui deactivate");
+        // comsole.log("node debug ui deactivate");
         this.getHost().$off("debug-into", this.into);
         this.getHost().$off("clean", this.clean);
         this.getHost().$off("debug-over", this.over);

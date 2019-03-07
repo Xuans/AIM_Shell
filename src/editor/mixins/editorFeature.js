@@ -37,8 +37,12 @@ export default {
   methods: {
     handleOfCreate: handleOfCreate,
     handleOfSave (editor, done) {
-      done()
-      this.state.setDirty(this.store.activeEditor)
+      const state = this.state
+
+      state.save(editor) // update in fact
+
+      this.$saveSerivce(this.target, state.genJson(editor))
+          .then(() => state.setDirty(editor))
     },
     handleOfCommand () {
       this.state.setDirty(this.store.activeEditor)

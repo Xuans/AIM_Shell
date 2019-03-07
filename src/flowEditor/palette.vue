@@ -135,12 +135,12 @@
         input: '',
         expandKeys: [1],
         treeProps: {
-          children: this.field.scriptTree.children,
-          label: this.field.scriptTree.label
+          children: this.$field.scriptTree.children,
+          label: this.$field.scriptTree.label
         },
         serviceTreeProps: {
-          children: this.field.serviceTree.children,
-          label: this.field.serviceTree.label
+          children: this.$field.serviceTree.children,
+          label: this.$field.serviceTree.label
         },
         searchTreeProps: {
           label: 'label'

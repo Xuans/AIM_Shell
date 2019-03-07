@@ -116,7 +116,7 @@ export default class EditorStore {
   }
 
   save () {
-    alert('save')
+    this.activeEditor && this.activeEditor.save()
   }
 
   delete () {

@@ -1,4 +1,6 @@
 import {EditorConfig, DebugEditorConfig} from '../util/editor-config'
+import update from '../util/update'
+import genJson from '../util/gen-json'
 
 const defaults = {
   render: false,
@@ -19,9 +21,9 @@ export class State {
   }
 
   refresh () {
-    const {getServiceInstance, getScriptInstanceTree, getServiceInstanceTree} = Vue
+    const {$getServiceInstance, $getScriptInstanceTree, $getServiceInstanceTree} = Vue
 
-    Promise.all(Array.of(getServiceInstance(this.target), getScriptInstanceTree(this.target), getServiceInstanceTree(this.target)))
+    Promise.all(Array.of($getServiceInstance(this.target), $getScriptInstanceTree(this.target), $getServiceInstanceTree(this.target)))
         .then(([json, scriptTree, serviceTree]) => {
           this.config = this.createEditorConfig(json)
 
@@ -42,6 +44,10 @@ export class State {
   createEditorConfig (json) {
     return this.target.lastest ? new EditorConfig(this.target, json) : new DebugEditorConfig(this.target, json)
   }
+
+  genJson = genJson
+
+  save = update
 }
 
 export default function makeState (target) {

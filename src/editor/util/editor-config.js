@@ -4,7 +4,6 @@ import line, {lineOfUnselectable} from '../figure/line'
 import types from '../figure/types'
 import {ReaderListener} from '../util/manhattan-router'
 import {dblfPolicy} from '../util/bind-event'
-import update from '../util/update'
 import layoutPolicy from '../util/layout-policy'
 import {debugRootPolicy} from './debug-policy'
 
@@ -61,7 +60,7 @@ export class EditorConfig {
           return this.editor.isDirty()
         },
         run () {
-          this.editor.rootEditPart.$emit('vueHandler', 'save')
+          this.editor.save()
         }
       },
       {
