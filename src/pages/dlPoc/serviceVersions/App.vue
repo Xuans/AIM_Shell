@@ -1,25 +1,31 @@
 <template>
-  <workbench :model="model">
+  <workbench>
 
-    <el-button-group slot="centerTool">
-      <el-button icon="el-icon-delete" :disabled="!target.lastest" @click="editorHandle('delete')"></el-button>
-      <el-button icon="el-icon-edit-outline" :disabled="!target.lastest" @click="editorHandle('save')"></el-button>
-      <el-button icon="el-icon-upload2" :disabled="!target.lastest" @click="editorHandle('upload')"></el-button>
-    </el-button-group>
+    <el-row slot="rightTool">
 
-    <el-select slot="centerTool"
-               v-model="target.head"
-               placeholder="待发布"
-    >
-      <el-option
-              v-for="item in target.versions"
-              :key="item.name"
-              :label="`v${item.name}.0`"
-              :value="item.name">
-      </el-option>
-    </el-select>
+      <version-select v-model="target.head"
+                      :versions="target.versions"
+                      :disabled="compareVersions.length > 0">
+      </version-select>
 
-    <shell-versions ref="editor" slot="mainPage" :target="target"></shell-versions>
+      <el-button icon="el-icon-circle-close-outline"></el-button>
+
+    </el-row>
+
+    <version-compare-select slot="centerTool"
+                            :head="target.head"
+                            :compareVersions="compareVersions"
+                            :versions="target.versions">
+    </version-compare-select>
+
+    <el-row slot="mainPage" class="sv-ctn">
+
+      <shell-versions ref="editor" :target="target"></shell-versions>
+
+      <shell-versions v-for="version in compareVersions"  :target="target.cloneByVersion(version)"></shell-versions>
+
+    </el-row>
+
   </workbench>
 </template>
 
@@ -34,6 +40,9 @@
   import ExternalApi from '../../../plugin/externalApi'
   import workbench from '../../../components/workbench.vue'
 
+  import VersionSelect from '../../../components/Tool/VersionSelect.vue'
+  import VersionCompareSelect from '../../../components/Tool/VersionCompareSelect.vue'
+
   Vue.config.productionTip = false
   Vue.use(ElementUi)
   Vue.use(ExternalApi)
@@ -41,22 +50,15 @@
   export default {
     name: 'app',
     props: ['target'],
-    data: function () {
+    data () {
       return {
-        model: {
-          name: '服务编排',
-          paths: [{name: 'path'}, {to: 'to'}, {me: 'me'}]
-        }
-      }
-    },
-
-    methods: {
-      editorHandle (action) {
-        this.$refs.editor.request(action)
+        compareVersions: Array.of()
       }
     },
 
     components: {
+      VersionSelect,
+      VersionCompareSelect,
       ShellVersions,
       workbench
     }
@@ -78,4 +80,13 @@
   border: none;
   margin:0;
 }
+  .sv-ctn{
+    display: flex;
+    flex-direction: row;
+    flex-wrap:nowrap;
+    flex: 1;
+  }
+  .sv-ctn>.aim-shell-content{
+    flex: 1;
+  }
 </style>

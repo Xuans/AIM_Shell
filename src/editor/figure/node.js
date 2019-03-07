@@ -41,7 +41,25 @@ export function editNode () {
 export function noeditNode () {
   return {
     canDrag: true,
-    linkable: $AG.ValidatorConnection,
+    selectable: selectable,
+    refresh,
+    type: 'rect',
+    policies: {
+      't': terminalPolicy,
+      'tt': textPolicy0,
+      'ttt': tooltipPolicy,
+      debugUI: debugUIPolicy
+    },
+    attr: {
+      fill: color
+    }
+  }
+}
+
+export function versionNode () {
+  return {
+    canDrag: false,
+    // linkable: $AG.ValidatorConnection,
     selectable: selectable,
     refresh,
     type: 'rect',

@@ -10,26 +10,12 @@
             </span>
           </div>
         </div>
-        <itree
-          ref="tree"
-          @open="openFile"
-          @delete="deleteItem"
-          @create="createItem"
-          @edit="editCategory"
-          :mapping="serviceMapping"
-          @reveal="reveal"
-        ></itree>
+          <itree ref="tree" @refresh="refreshBreadCrumb" @open="openFile" @delete="deleteItem" @create="createItem" @edit="editCategory" :mapping="serviceMapping"  ></itree>
+      
       </div>
       <div slot="centerPage" style="position:relative;width:100%;height:100%;">
         <el-col :span="24" style="height:100%;">
-          <iresourceManager
-            @open="openFile"
-            @reveal="reveal"
-            @create="createItem"
-            ref="resourceManager"
-            :model="selected"
-            :mapping="serviceMapping"
-          ></iresourceManager>
+          <iresourceManager @refresh="refreshBreadCrumb"  @open="openFile"   @create="createItem" ref='resourceManager' :model="selection" :mapping="serviceMapping"></iresourceManager>
         </el-col>
       </div>
       <!-- <div slot="leftTool">
@@ -116,17 +102,35 @@ const URL = PRODUCT_ENV
 
 export default {
   name: "app",
-  data: function() {
+  provide() {
+    return {
+      parent: this
+    };
+  },
+  data() {
+    let _self=this;
     return {
       _ctype: 0,
       newNode: {},
       serviceConfig: {
         name: "服务管理",
-        paths: []
+        resetBreadCrumb:function(selection,callback){
+          let paths=[];
+          if(selection){
+              let target=selection;
+              let pNode;
+              paths=[target];
+              while(pNode =_self.cache[target.tree_p_node_name]){
+                  paths.push(pNode);
+                  target=pNode;
+              }
+          }
+          callback(paths.reverse());
+        },
       },
-      cache: {},
-      selected: {
-        children: []
+      cache:{},
+      selection:{
+        children:[],
       },
       showCreateDialog: false,
       serviceMapping: {
@@ -134,7 +138,7 @@ export default {
         id: "tree_node_name",
         label: "tree_node_desc"
       },
-      treeData: null
+      treeData: [],
     };
   },
 
@@ -142,6 +146,10 @@ export default {
     iworkbench,
     itree,
     iresourceManager
+  },
+  watch:{
+    'selection'(){
+    }
   },
   methods: {
     openFile(item) {
@@ -152,19 +160,19 @@ export default {
         id: item[this.serviceMapping.label]
       });
     },
-    createItem(selected, level = "1") {
-      let pName = selected ? selected[this.serviceMapping.id] : "";
-      this.newNode = {
-        tree_p_node_name: pName,
-        tree_class: "0002",
-        tree_node_desc: null,
-        tree_node_name: null,
-        tree_node_type: level,
-        tree_node_table: "shell_conf_service"
-      };
-      let $el = $(this.$refs.createItemDialog);
-      this._ctype = 0;
-      this.showAddCatModal({ $el });
+    createItem(selection,level='1'){
+    let pName=selection?selection[this.serviceMapping.id]:'';
+      this.newNode={
+        "tree_p_node_name":pName,
+        "tree_class":"0002",
+         "tree_node_desc":null,
+         "tree_node_name":null,
+         "tree_node_type":level,
+         "tree_node_table":"shell_conf_service",
+      }
+      let $el=$(this.$refs.createItemDialog);
+      this._ctype=0;
+      this.showAddCatModal({$el});
     },
     deleteItem(item) {
       let name = item[this.serviceMapping.id];
@@ -198,8 +206,8 @@ export default {
         }
       });
     },
-    editCategory(selected) {
-      this.newNode = JSON.parse(JSON.stringify(selected));
+    editCategory(selection){
+      this.newNode=JSON.parse(JSON.stringify(selection));
       this.$forceUpdate();
       let $el = $(this.$refs.createItemDialog);
       this._ctype = 1;
@@ -231,22 +239,22 @@ export default {
           });
       }
     },
+    
+    refreshTree(){
+      //重新加载树结构 
+      this.loading=true;
+        api.getServiceInstanceTree().then(data=>{
+            // this.$refs.tree.setModel(data);
+            // this.$refs.resourceManager.setModel(data);
+            this.treeData=data;
 
-    refreshTree() {
-      //重新加载树结构
-      this.$refs.tree.setLoading(true);
-      api
-        .getServiceInstanceTree()
-        .then(data => {
-          this.$refs.tree.setModel(data);
-          this.$refs.resourceManager.setModel(data);
-          this.$refs.tree.setLoading(false);
+            this.buildIndex(data);
+            this.selection=null;
+            this.loading=false;
 
-          this.buildIndex(data);
-          this.$refs.resourceManager.setSearchable(this.cache);
-        })
-        .catch(() => {
-          this.$refs.tree.setLoading(false);
+            // this.$refs.resourceManager.setSearchable(this.cache);
+        }).catch(()=>{
+            this.loading=false;
         });
     },
     /**
@@ -260,39 +268,22 @@ export default {
           if (v.children) this.buildIndex(v.children);
         }
     },
-    showAddCatModal({ $el }) {
-      this.showCreateDialog = true;
-      //修改模式下，名称只读,_ctype 0创建 1修改
-      $('[name="serviceCatName"]', $el)[this._ctype ? "attr" : "removeAttr"](
-        "disabled",
-        "disabled"
-      );
+    showAddCatModal ({$el}){
+        this.showCreateDialog=true;
+				//修改模式下，名称只读,_ctype 0创建 1修改
+				$('[name="serviceCatName"]', $el)
+        [ this._ctype ? 'attr' : 'removeAttr']('disabled', 'disabled');
+
+      },
+    // reveal(target){
+    //   if(target){
+    //     this.selection=target;
+    //     this.$refs.resourceManager.setModel([this.selection]);
+    //   }else{
+    //     this.selection=null;
+    //      this.$refs.resourceManager.setModel(this.$refs.tree.model);
+    //   }
     },
-    reveal(target) {
-      if (target) {
-        this.selected = target;
-        this.$refs.resourceManager.setModel([this.selected]);
-        this.refreshBreadCrumb();
-      } else {
-        this.selected = null;
-        this.$refs.resourceManager.setModel(this.$refs.tree.model);
-        this.refreshBreadCrumb();
-      }
-    },
-    refreshBreadCrumb() {
-      let paths = [];
-      if (this.selected) {
-        let target = this.selected;
-        let pNode;
-        paths = [target];
-        while ((pNode = this.cache[target.tree_p_node_name])) {
-          paths.push(pNode);
-          target = pNode;
-        }
-      }
-      this.serviceConfig.paths = paths.reverse();
-    }
-  },
   mounted() {
     window.ss = this;
     this.axios

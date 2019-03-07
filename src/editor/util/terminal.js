@@ -88,18 +88,23 @@ const PinHandle = $AG.Handle.extend($AG.CIRCLE).extend({
     let policy = this.editPart.getConnectionPolicy()
     let anchor = this.editPart.figure.anchorMap.get(this.anchorId)
 
-    // validator 默认安装ValidatorConnection
-    if (policy.validatorAnchor(anchor, {
+    try {
+      // validator 默认安装ValidatorConnection
+      if (policy.validatorAnchor(anchor, {
         type: 'connection start'
       })) {
-      let editor = this.editPart.editor
-      let oldTool = editor.getActiveTool()
-      let tool = new LinkTool(() => editor.setActiveTool(oldTool))
+        let editor = this.editPart.editor
+        let oldTool = editor.getActiveTool()
+        let tool = new LinkTool(() => editor.setActiveTool(oldTool))
 
-      editor.setActiveTool(tool)
-      tool.mouseMove(e, this.editPart)
-      tool.mouseDown(e, this.editPart)
+        editor.setActiveTool(tool)
+        tool.mouseMove(e, this.editPart)
+        tool.mouseDown(e, this.editPart)
+      }
+    } catch (e) {
+
     }
+
   }
 })
 

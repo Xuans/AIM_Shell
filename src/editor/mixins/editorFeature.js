@@ -13,20 +13,10 @@ export default {
     }
   },
 
-  watch: {
-    'target.head' (vision) {
-      if (this.store.has(vision)) {
-        this.state.palette = false
-      } else {
-        this.state.refresh()
-      }
-    }
-  },
-
   data () {
     return {
       state: this.makeState(this.target),
-      store: new EditorStore()
+      store: new EditorStore(this.target)
     }
   },
 

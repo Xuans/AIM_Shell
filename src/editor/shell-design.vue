@@ -3,9 +3,10 @@
 
         <shell-flow ref="shell-flow"
                     :target="target"
-                    :maximize="maximize"
+                    :maximize="target.lastest ? maximize : true"
                     @selection-change="handleOfSelectionChange"
                     @selection-remove="handleOfSelectionRemove">
+            <mutil-panel slot="panels" :store="store"></mutil-panel>
         </shell-flow>
 
         <dblf-transition
@@ -23,6 +24,7 @@
 <script type="text/javascript">
   import dblfTransition from './transition.vue'
   import shellFlow from './shell-flow.vue'
+  import mutilPanel from '../components/Panel/MutilPanel.vue'
 
   import abbreviate from './mixins/abbreviate'
 
@@ -79,11 +81,15 @@
       },
       handleOfOpening (el) {
         this.abbreviateWhenOpen(this.store.activeEditor, this.store.active, el)
+      },
+      request (action) {
+        this.store[action]()
       }
     },
 
     components: {
       shellFlow,
+      mutilPanel,
       dblfTransition
     }
   }

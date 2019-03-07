@@ -1,6 +1,6 @@
 <template>
   <div :class="'stm-left-warp'">
-    <div :class="'ssm-tree-list'" v-loading="model&&model.length==0" v-if="model">
+    <div :class="'ssm-tree-list'" v-loading="parent.loading" v-if="model">
       <ul v-for="(cat1,cat1_index) of model" :key="cat1_index">
         <li>
           <div
@@ -9,7 +9,7 @@
             :data-id="cat1[mapping['id']]"
             :title="cat1[mapping['label']]"
             @dblclick.stop="expand(cat1)"
-            @click.stop="reveal(cat1)"
+            @click.stop="selectionChanged(cat1)"
             :class="{selected:cat1==selectedItem}"
           >
             <span>
@@ -27,7 +27,7 @@
             </div>
           </div>
           <el-collapse-transition>
-            <div v-show="cat1.expanded">
+            <div v-show="isExpand(cat1)">
               <ul v-for="(cat2,cat2_index) in cat1.children" :key="cat2_index">
                 <li>
                   <div
@@ -39,7 +39,7 @@
                     :data-id="cat2[mapping['id']]"
                     :title="cat2[mapping['label']]"
                     @dblclick.stop="expand(cat2)"
-                    @click.stop="reveal(cat2)"
+                    @click.stop="selectionChanged(cat2)"
                   >
                     <span>
                     {{cat2[mapping['label']]}}
@@ -60,7 +60,7 @@
                     </div>
                   </div>
                   <el-collapse-transition>
-                    <div v-show="cat2.expanded">
+                    <div v-show="isExpand(cat2)">
                       <ul v-for="(item,item_index) in cat2.children" :key="item_index">
                         <li>
                           <div
@@ -100,6 +100,7 @@
 </template>
 <script>
 export default {
+  inject: ['parent'],
   props: {
     mapping: {
       default() {
@@ -114,14 +115,16 @@ export default {
   },
   data() {
     return {
-      loading: false,
+      expandList:{},
       selectedItem: null
     };
   },
-  methods: {
-    setLoading(loading) {
-      this.loading = loading;
+  watch:{
+    'parent.treeData'(data){
+      this.model=data;
     },
+  },
+  methods: {
     open(item){
       this.$emit('open',item);
     },
@@ -136,22 +139,29 @@ export default {
         this.$forceUpdate();
       });
     },
-    setModel(m) {
-      console.log("tree: ", m);
-      this.model = m;
-      this.$forceUpdate();
-    },
-    reveal(selection) {
-      this.$emit("reveal", selection);
-      this.selectedItem = selection;
+    // setModel(m) {
+    //   console.log("tree: ", m);
+    //   this.model = m;
+    //   this.$forceUpdate();
+    // },
+    selectionChanged(selection) {
+      // this.$emit("reveal", selection);
+      // this.selectedItem = selection;
+
+      this.parent.selection=selection;
+      this.$emit("refresh");
     },
     expand(category) {
-      if (category.expanded == null) {
-        category.expanded = false;
-      }
-      category.expanded = !category.expanded;
+      // if (category.expanded == null) {
+      //   category.expanded = false;
+      // }
+      // category.expanded = !category.expanded;
+      this.expandList[category[this.mapping.id]]=!this.expandList[category[this.mapping.id]];
       this.$forceUpdate();
-    }
+    },
+    isExpand(category){
+      return this.expandList[category[this.mapping.id]];
+    },
   }
 };
 </script>

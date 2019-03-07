@@ -5465,6 +5465,7 @@
         cmdStack: null,
         background: '#FFFFFF',
         setInput: function (input) {
+            input.background && (this.background = input.background)
             this.storeId = anra.Store.newStore(input.uuid);
             this.store = anra.Store.get(this.storeId);
             this.rootModel = this.createRootModel(input);
@@ -5638,6 +5639,8 @@
             this.rootEditPart.deactivate();
             this.actionRegistry.dispose();
             this.listenerSupport.dispose();
+
+          console.log('editor dispose: ' + this.storeId);
         }
     });
 

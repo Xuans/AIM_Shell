@@ -1,8 +1,9 @@
 export default class EditorStore {
-  constructor (editor) {
+  constructor (target) {
 
+    this.target = target
     this.active = null
-    this.activeEditor = editor
+    this.activeEditor = null
     this.pool = new Map()
   }
 

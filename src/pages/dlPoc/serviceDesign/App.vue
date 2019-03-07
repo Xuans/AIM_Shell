@@ -7,17 +7,7 @@
       <el-button icon="el-icon-upload2" :disabled="!target.lastest" @click="editorHandle('upload')"></el-button>
     </el-button-group>
 
-    <el-select slot="rightTool"
-               v-model="target.head"
-               placeholder="待发布"
-    >
-      <el-option
-              v-for="item in target.versions"
-              :key="item.name"
-              :label="`v${item.name}.0`"
-              :value="item.name">
-      </el-option>
-    </el-select>
+    <version-select slot="rightTool" v-model="target.head" :versions="target.versions"></version-select>
 
     <shell-design ref="editor" slot="mainPage" :target="target">
       <template slot="form" slot-scope="{store}">
@@ -37,6 +27,8 @@
   import '../../../assets/flow1/iconfont.css'
   import ElementUi from 'element-ui'
   import ExternalApi from '../../../plugin/externalApi'
+
+  import VersionSelect from '../../../components/Tool/VersionSelect.vue'
 
   import workbench from '../../../components/workbench.vue'
 
@@ -63,6 +55,7 @@
     },
 
     components: {
+      VersionSelect,
       ShellDesign,
       ShellFlowPanel,
       workbench

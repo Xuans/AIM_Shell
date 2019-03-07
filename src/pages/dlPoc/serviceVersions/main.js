@@ -9,6 +9,14 @@ class Target {
     this.head = 0
   }
 
+  cloneByVersion (version) {
+    let target = new Target({serviceId: this.id})
+
+    target.head = version.name
+
+    return target
+  }
+
   get lastest () {
     return this.head === this.versions[this.versions.length - 1].name
   }
