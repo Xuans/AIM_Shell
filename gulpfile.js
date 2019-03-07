@@ -1,5 +1,5 @@
 //打包目录
-const DEST = 'D:\\workspace_xian\\Cama4\\WebContent';
+const DEST = '/Users/lijiancheng/Agree/AIM3.0/WebContent';
 const SRC_FLODER = 'dist';
 const SRC = `./${SRC_FLODER}`;
 
@@ -81,7 +81,7 @@ const generateModule = function (queue) {
             const moduleName = chunk.dirname.split(diliver)[1];
 
             const moduleDir = path.join(DEST, 'module', moduleName);
-            const upToRootDir = '../'.repeat(moduleDir.replace(/[\\\/]/g,path.sep).replace(DEST.replace(/[\\\/]/g,path.sep), '').split(path.sep).length - 1);
+            const upToRootDir = '../'.repeat(moduleDir.replace(DEST, '').split(path.sep).length - 1);
 
             //防止没有目录报错
             mkdir(moduleDir);
@@ -98,7 +98,7 @@ const generateModule = function (queue) {
                 .map(script => {
                     script = script.match(/src=([^\s>]+)/)[1] || '';
 
-                   
+
                     if(!script || script==='/'||script.indexOf('http')===0){
                         console.log(script);
                         return '';
@@ -111,10 +111,10 @@ const generateModule = function (queue) {
                         return `"${path.join(upToRootDir, script)}"`
                     }
                 }).filter(script=>!!script);
-            
+
 
             //css
-            const cssDeps = Array.from(new Set((content.match(/<link href=[^\s$]+/g) || [])))//去重
+            const cssDeps = Array.from(new Set((content.match(/<link href=[^>\s$]+/g) || [])))//去重
                 .filter(link => link.indexOf('.css') !== -1)//过滤掉非css文件
                 .map(link => {
                     link = link.match(/href=([^\s$]+)/)[1] || '';
@@ -130,8 +130,8 @@ const generateModule = function (queue) {
                             src:path.join(chunk.dirname,upToRootDir,link),
                             dst:path.join(moduleDir,upToRootDir,link)
                         });
-        
-                        
+
+
 
                         return `"requireCss!${path.join(upToRootDir, link)}"`;
                     }
@@ -171,13 +171,12 @@ const generateModule = function (queue) {
             console.log(error);
         })
         .on('end', function () {
-            
+
             let map={};
             cssList.forEach(css=>map[css.src]=css.dst);
 
             for(let i in map){
                 if(map.hasOwnProperty(i)){
-                    console.log(map);
                     copyCssFile(i,map[i]);
                 }
             }

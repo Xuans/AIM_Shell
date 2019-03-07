@@ -15,3 +15,536 @@
     not supported by any browser */
     
     }
+
+
+/* 容器 Start */
+.stm {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 15px;
+    background: white;
+    overflow: auto;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 容器 End */
+.stm > .stm-title {
+    border-bottom: 1px solid #e5e5e5;
+    height: 44px;
+    line-height: 44px;
+    background: #fafafa;
+    padding-left: 20px;
+    font-size: 14px;
+    margin: 0;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.stm-ctn {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+/* 左侧任务列表 Start */
+.stm-left-ctn {
+    display: flex;
+    flex-direction: column;
+    width: 264px;
+    height: calc(100% - 20px);
+    padding: 10px 20px;
+    border-right: 1px solid #e5e5e5;
+}
+
+.stm-right-ctn {
+    flex: 1;
+    height: 100%;
+    overflow: auto;
+}
+
+.stm-header {
+    line-height: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 0 2px;
+}
+
+.stm-tookit {
+    font-size: 12px;
+    color: #1DB4F5;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.stm-tookit > span {
+    font-size: 12px;
+    color: #1DB4F5;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.stm-tookit i {
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+.stm-search {
+    height: 28px;
+    align-items: center;
+    border: 1px solid #DADADA;
+    border-radius: 4px;
+    margin: 5px auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.stm-search > input {
+    border: none;
+    box-shadow: none;
+    font-size: 12px;
+    margin: 0;
+    flex: 1;
+}
+
+.stm-search > input:active,
+.stm-search > input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+.stm-search > i {
+    font-size: 14px;
+    margin-right: 10px;
+    color: #9B9B9B;
+    position: relative;
+    top: -1px;
+}
+
+/* 左侧任务列表 End */
+/* 新增任务分类 Start */
+
+/* 新增任务分类 End */
+.stm [data-role=btn],
+.stm i[data-role] {
+    cursor: pointer;
+    user-select: none;
+}
+
+/*新增任务 Start*/
+.stm-add-task-modal{
+    height:600px;
+    width:800px;
+    display: flex;
+    flex-direction: column;
+}
+
+.stm-add-task-modal>.modal-body{
+    flex: 1;
+    max-height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.stm-add-task-modal>.modal-body > div{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-left: -.5em;
+    /* padding: 1em; */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+.stm-add-task-modal div[data-widget-type=aweb4StepCtn]>.step-chart{
+    border: none;
+    min-height: 0;
+    min-height: 80px;
+    padding: 1em 0;
+    margin: 0;
+}
+/*新增任务 End*/
+
+/* 右侧任务 Start */
+.stm-right-ctn {
+    display: flex;
+    flex-direction: column;
+}
+
+.stm-right-ctn-backdrop {
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.stm-right-ctn-backdrop-ctt {
+    display: none;
+    background: url('../../../img/echarts/workitem.png') center center no-repeat;
+    width: 148px;
+    height: 88px;
+    background-size: contain;
+}
+
+.stm-right-ctn-backdrop > .stm-right-ctn-backdrop-ctt {
+    display: block;
+    opacity: .6;
+}
+
+.stm-right-ctn > .stm-header {
+    padding: 1em;
+    background-color: #fafafa;
+}
+
+.stm-right-ctn > .stm-header .stm-tookit > [data-role="btn"] {
+    background-color: #13B1F5;
+    color: #FFF;
+    margin: 0 5px;
+    cursor: pointer;
+    padding: .25em .5em;
+}
+
+.stm-right-ctt {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+.stm-right-ctn .nav.nav-tabs.nav-underLine {
+    border-bottom: 1px solid #e0dfe6;
+    color: #929099;
+    background: #ffffff;
+}
+
+.stm-right-ctn .nav.nav-tabs.nav-underLine li > a {
+    padding: 0 15px;
+    height: 36px;
+    line-height: 36px;
+    margin: 0 6px;
+    position: relative;
+    font-size: 12px;
+}
+
+.stm-right-ctn .nav.nav-tabs.nav-underLine li.active > a {
+    background: transparent;
+    border-bottom: 2px solid #5b62f9;
+    font-weight: bold;
+}
+
+.stm-right-ctn .nav.nav-tabs.nav-underLine li.active > a::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    position: absolute;
+    border-bottom-color: #5b62f9;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    margin-top: 27px;
+}
+
+.stm-right-ctt > .tab-content {
+    flex: 1;
+    padding: 1em;
+}
+
+.stm-right-ctt > .tab-content > .tab-pane {
+    height: 100%;
+    overflow: auto;
+}
+
+.stm .item-row {
+    display: flex;
+}
+
+.stm .item-row > div {
+    display: flex;
+    align-items: center;
+}
+
+.stm .item-row .form-text {
+    width: 52px;
+}
+
+.stm .task-model .excute-flag {
+    display: flex;
+    margin: 0 40px 0 0;
+}
+
+.stm .task-model .excute-flag > span {
+    padding: 0 15px;
+    text-align: center;
+    border: solid 1px #E0E0E0;
+    cursor: pointer;
+}
+
+.stm .task-model .excute-flag > span.active {
+    background: #13B1F5;
+    color: #fff;
+}
+
+.stm .task-model label,
+.stm .task-model input,
+.stm .task-model select {
+    margin: 0;
+}
+
+.stm .task-model .autoStop {
+    margin: 0 20px 0 4px;
+}
+
+.stm .task-model .condition-wrap {
+    background: #eff1f3;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.stm .task-model .timing-wrap,
+.stm .task-model .specify-wrap,
+.stm .task-model .delay-wrap {
+    display: flex;
+}
+
+.stm .task-model .specify-wrap,
+.stm .task-model .delay-wrap {
+    align-items: center;
+}
+
+.stm .task-model .timing-wrap > .type-wrap {
+    position: relative;
+    flex: none;
+    width: 80px;
+    border-right: solid 1px #d7d7d8;
+}
+
+.stm .task-model .timing-wrap > .type-wrap:before {
+    content: '';
+    position: absolute;
+    right: -11px;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: solid 5px transparent;
+    border-left-color: #d7d7d8;
+    transform: translateY(-50%);
+}
+
+.stm .time-checked {
+    position: relative;
+    border-color: #22B5F4 !important;
+    background: linear-gradient(223deg, #22B5F4 0%, #22B5F4 50%, transparent 50%, transparent 100%) no-repeat;
+    background-size: 16px 16px;
+    background-position: 100% 0px;
+}
+
+.stm .task-model .timing-wrap > .type-wrap > span {
+    display: block;
+    width: 60px;
+    height: 22px;
+    text-align: center;
+    border: solid 1px #CAC9CE;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.stm .task-model .excute-flag > span:first-child {
+    border-radius: 4px 0 0 4px;
+    border-right: none;
+}
+
+.stm .task-model .timing-wrap > .type-wrap > span:nth-child(2) {
+    margin: 10px 0;
+}
+
+.stm .task-model .excute-flag > span:last-child {
+    border-radius: 0 4px 4px 0;
+    border-left: none;
+}
+
+.stm .task-model .form-wrap {
+    padding-left: 20px;
+}
+
+.stm .task-model .form-text-time {
+    display: inline-block;
+    width: 60px;
+}
+
+.stm-right-ctt .specify-wrap .desc-form {
+    margin-left: 10px;
+}
+
+.stm .time-checked:before {
+    position: absolute;
+    content: '';
+}
+
+.stm .time-checked:after {
+    position: absolute;
+    right: 0;
+    top: -7px;
+    content: '✔';
+    color: #fff;
+}
+
+.stm .task-model .form-wrap > div > div {
+    margin-bottom: 10px;
+}
+
+.stm .task-model .weeks {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.stm .task-model .weeks > span {
+    display: inline-block;
+    width: 60px;
+    height: 22px;
+    color: #CBCACF;
+    border: solid 1px #CBCACF;
+    border-radius: 2px;
+    text-align: center;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.stm .task-model .weeks > span.time-checked {
+    color: #22B5F4;
+}
+
+.stm .task-model .form-text {
+    width: 52px;
+}
+
+.stm-modal-body .stm-srv-checkbox {
+    position: relative;
+    /* top: -.125em; */
+    margin: .25em;
+}
+
+
+
+/* 右侧任务 End */
+
+/*表单 Start*/
+.stm-add-task-modal [data-widget-type="aweb4StepCtn"]>[data-widget-type="aweb3DivCtn"]{
+    flex: 1;
+    /* width: 80%; */
+    /* margin: 0 auto; */
+}
+
+.stm-add-task-panel{
+    display: flex!important;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.stm-add-task-panel-left,
+.stm-add-task-panel-right{
+    flex:1;
+    padding: .5em;
+}
+.stm-form>div{
+    display:flex;
+    flex-direction:row;
+}
+.stm-form>div>span{
+    text-align:right;
+}
+.stm-form>div>input,
+.stm-form>div>textarea{
+    flex:1;
+}
+.stm-form input:focus,
+.stm-form input:active,
+.stm-form textarea:focus,
+.stm-form textarea:active{
+    box-shadow:none;
+    border-color: #DADADA;
+}
+
+.stm-form.stm-add-task-filter .stm-search{
+    margin:0;
+    padding:0;
+}
+
+.stm-add-task-modal .ssm-tree-list>ul{
+    padding-left:0;
+}
+.stm-add-task-filter,
+.stm-add-task-filter>div{
+    height: 100%;
+    /* overflow: auto; */
+    /* position: relative; */
+}
+
+.stm-add-task-tree-ctn{
+    position: relative;
+    /* left: 0; */
+    height: 100%;
+    overflow: hidden;
+}
+.stm-add-task-tree-ctn .ssm-tree-list{
+    /* flex:1; */
+    /* overflow: auto; */
+    max-height: calc( 100% - 30px);
+    position: absolute;
+    top: 30px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.stm-add-task-modal .task-model{
+    width: 90%;
+    margin: 0 auto;
+}
+
+#executeParams{
+    height: 400px;
+    width:calc(100% - 2em);
+    margin:0 auto;
+    overflow: auto;
+}
+/*表单 End*/
+
+
+/*vue */
+.stm>.el-container{
+
+}
+.stm>.el-container>.el-header {
+    border-bottom: 1px solid #e5e5e5;
+    height: 44px!important;
+    line-height: 44px;
+    background: #fafafa;
+    padding-left: 20px;
+    font-size: 14px;
+    margin: 0;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.stm>.el-container>.el-header .el-button{
+    background:none;
+    border:1px solid #e5e5e5;
+    color:#666666;
+    font-weight:800;
+}
