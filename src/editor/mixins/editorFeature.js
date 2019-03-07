@@ -1,33 +1,33 @@
 import $ from 'jquery'
 import KeyManager from '../../util/keyManager'
 import makeState from '../state/state'
-import handleOfCreate from "../util/create-tool";
+import handleOfCreate from '../util/create-tool'
 import EditorStore from '../util/editor-store'
 
 export default {
-  props: ['target'],
+  props: {
+    target: Object,
+    makeState: {
+      type: Function,
+      default: makeState
+    }
+  },
 
   data () {
     return {
-      state: makeState(this.target),
+      state: this.makeState(this.target),
       store: new EditorStore()
     }
   },
 
-  computed: {
-    head () {
-      return this.target.head
-    }
-  },
-
-  created() {
+  created () {
     this.keyManagerOfFlow = new KeyManager()
     this.keyManager = new KeyManager('global')
     this.keyManager.watchPage('0', this.keyManagerOfFlow)
     this.keyManager.active('0')
   },
 
-  beforeDestroy() {
+  beforeDestroy () {
     this.store.clear()
 
     this.keyManagerOfFlow.unwatchAllPage()
@@ -35,23 +35,18 @@ export default {
   },
 
   methods: {
-    saveOfFlow(editor) {
-      this.state.save(editor, this.target);
-    },
-
-    /* handlers */
     handleOfCreate: handleOfCreate,
-    handleOfSave(editor,done) {
-      done();
+    handleOfSave (editor, done) {
+      done()
       this.state.setDirty(this.store.activeEditor)
     },
-    handleOfCommand() {
+    handleOfCommand () {
       this.state.setDirty(this.store.activeEditor)
     },
-    handleOfInit(editor) {
-      this.store.push(this.head, editor)
+    handleOfInit (editor) {
+      this.store.push(this.target.head, editor)
     },
-    handleOfFlowCallback(fn, params = []) {
+    handleOfFlowCallback (fn, params = []) {
       if ($.isFunction(fn)) {
         fn(this)
       } else if (typeof fn === 'string') {

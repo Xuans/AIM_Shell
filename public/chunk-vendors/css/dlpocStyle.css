@@ -1,21 +1,19 @@
 .noselect {
-
-    -webkit-touch-callout: none; /* iOS Safari */
-    
-    -webkit-user-select: none; /* Chrome/Safari/Opera */
-    
-    -khtml-user-select: none; /* Konqueror */
-    
-    -moz-user-select: none; /* Firefox */
-    
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    
-    user-select: none; /* Non-prefixed version, currently
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Chrome/Safari/Opera */
+    -khtml-user-select: none;
+    /* Konqueror */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
     
     not supported by any browser */
-    
-    }
-
+}
 
 /* 容器 Start */
 .stm {
@@ -59,6 +57,11 @@
     height: calc(100% - 20px);
     padding: 10px 20px;
     border-right: 1px solid #e5e5e5;
+}
+
+.stm-left-warp {
+    display: flex;
+    flex: 1;
 }
 
 .stm-right-ctn {
@@ -113,8 +116,7 @@
     flex: 1;
 }
 
-.stm-search > input:active,
-.stm-search > input:focus {
+.stm-search > input:active, .stm-search > input:focus {
     outline: none;
     border: none;
     box-shadow: none;
@@ -128,31 +130,135 @@
     top: -1px;
 }
 
+/* 左侧树 Start */
+.ssm-tree-list {
+    flex: 1;
+    overflow: auto;
+    margin-top: .5em;
+}
+
+.ssm-tree-list ul {
+    margin: 0 -1em 0 10px;
+    padding-top: 5px;
+    border-left: 1px solid #000;
+}
+
+.ssm-tree-list ul li {
+    position: relative;
+    padding-left: 30px;
+}
+
+.ssm-tree-list ul li:first-child {
+    margin-top: 0;
+}
+
+.ssm-tree-list ul li:last-child {
+    margin-bottom: 5px;
+}
+
+.ssm-tree-list ul li::before {
+    content: '';
+    background: black;
+    width: 30px;
+    display: block;
+    height: 1px;
+    position: absolute;
+    top: 12px;
+    left: 0;
+}
+
+.ssm-tree-list>ul {
+    padding: 0 0 0 1em;
+    margin: 0;
+    border-left: none;
+}
+
+.ssm-tree-list>ul>li {
+    padding-left: 0;
+}
+
+.ssm-tree-list>ul>li::before {
+    display: none;
+}
+
+.ssm-tree-list .ssm-tree-header>span {
+    display: inline-block;
+    line-height: 22px;
+    border: 1px solid #CACACA;
+    display: inline-block;
+    padding: 0 10px;
+    min-width: 80px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.ssm-tree-list .ssm-tree-header.active>span {
+    background: #13B1F5;
+    color: #FFF;
+    border: none;
+}
+
+.ssm-tree-list .ssm-tree-header>span.fa-caret-up, .ssm-tree-list .ssm-tree-header>span.fa-caret-down {
+    font-size: 1.5em;
+}
+
+.ssm-tree-list .ssm-tree-header .fa {
+    padding: 0 3px;
+    font-size: 1em;
+    line-height: 20px;
+}
+
+.ssm-tree-list .ssm-tree-header>span .fa {
+    float: right;
+}
+
+.ssm-tree-list .ssm-tree-header.active>span .fa {
+    transform: rotate(180deg);
+}
+
+.ssm-tree-list .ssm-tree-header>.tookit {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.ssm-tree-list .ssm-tree-header:hover {
+    color: #1DB4F5;
+}
+
+.ssm-tree-list .ssm-tree-header+ul {
+    display: none;
+}
+
+.ssm-tree-list .ssm-tree-header.active+ul {
+    display: block;
+}
+
+/* 左侧树 End */
 /* 左侧任务列表 End */
 /* 新增任务分类 Start */
-
 /* 新增任务分类 End */
-.stm [data-role=btn],
-.stm i[data-role] {
+.stm [data-role=btn], .stm i[data-role] {
     cursor: pointer;
     user-select: none;
 }
 
 /*新增任务 Start*/
-.stm-add-task-modal{
-    height:600px;
-    width:800px;
+.stm-add-task-modal {
+    height: 600px;
+    width: 800px;
     display: flex;
     flex-direction: column;
 }
 
-.stm-add-task-modal>.modal-body{
+.stm-add-task-modal>.modal-body {
     flex: 1;
     max-height: 100%;
     position: relative;
     overflow: hidden;
 }
-.stm-add-task-modal>.modal-body > div{
+
+.stm-add-task-modal>.modal-body > div {
     position: absolute;
     top: 0;
     left: 0;
@@ -167,15 +273,16 @@
     padding: 0;
     margin: 0;
 }
-.stm-add-task-modal div[data-widget-type=aweb4StepCtn]>.step-chart{
+
+.stm-add-task-modal div[data-widget-type=aweb4StepCtn]>.step-chart {
     border: none;
     min-height: 0;
     min-height: 80px;
     padding: 1em 0;
     margin: 0;
 }
-/*新增任务 End*/
 
+/*新增任务 End*/
 /* 右侧任务 Start */
 .stm-right-ctn {
     display: flex;
@@ -190,7 +297,7 @@
 
 .stm-right-ctn-backdrop-ctt {
     display: none;
-    background: url('../../../img/echarts/workitem.png') center center no-repeat;
+    background: url('../../img/echarts/workitem.png') center center no-repeat;
     width: 148px;
     height: 88px;
     background-size: contain;
@@ -295,9 +402,7 @@
     color: #fff;
 }
 
-.stm .task-model label,
-.stm .task-model input,
-.stm .task-model select {
+.stm .task-model label, .stm .task-model input, .stm .task-model select {
     margin: 0;
 }
 
@@ -311,14 +416,11 @@
     margin-top: 10px;
 }
 
-.stm .task-model .timing-wrap,
-.stm .task-model .specify-wrap,
-.stm .task-model .delay-wrap {
+.stm .task-model .timing-wrap, .stm .task-model .specify-wrap, .stm .task-model .delay-wrap {
     display: flex;
 }
 
-.stm .task-model .specify-wrap,
-.stm .task-model .delay-wrap {
+.stm .task-model .specify-wrap, .stm .task-model .delay-wrap {
     align-items: center;
 }
 
@@ -437,18 +539,15 @@
     margin: .25em;
 }
 
-
-
 /* 右侧任务 End */
-
 /*表单 Start*/
-.stm-add-task-modal [data-widget-type="aweb4StepCtn"]>[data-widget-type="aweb3DivCtn"]{
+.stm-add-task-modal [data-widget-type="aweb4StepCtn"]>[data-widget-type="aweb3DivCtn"] {
     flex: 1;
     /* width: 80%; */
     /* margin: 0 auto; */
 }
 
-.stm-add-task-panel{
+.stm-add-task-panel {
     display: flex!important;
     flex-direction: row;
     height: 100%;
@@ -456,52 +555,52 @@
     overflow: hidden;
 }
 
-.stm-add-task-panel-left,
-.stm-add-task-panel-right{
-    flex:1;
+.stm-add-task-panel-left, .stm-add-task-panel-right {
+    flex: 1;
     padding: .5em;
 }
-.stm-form>div{
-    display:flex;
-    flex-direction:row;
+
+.stm-form>div {
+    display: flex;
+    flex-direction: row;
 }
-.stm-form>div>span{
-    text-align:right;
+
+.stm-form>div>span {
+    text-align: right;
 }
-.stm-form>div>input,
-.stm-form>div>textarea{
-    flex:1;
+
+.stm-form>div>input, .stm-form>div>textarea {
+    flex: 1;
 }
-.stm-form input:focus,
-.stm-form input:active,
-.stm-form textarea:focus,
-.stm-form textarea:active{
-    box-shadow:none;
+
+.stm-form input:focus, .stm-form input:active, .stm-form textarea:focus, .stm-form textarea:active {
+    box-shadow: none;
     border-color: #DADADA;
 }
 
-.stm-form.stm-add-task-filter .stm-search{
-    margin:0;
-    padding:0;
+.stm-form.stm-add-task-filter .stm-search {
+    margin: 0;
+    padding: 0;
 }
 
-.stm-add-task-modal .ssm-tree-list>ul{
-    padding-left:0;
+.stm-add-task-modal .ssm-tree-list>ul {
+    padding-left: 0;
 }
-.stm-add-task-filter,
-.stm-add-task-filter>div{
+
+.stm-add-task-filter, .stm-add-task-filter>div {
     height: 100%;
     /* overflow: auto; */
     /* position: relative; */
 }
 
-.stm-add-task-tree-ctn{
+.stm-add-task-tree-ctn {
     position: relative;
     /* left: 0; */
     height: 100%;
     overflow: hidden;
 }
-.stm-add-task-tree-ctn .ssm-tree-list{
+
+.stm-add-task-tree-ctn .ssm-tree-list {
     /* flex:1; */
     /* overflow: auto; */
     max-height: calc( 100% - 30px);
@@ -512,24 +611,23 @@
     bottom: 0;
 }
 
-.stm-add-task-modal .task-model{
+.stm-add-task-modal .task-model {
     width: 90%;
     margin: 0 auto;
 }
 
-#executeParams{
+#executeParams {
     height: 400px;
-    width:calc(100% - 2em);
-    margin:0 auto;
+    width: calc(100% - 2em);
+    margin: 0 auto;
     overflow: auto;
 }
+
 /*表单 End*/
-
-
 /*vue */
-.stm>.el-container{
-
+.stm>.el-container {
 }
+
 .stm>.el-container>.el-header {
     border-bottom: 1px solid #e5e5e5;
     height: 44px!important;
@@ -542,9 +640,17 @@
     border-top-right-radius: 4px;
 }
 
-.stm>.el-container>.el-header .el-button{
-    background:none;
-    border:1px solid #e5e5e5;
-    color:#666666;
-    font-weight:800;
+.stm>.el-container>.el-header .el-button {
+    background: none;
+    border: 1px solid #e5e5e5;
+    color: #666666;
+    font-weight: 800;
+}
+
+.stm>.el-container>.el-container>.el-aside {
+    width: 305px!important;
+}
+
+.stm>.el-container>.el-container>.el-main {
+    padding: 0;
 }

@@ -1,12 +1,11 @@
 export const dblfPolicy = {
   config: {
     removingChild (child) {
-      this.emit('vueHandler', 'nodeOfToDelete', [child])
+      this.emit('vueHandler', 'removing', [child])
     },
     selectionChanged (selection) {
-      // TODO
       if (selection instanceof Array && selection.length === 1) selection = selection[0]
-      this.emit('vueHandler', 'stepOfSelectionChange', [selection])
+      this.emit('vueHandler', 'selectionChange', [selection])
     }
   },
   activate () {

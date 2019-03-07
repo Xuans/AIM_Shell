@@ -66,7 +66,7 @@ const copyCssFile=function(src,dst){
 
     mkdir(path.dirname(dst));
 
-    fs.writeFileSync(dst,new Buffer(file.replace(/\.el-/g,`${CLASS_PREFIX} .el-`)));
+    fs.writeFileSync(dst,new Buffer(file.replace(/}\s?\.el-/g,`}${CLASS_PREFIX} .el-`)));
 }
 
 const generateModule = function (queue) {

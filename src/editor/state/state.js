@@ -1,14 +1,13 @@
-import getEditorConfig from '../util/editor-config'
+import {EditorConfig, DebugEditorConfig} from '../util/editor-config'
 
 const defaults = {
   render: false,
   palette: true,
-  mode: 0,
   dirty: false,
   config: null
 }
 
-class State {
+export class State {
   constructor (target, options = defaults) {
     for (let [key, value] of Object.entries(options)) {
       this[key] = value
@@ -24,18 +23,24 @@ class State {
 
     Promise.all(Array.of(getServiceInstance(this.target), getScriptInstanceTree(this.target), getServiceInstanceTree(this.target)))
         .then(([json, scriptTree, serviceTree]) => {
-          this.config = getEditorConfig(this.target, json)
+          this.config = this.createEditorConfig(json)
 
-          this.config.scriptTree = scriptTree
-          this.config.serviceTree = serviceTree
+          if (this.target.lastest) {
+            this.config.scriptTree = scriptTree
+            this.config.serviceTree = serviceTree
+            this.palette = true
+          }
 
           this.render = true
-          this.palette = this.target.lastest
         })
   }
 
   setDirty (editor) {
     editor && (this.dirty = editor.isDirty())
+  }
+
+  createEditorConfig (json) {
+    return this.target.lastest ? new EditorConfig(this.target, json) : new DebugEditorConfig(this.target, json)
   }
 }
 

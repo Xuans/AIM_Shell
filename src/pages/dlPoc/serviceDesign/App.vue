@@ -7,67 +7,60 @@
       <el-button icon="el-icon-upload2" :disabled="!target.lastest" @click="editorHandle('upload')"></el-button>
     </el-button-group>
 
-    <el-select slot="centerTool"
-               v-model="target.head"
-               placeholder="待发布"
-    >
-      <el-option
-              v-for="item in target.versions"
-              :key="item.name"
-              :label="`v${item.name}.0`"
-              :value="item.name">
-      </el-option>
-    </el-select>
+    <version-select slot="rightTool" v-model="target.head" :versions="target.versions"></version-select>
 
-    <shell-flow ref="editor" slot="mainPage" :target="target">
+    <shell-design ref="editor" slot="mainPage" :target="target">
       <template slot="form" slot-scope="{store}">
         <shell-flow-panel :store="store"></shell-flow-panel>
       </template>
-    </shell-flow>
+    </shell-design>
   </workbench>
 </template>
 
 
 <script>
-import Vue from 'vue'
-import ShellFlow from '../../../editor/shell-flow.vue'
-import ShellFlowPanel from '../../../components/Panel/ShellFlowPanel.vue'
-import 'element-ui/lib/theme-chalk/index.css'
-import '../../../assets/flow-style.css'
-import '../../../assets/flow1/iconfont.css'
-import ElementUi from 'element-ui'
-import ExternalApi from '../../../plugin/externalApi'
+  import Vue from 'vue'
+  import ShellDesign from '../../../editor/shell-design.vue'
+  import ShellFlowPanel from '../../../components/Panel/ShellFlowPanel.vue'
+  import 'element-ui/lib/theme-chalk/index.css'
+  import '../../../assets/flow-style.css'
+  import '../../../assets/flow1/iconfont.css'
+  import ElementUi from 'element-ui'
+  import ExternalApi from '../../../plugin/externalApi'
 
-import workbench from '../../../components/workbench.vue'
+  import VersionSelect from '../../../components/Tool/VersionSelect.vue'
 
-Vue.config.productionTip = false
-Vue.use(ElementUi)
-Vue.use(ExternalApi)
+  import workbench from '../../../components/workbench.vue'
 
-export default {
-  name: 'app',
-  props: ['target'],
-  data: function () {
-    return {
-      model: {
-        name:'服务编排',
-        paths:[{name:'path'},{to:'to'},{me:'me'}]
+  Vue.config.productionTip = false
+  Vue.use(ElementUi)
+  Vue.use(ExternalApi)
+
+  export default {
+    name: 'app',
+    props: ['target'],
+    data: function () {
+      return {
+        model: {
+          name: '服务编排',
+          paths: [{name: 'path'}, {to: 'to'}, {me: 'me'}]
+        }
       }
-    }
-  },
+    },
 
-  methods: {
-    editorHandle (fnName) {
-      this.$refs.editor.store[fnName]()
-    }
-  },
+    methods: {
+      editorHandle (action) {
+        this.$refs.editor.request(action)
+      }
+    },
 
-  components: {
-    ShellFlow,
-    ShellFlowPanel,
-    workbench
+    components: {
+      VersionSelect,
+      ShellDesign,
+      ShellFlowPanel,
+      workbench
+    }
   }
-}
 </script>
 
 <style>

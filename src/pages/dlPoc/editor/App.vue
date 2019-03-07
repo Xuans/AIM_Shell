@@ -2,9 +2,9 @@
   <div class="aim-shell-editor">
     <shell-flow v-bind:target="target">
       <!-- 表单凹槽 -->
-      <template slot="form" slot-scope="{store}">
+      <!--<template slot="form" slot-scope="{store}">
         <shell-flow-panel :store="store"></shell-flow-panel>
-      </template>
+      </template>-->
     </shell-flow>
   </div>
 </template>
