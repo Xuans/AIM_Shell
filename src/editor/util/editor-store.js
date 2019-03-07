@@ -1,13 +1,14 @@
 export default class EditorStore {
-  constructor (editor) {
+  constructor (target) {
 
+    this.target = target
     this.active = null
-    this.activeEditor = editor
+    this.activeEditor = null
     this.pool = new Map()
   }
 
   push (mode, editor) {
-    editor && (this.pool.set(mode, editor), this.activeEditor = editor)
+    editor && (this.pool.set(mode, editor), this.setEditor(editor))
   }
 
   reset (data) {
@@ -85,8 +86,17 @@ export default class EditorStore {
     return this.pool.get(mode)
   }
 
+  setEditor (editor) {
+    if (editor !== this.activeEditor) {
+      editor && editor.rootEditPart.$emit('vueHandler', 'selectionChange', [editor.rootEditPart.selection])
+      this.activeEditor = editor
+    }
+  }
+
   getAndApplyCurrent (mode) {
-    return (this.activeEditor = this.get(mode))
+    this.setEditor(this.get(mode))
+
+    return this.activeEditor
   }
 
   get size () {

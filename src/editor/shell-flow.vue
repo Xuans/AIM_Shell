@@ -12,6 +12,8 @@
 
       <slot slot="canvasUnder" name="panels" :store="store"></slot>
 
+      <slot slot="canvas" name="canvass"></slot>
+
   </flow-editor>
 </template>
 <script type="text/javascript">
@@ -45,8 +47,14 @@
       },
 
       selectionChange (selection) {
-        this.store.active = this.nodeOrNot(selection) ? selection.model : null
-        this.$emit('selection-change', selection)
+        if (selection instanceof Array && selection.length === 1) selection = selection[0]
+
+        selection = this.nodeOrNot(selection) ? selection.model : null
+
+        if (!this.activeOrNot(selection)) {
+          this.store.active = selection
+          this.$emit('selection-change', selection)
+        }
       },
 
       removing (model) {

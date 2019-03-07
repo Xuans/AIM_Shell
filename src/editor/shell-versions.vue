@@ -1,17 +1,18 @@
 <template>
-    <div class="aim-shell-content">
+    <shell-flow ref="shell-flow"
+                :target="target"
+                :maximize="true"
+                :make-state="makeState">
 
-        <shell-flow ref="shell-flow"
-                    :target="target"
-                    :maximize="true"
-                    :make-state="makeState">
-        </shell-flow>
+        <template slot="panels" slot-scope="{store}">
+            <mutil-panel :store="store"></mutil-panel>
+        </template>
 
-    </div>
+    </shell-flow>
 </template>
 <script type="text/javascript">
   import shellFlow from './shell-flow.vue'
-  import mutilPanel from '../components/Panel/MutilPanel.vue'
+  import mutilPanel from '../components/Panel/MutilPanel$0.vue'
   import makeState from './state/versions-state'
 
   export default {

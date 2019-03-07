@@ -4,19 +4,20 @@
             <service-params></service-params>
         </el-tab-pane>
         <el-tab-pane label="日志">
-
+            <log-panel></log-panel>
         </el-tab-pane>
         <el-tab-pane label="任务列表">
 
         </el-tab-pane>
-      </el-tabs>
+    </el-tabs>
 </template>
 
 <script>
   import ServiceParams from './ServiceParams.vue'
+  import LogPanel from './LogPanel.vue'
 
   export default {
-    name: 'MutilPanel',
+    name: 'MutilPanel$0',
     props: { store: Object },
     provide () {
       return {
@@ -24,6 +25,7 @@
       }
     },
     components: {
+      LogPanel,
       ServiceParams
     }
   }

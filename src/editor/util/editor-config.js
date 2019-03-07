@@ -154,6 +154,7 @@ export class DebugEditorConfig {
       })
 
     addDataAndLine(this, json.data)
+    addServiceParas(this, json.params)
   }
 }
 
@@ -181,6 +182,7 @@ export class VersionsEditorConfig {
       })
 
     addDataAndLine(this, json.data)
+    addServiceParas(this, json.params)
   }
 }
 
