@@ -42,12 +42,12 @@
             </div>
             <div class="bi-computer-card-content">
               <div class="bi-computer-card-item"  @click.stop="$emit('create',item,1)" data-id="addcate1" :data-operate="id">
-                <div class="card-content-text">新增{{id === "0" ? '文件夹':"业务模型"}}</div>
+                <div class="card-content-text">新增{{id === "0" ? '文件夹':"文件"}}</div>
                 <div class="card-content-icon">
                   <i class="el-icon-circle-plus-outline" style="color:#2ad285"></i>
                 </div>
               </div>
-              <div @dblclick.stop="reveal(child)" v-for="(child,ind) of item.children" :class="{'bi-computer-card-item': child.tree_node_type === '1' ? 'cate-file':'file'}" :data-parent="item.tree_node_name" :data-id="child.tree_node_name">
+              <div @dblclick.stop="reveal(child)" :key="ind" v-for="(child,ind) of item.children" :class="{'bi-computer-card-item': child.tree_node_type === '1' ? 'cate-file':'file'}" :data-parent="item.tree_node_name" :data-id="child.tree_node_name">
                 <div class="card-content-text"><span class="file-name">{{child.tree_node_desc}}</span></div>
                 <div class="card-content-icon">
                   <i :class="child.tree_node_type === '1' ? 'fa fa-briefcase':'icon icon-LC_icon_file_line1'"></i>
@@ -108,8 +108,11 @@ export default {
       return item.tree_node_desc.toLowerCase().match(this.queryString.toLowerCase()) != null;
     },
     reveal(item){
-      this.selected=item;
-      this.$emit('reveal',item)
+        this.selected=item;
+      if(item.tree_node_type=='1')
+       this.$emit('reveal',item)
+      else
+        this.$emit('open',item)
     }
   },
   computed: {

@@ -71,7 +71,7 @@
                             :data-p-name="cat2[mapping['label']]"
                             :data-id="item[mapping['id']]"
                             :title="item[mapping['label']]"
-                            @click.stop="reveal(item)"
+                            @dblclick.stop="open(item)"
                           >
                             <span>{{item[mapping['label']]}}</span>
                             <div class="tookit">
@@ -121,6 +121,9 @@ export default {
   methods: {
     setLoading(loading) {
       this.loading = loading;
+    },
+    open(item){
+      this.$emit('open',item);
     },
     create(item, level) {
       this.$emit("create", item, level);

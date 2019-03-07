@@ -10,11 +10,11 @@
                     </span>
                 </div>
             </div>
-        <itree ref="tree" @delete="deleteItem" @create="createItem" @edit="editCategory" :mapping="serviceMapping"  @reveal="reveal"></itree>
+        <itree ref="tree" @open="openFile" @delete="deleteItem" @create="createItem" @edit="editCategory" :mapping="serviceMapping"  @reveal="reveal"></itree>
       </div>
       <div slot="centerPage" style="position:relative;width:100%;height:100%;">
         <el-col :span="24" style="height:100%;">
-          <iresourceManager @reveal="reveal"  @create="createItem" ref='resourceManager' :model="selected" :mapping="serviceMapping"></iresourceManager>
+          <iresourceManager  @open="openFile" @reveal="reveal"  @create="createItem" ref='resourceManager' :model="selected" :mapping="serviceMapping"></iresourceManager>
         </el-col>
       </div>
        <!-- <div slot="leftTool">
@@ -106,6 +106,14 @@ export default {
     iresourceManager,
   },
   methods: {
+    openFile(item){
+        app.dispatcher.load({
+                		title:"服务-"+item[this.serviceMapping.label],
+                		moduleId:"dlPoc",
+                		section:"editor",
+                		id:item[this.serviceMapping.label]
+                	});
+    },
     createItem(selected,level='1'){
     let pName=selected?selected[this.serviceMapping.id]:'';
       this.newNode={
