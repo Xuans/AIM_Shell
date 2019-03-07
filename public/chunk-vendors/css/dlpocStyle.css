@@ -15,7 +15,7 @@
     not supported by any browser */
 }
 
-/* 容器 Start */
+/* å®¹å™¨ Start */
 .stm {
     position: absolute;
     top: 0;
@@ -30,7 +30,7 @@
     flex-direction: column;
 }
 
-/* 容器 End */
+/* å®¹å™¨ End */
 .stm > .stm-title {
     border-bottom: 1px solid #e5e5e5;
     height: 44px;
@@ -49,7 +49,7 @@
     flex-direction: row;
 }
 
-/* 左侧任务列表 Start */
+/* å·¦ä¾§ä»»åŠ¡åˆ—è¡¨ Start */
 .stm-left-ctn {
     display: flex;
     flex-direction: column;
@@ -130,7 +130,7 @@
     top: -1px;
 }
 
-/* 左侧树 Start */
+/* å·¦ä¾§æ ‘ Start */
 .ssm-tree-list {
     flex: 1;
     overflow: auto;
@@ -201,7 +201,7 @@
 .ssm-tree-list .ssm-tree-header.active>span {
     background: #13B1F5;
     color: #FFF;
-    border: none;
+    border-color: #13B1F5;
 }
 
 .ssm-tree-list .ssm-tree-header>span.fa-caret-up, .ssm-tree-list .ssm-tree-header>span.fa-caret-down {
@@ -242,16 +242,16 @@
     display: block;
 }
 
-/* 左侧树 End */
-/* 左侧任务列表 End */
-/* 新增任务分类 Start */
-/* 新增任务分类 End */
+/* å·¦ä¾§æ ‘ End */
+/* å·¦ä¾§ä»»åŠ¡åˆ—è¡¨ End */
+/* æ–°å¢žä»»åŠ¡åˆ†ç±» Start */
+/* æ–°å¢žä»»åŠ¡åˆ†ç±» End */
 .stm [data-role=btn], .stm i[data-role] {
     cursor: pointer;
     user-select: none;
 }
 
-/*新增任务 Start*/
+/*æ–°å¢žä»»åŠ¡ Start*/
 .stm-add-task-modal {
     height: 600px;
     width: 800px;
@@ -290,8 +290,8 @@
     margin: 0;
 }
 
-/*新增任务 End*/
-/* 右侧任务 Start */
+/*æ–°å¢žä»»åŠ¡ End*/
+/* å³ä¾§ä»»åŠ¡ Start */
 .stm-right-ctn {
     display: flex;
     flex-direction: column;
@@ -505,7 +505,7 @@
     position: absolute;
     right: 0;
     top: -7px;
-    content: '✔';
+    content: 'âœ”';
     color: #fff;
 }
 
@@ -547,8 +547,8 @@
     margin: .25em;
 }
 
-/* 右侧任务 End */
-/*表单 Start*/
+/* å³ä¾§ä»»åŠ¡ End */
+/*è¡¨å• Start*/
 .stm-add-task-modal [data-widget-type="aweb4StepCtn"]>[data-widget-type="aweb3DivCtn"] {
     flex: 1;
     /* width: 80%; */
@@ -631,7 +631,7 @@
     overflow: auto;
 }
 
-/*表单 End*/
+/*è¡¨å• End*/
 /*vue */
 .stm>.el-container {
 }

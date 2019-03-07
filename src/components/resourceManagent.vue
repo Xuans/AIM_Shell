@@ -27,7 +27,7 @@
         <i class="fa fa-refresh"></i>
         <span>刷新</span>
       </div>
-      <div class="right-absolute right-bottom-btn" style="width:100px;display:flex;">
+      <div class="right-absolute">
         <div
           class="right-bottom-btn"
           style="margin-right:20px;"
@@ -118,15 +118,16 @@
         </div>
       </div>
 
-      <div class="data-file-detail animated fadeIn" v-show="showDetailPanel">
-        <el-tabs v-model="activeTag">
-          <el-tab-pane label="基本信息" name="info">基本信息</el-tab-pane>
-          <el-tab-pane label="文档" name="document">文档</el-tab-pane>
-          <el-tab-pane label="画像" name="second">配置管理</el-tab-pane>
-        </el-tabs>
-      </div>
+        <div class="data-file-detail animated fadeIn" v-show="showDetailPanel">
+            <el-tabs v-model="activeTag">
+              <el-tab-pane label="基本信息" name="info">基本信息</el-tab-pane>
+              <el-tab-pane label="文档" name="document">文档</el-tab-pane>
+              <el-tab-pane label="画像" name="second">配置管理</el-tab-pane>
+            </el-tabs>
+        </div>
+
     </div>
-  </div>
+</div>
 </template>
 <script>
 import iresource from "./resource";
@@ -143,7 +144,7 @@ export default {
   methods: {
     setModel(model) {
       this.expand(model);
-    }, 
+    },
     expand(s){
        if(!this.stacking){
          //存放旧list
@@ -176,8 +177,8 @@ export default {
       }
       this.$emit("refresh");
     },
-    setSearchable(searchable) {
-      this.searchable = searchable;
+    setSearchable(searchable){
+      this.searchable=searchable;
     },
     filter(item) {
       if (!this.queryString || this.queryString.length == 0) return true;
@@ -202,7 +203,7 @@ export default {
         this.stacking=true;
         this.prevStack.push(this.list);
         // this.expand(b[0]);
-        
+
         console.log('moveback',b[0])
         let len=b[0].length;
         if(len==1)
@@ -231,6 +232,7 @@ export default {
     window.resMgr = this;
   },
   data() {
+    
     return {
       stacking:false,
       focusTarget:null,
@@ -265,27 +267,23 @@ export default {
   box-shadow: 0 2px 8px 0 rgba(61, 77, 102, 0.15);
 }
 .data-file-search {
-  flex: 1;
   width: 300px;
-  height: 100%;
   background: #fff;
-  box-shadow: 0 2px 8px 0 rgba(61, 77, 102, 0.15);
-  /* right: -300px;
-    transition: right .5s linear; */
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #eee;
 }
 
 .data-file-content {
-  position: relative;
-  height: calc(100% - 52px);
   overflow: auto;
+  flex: 1;
 }
-
 .search-input-content {
-  border-bottom: 1px solid #ccc;
-  padding: 5px 10px;
-  height: 50px;
-  box-sizing: border-box;
+  width: 80%;
+  border: 1px solid #eee;
+  border-radius: 2em;
+  margin: 0.5em auto;
+  padding: 0 1em;
 }
 
 .data-base-operate-btn {
@@ -299,11 +297,24 @@ export default {
   margin-right: 16px;
   cursor: pointer;
 }
-.data-base-operate-btn > .right-bottom-btn.right-absolute {
+.data-base-operate-btn > .right-bottom-btn i {
+  font-size: 1em;
+  padding-right: 0.5em;
+}
+.data-base-operate-btn > .right-absolute {
   position: absolute;
   right: 0;
 }
-.data-base-operate-btn > .right-bottom-btn:hover {
+.data-base-operate-btn > .right-absolute > .right-bottom-btn {
+  display: inline-block;
+  margin: 0 1em;
+  cursor: pointer;
+}
+.data-base-operate-btn > .right-absolute > .right-bottom-btn i {
+  font-weight: 800;
+}
+
+.data-base-operate-btn .right-bottom-btn:hover {
   color: #000;
 }
 .data-base-right-bottom .db-tab-contents {
@@ -437,12 +448,21 @@ export default {
 .search-list > .icon {
   color: #3685f2;
 }
+
 .data-file-search input {
-  width: 85%;
-  border: none;
-  font-size: 12px;
-  height: 22px;
-  text-indent: 10px;
+    width: 85%;
+    font-size: 12px;
+    height: 22px;
+    text-indent: 10px;
+    margin: 0;
+    border: none;
+    box-shadow: none;
+}
+
+.data-file-search input:active,
+.data-file-search input:focus{
+   border: none;
+   box-shadow: none;
 }
 
 .bi-computer-card-content > .bi-computer-card-item {
