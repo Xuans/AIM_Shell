@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="'stm-left-warp'">
     <div :class="'ssm-tree-list'" v-loading="model&&model.length==0" v-if="model">
       <ul v-for="(cat1,cat1_index) of model" :key="cat1_index">
         <li>
@@ -157,43 +157,4 @@ export default {
 </script>
 
 <style >
-.ssm-tree-list {
-  flex: 1;
-  overflow: auto;
-  margin-top: 0em;
-}
-
-.ssm-tree-list > ul {
-  padding: 0;
-  margin: 0;
-}
-
-.ssm-tree-list ul {
-  padding: 0;
-  margin: 0 1em;
-}
-
-.ssm-tree-list .ssm-tree-header {
-  line-height: 1.5;
-}
-
-.ssm-tree-list .ssm-tree-header > .fa-caret-up,
-.ssm-tree-list .ssm-tree-header > .fa-caret-down {
-  font-size: 1.5em;
-}
-
-.ssm-tree-list .ssm-tree-header .fa {
-  padding: 0 3px;
-  font-size: 1em;
-}
-
-.ssm-tree-list .ssm-tree-header:hover {
-  color: #1db4f5;
-}
-.tookit {
-  display: inline;
-}
-.selected {
-  background: lightblue;
-}
 </style>
