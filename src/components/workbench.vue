@@ -1,24 +1,26 @@
 <template>
   <el-container style="height: 500px; border: 1px solid #eee">
     <el-header height="2rem">
-      <el-col :span="2" @click.stop="reveal()">
-        <!-- 页面名称 -->
-        {{model.name}}
+      <el-col :span="5">
+        <el-col :span="12" @click.stop="reveal()">
+          <!-- 页面名称 -->
+          {{model.name}}
+        </el-col>
+        <el-col :span="12">
+          <!-- 页面actionBar -->
+          <slot name="leftTool"></slot>
+        </el-col>
       </el-col>
-      <el-col :span="1">
-        <!-- 页面actionBar -->
-        <slot name="leftTool"></slot>
-      </el-col>
-      <el-col :span="7">
+      <el-col :span="5">
         <!-- 展示path用的面包屑 -->
         <div class="ibreadcrumb" style="width:100%;height:100%;">
             <span  :key="index">
                 <span @click.stop="reveal()">{{model.name}}</span>
-                <i class="el-icon-arrow-right" v-if=" model.paths&& model.paths.length>0"></i>
+                <i class="el-icon-arrow-right" v-if=" paths&& paths.length>0"></i>
             </span>
-            <span  v-for="(path,index) in model.paths"  :key="index">
+            <span  v-for="(path,index) in paths"  :key="index">
                 <span @click.stop="reveal(path)">{{path[mapping.label]}}</span>
-                <i class="el-icon-arrow-right" v-if="index<model.paths.length-1"></i>
+                <i class="el-icon-arrow-right" v-if="index<paths.length-1"></i>
             </span>
         </div>
       </el-col>
@@ -58,12 +60,20 @@
  *  centerPage，页面中间内容，使用mainPage后失效
  */
 export default {
+  inject: ['parent'],
+  data(){
+    return {
+      paths:[]
+    }
+  },
   props: {
     model: {
       default() {
         return {
             name:'页面名称',
-            paths:[],
+            resetBreadCrumb(){
+
+            },
         };
       }
     },
@@ -76,15 +86,23 @@ export default {
        }
       },
   },
+  watch:{
+    'parent.selection'(selection){
+      this.model.resetBreadCrumb(selection,(p)=>{
+        this.paths=p;
+        this.$forceUpdate();
+      });
+    }
+  },
   data() {},
   methods:{
       calPath(index){
-          this.model.paths.splice(index+1);
-          return this.model.paths.reverse();
+          this.paths.splice(index+1);
+          return this.paths.reverse();
       },
       reveal(selected){
           //点击面包屑时的跳转
-          this.$emit('reveal',selected);
+        this.parent.selection=selected;
       }
   },
 };
