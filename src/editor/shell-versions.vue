@@ -11,6 +11,7 @@
 </template>
 <script type="text/javascript">
   import shellFlow from './shell-flow.vue'
+  import mutilPanel from '../components/Panel/MutilPanel.vue'
   import makeState from './state/versions-state'
 
   export default {
@@ -25,6 +26,7 @@
     },
 
     components: {
+      mutilPanel,
       shellFlow
     }
   }

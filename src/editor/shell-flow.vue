@@ -8,17 +8,15 @@
           @init="handleOfInit"
           @save="handleOfSave"
           @command="handleOfCommand">
+      <palette v-if="state.palette" slot="palette" @create="handleOfCreate"></palette>
 
-    <palette v-if="state.palette" slot="palette" @create="handleOfCreate"></palette>
-
-    <mutil-panel slot="canvasUnder" :store="store"></mutil-panel>
+      <slot slot="canvasUnder" name="panels" :store="store"></slot>
 
   </flow-editor>
 </template>
 <script type="text/javascript">
   import palette from '../flowEditor/palette.vue'
   import flowEditor from '../flowEditor/flowEditor.vue'
-  import mutilPanel from '../components/Panel/MutilPanel.vue'
   import editorFeature from './mixins/editorFeature'
 
   export default {
@@ -59,7 +57,7 @@
       }
     },
 
-    components: { palette, flowEditor, mutilPanel }
+    components: { palette, flowEditor }
   }
 </script>
 
