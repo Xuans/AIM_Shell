@@ -21,7 +21,7 @@ export function editNode () {
       'tttt': {
         config: {
           switch () {
-            this.emit('vueHandler', vue => vue.nodeOfSwitch())
+            this.emit('vueHandler', vue => vue.handleOfSwitch())
           }
         },
         activate () {

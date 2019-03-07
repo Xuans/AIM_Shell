@@ -6,7 +6,7 @@ class Target {
     this.inputId = this.id = serviceId
     this.type = 0
     this.versions = Array.of({name: 0}, {name: 1}, {name: 2})
-    this.head = 2
+    this.head = 0
   }
 
   get lastest () {
