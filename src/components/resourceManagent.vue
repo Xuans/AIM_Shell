@@ -98,8 +98,8 @@
 
       <div class="data-file-search active animated fadeIn" v-show="showSearchPanel">
         <div class="search-input-content">
-          <i class="fa fa-search"></i>
           <input type="text" id="searchInfoModal" v-model="queryString" placeholder="请输入关键字进行搜索">
+           <i class="fa fa-search"></i>
         </div>
         <div class="data-file-content" ref="fileContent">
           <div
@@ -282,7 +282,10 @@ export default {
   margin: 0.5em auto;
   padding: 0 1em;
 }
-
+.search-input-content>i{
+  font-size: 1em;
+  color:#666;
+}
 .data-base-operate-btn {
   display: flex;
   background: #ebebeb;

@@ -1,5 +1,5 @@
 //打包目录
-const DEST = 'D:\\workspace_xian\\Cama4\\WebContent';
+const DEST = '/Users/lijiancheng/Agree/AIM3.0/WebContent';
 const SRC_FLODER = 'dist';
 const SRC = `./${SRC_FLODER}`;
 
@@ -100,7 +100,6 @@ const generateModule = function (queue) {
 
 
                     if(!script || script==='/'||script.indexOf('http')===0){
-                        console.log(script);
                         return '';
                     }else if(script.indexOf(PAGES_FLODER) !== -1){
                         //拷贝页面js
@@ -221,7 +220,7 @@ const copy = function (queue) {
     .on('end', function () {
         console.log(new Date().toString() + '\t:复制字体文件完成！');
         queue.next();
-    });s
+    });
 };
 
 
