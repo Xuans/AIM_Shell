@@ -1,5 +1,5 @@
 <template>
-    <el-tabs type="border-card" style="z-index: 1000000">
+    <el-tabs type="border-card">
         <el-tab-pane label="服务参数">
             <service-params></service-params>
         </el-tab-pane>

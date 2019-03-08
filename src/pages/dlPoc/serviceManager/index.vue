@@ -1,5 +1,4 @@
 <template>
-  <div class="stm">
     <iworkbench @reveal="reveal" :model="serviceConfig" :mapping="serviceMapping">
       <div slot="leftPage" class="stm-left-ctn">
         <div class="stm-header">
@@ -21,9 +20,7 @@
       <!-- <div slot="leftTool">
         <el-button type="success" icon="el-icon-plus" size="mini" @click="createItem"></el-button>
       </div>-->
-    </iworkbench>
-
-    <div v-show="showCreateDialog" class="mask"></div>
+      <div v-show="showCreateDialog" class="mask"></div>
     <div
       ref="createItemDialog"
       data-role="ssmAddCatModal"
@@ -70,11 +67,11 @@
         >完成</button>
       </div>
     </div>
-  </div>
+    </iworkbench>
 </template>
 
 <script>
-import Vue from "vue";
+//import Vue from "vue";
 import axios from "axios";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";

@@ -1,4 +1,5 @@
 <template>
+  <div class="stm">
   <el-container style="height: 500px; border: 1px solid #eee">
     <el-header height="2rem">
       <el-col :span="5">
@@ -47,6 +48,7 @@
       </slot>
     </el-container>
   </el-container>
+  </div>
 </template>
 <script>
 /**

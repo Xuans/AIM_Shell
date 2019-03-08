@@ -31,7 +31,7 @@
 
 
 <script>
-  import Vue from 'vue'
+  //import Vue from 'vue'
   import ShellVersions from '../../../editor/shell-versions.vue'
   import 'element-ui/lib/theme-chalk/index.css'
   import '../../../assets/flow-style.css'
