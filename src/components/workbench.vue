@@ -94,7 +94,7 @@ export default {
       });
     }
   },
-  data() {},
+  //data() {},
   methods:{
       calPath(index){
           this.paths.splice(index+1);

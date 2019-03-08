@@ -39,8 +39,13 @@
   export default {
     name: 'app',
     props: ['target'],
+    provide: {
+      parent: this
+    },
     data: function () {
       return {
+        cache: null,
+        selection: null,
         model: {
           name: '服务编排',
           paths: [{name: 'path'}, {to: 'to'}, {me: 'me'}]

@@ -50,8 +50,13 @@
   export default {
     name: 'app',
     props: ['target'],
+    provide: {
+      parent: this
+    },
     data () {
       return {
+        cache: null,
+        selection: null,
         compareVersions: Array.of()
       }
     },

@@ -36,7 +36,7 @@ class Target {
       return ins
     }
 
-    app.dlPoc.editor = function (viewId, serviceId) {
+    app.dlPoc.serviceDesign = function (viewId, serviceId) {
       return dispay(viewId, serviceId)
     }
   } else {
