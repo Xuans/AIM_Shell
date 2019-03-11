@@ -11,7 +11,6 @@ export default {
           const content = JSON.parse(ret.service_content || '{}')
           target.ret = ret
           content.data = content.data || []
-          debugger
           cb(content)
         })
         .fail(error => {
@@ -59,7 +58,10 @@ export default {
     target.tree_node_name = target.tree_node_name || ''
     return new Promise(resolve => {
       methods.getTreeNodeLoop([{'tree_class': '0001', 'tree_node_name': target.tree_node_name}]).then(response => {
+        console.log('getScriptInstanceTree');
+        window.script=response;
         let result = response.content.result.data.r.ret
+        
         resolve(result || [])
       }).fail(error => {
         resolve([])
@@ -71,7 +73,10 @@ export default {
     target.tree_node_name = target.tree_node_name || ''
     return new Promise(resolve => {
       methods.getTreeNodeLoop([{'tree_class': '0002', 'tree_node_name': target.tree_node_name}]).then(response => {
+        console.log('getServiceInstanceTree');
+        window.service=response;
         let result = response.content.result.data.r.ret
+        
         resolve(result || [])
       }).fail(error => {
         resolve([])
@@ -85,7 +90,7 @@ export default {
 
           const ret=response.content.result.data.r.ret;
 
-          const content=JSON.parse(ret.service_content||"{}");
+          const content=ret?ret.service_content?JSON.parse(ret.service_content||"{}"):{}:{};
 
           target.ret=ret;
           content.data = content.data ||[];
@@ -196,6 +201,57 @@ export default {
     })
   },
   $field: {
+    scriptTree: {
+      label: 'tree_node_desc',
+      children: 'children'
+    },
+    serviceTree: {
+      label: 'tree_node_desc',
+      children: 'children'
+    }
+  },
 
-  }
+  $scriptField: [
+    {
+      key: 'id',
+      name: 'ID',
+      exposure: false,
+      writable: false
+    },
+    {
+      key: 'author',
+      name: '作者',
+      exposure: false,
+      writable: false,
+      default () {
+        return '未知'
+      }
+    },
+    {
+      key: 'createTime',
+      name: '创建时间',
+      writable: false,
+      exposure: false,
+      default () {
+        return Date().toString()
+      },
+    },
+    {
+      key: 'desc',
+      name: '描述',
+      exposure: false,
+      writable: true,
+      default() {
+        return '关于脚本编排'
+      }
+    },
+    {
+      key: 'agent',
+      name: 'Agent',
+      exposure: true,
+      writable: true,
+      default() {
+        return ''
+      }
+    }]
 }

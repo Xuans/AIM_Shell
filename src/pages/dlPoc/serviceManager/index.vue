@@ -155,7 +155,7 @@ export default {
       app.dispatcher.load({
         title: "服务-" + item[this.serviceMapping.label],
         moduleId: "dlPoc",
-        section: "editor",
+        section: "serviceDesign",
         id: item[this.serviceMapping.label]
       });
     },

@@ -26,7 +26,8 @@ export class State {
     Promise.all(Array.of($getServiceInstance(this.target), $getScriptInstanceTree(this.target), $getServiceInstanceTree(this.target)))
         .then(([json, scriptTree, serviceTree]) => {
           this.config = this.createEditorConfig(json)
-
+          debugger
+          window.input=[json, scriptTree, serviceTree];
           if (this.target.lastest) {
             this.config.scriptTree = scriptTree
             this.config.serviceTree = serviceTree

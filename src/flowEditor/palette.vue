@@ -130,6 +130,7 @@
     props: {},
 
     data () {
+      console.log('palette data');
       return {
         searchResult: [],
         input: '',
