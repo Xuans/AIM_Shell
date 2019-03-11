@@ -19,7 +19,7 @@
 
 
 <script>
-  import Vue from 'vue'
+  //import Vue from 'vue'
   import ShellDesign from '../../../editor/shell-design.vue'
   import ShellFlowPanel from '../../../components/Panel/ShellFlowPanel.vue'
   import 'element-ui/lib/theme-chalk/index.css'

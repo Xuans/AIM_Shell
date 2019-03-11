@@ -30,6 +30,11 @@
     flex-direction: column;
 }
 
+.stm>.el-container {
+    padding: 0;
+    border: none!important;
+}
+
 /* å®¹å™¨ End */
 .stm > .stm-title {
     border-bottom: 1px solid #e5e5e5;
@@ -633,9 +638,6 @@
 
 /*è¡¨å• End*/
 /*vue */
-.stm>.el-container {
-}
-
 .stm>.el-container>.el-header {
     border-bottom: 1px solid #e5e5e5;
     height: 44px!important;
@@ -646,13 +648,46 @@
     margin: 0;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
+    padding: 0;
+}
+
+.stm>.el-container>.el-header>.el-col:first-child {
+    padding-left: 20px;
+}
+
+.stm>.el-container>.el-header>.el-col:last-child {
+    text-align: right;
+    /* overflow: hidden; */
+    /* height: 100%; */
+    padding-right: 5px;
 }
 
 .stm>.el-container>.el-header .el-button {
     background: none;
-    border: 1px solid #e5e5e5;
+    border: none;
     color: #666666;
     font-weight: 800;
+}
+
+.stm>.el-container>.el-header .el-button>i {
+    font-size: 1.3em;
+}
+
+.stm>.el-container>.el-header .el-button:hover {
+    color: #000;
+}
+
+.stm>.el-container>.el-header .el-input__inner {
+    margin: 0;
+    border: 1px solid #efefef;
+    position: relative;
+    top: -0.05em;
+    background: white;
+    box-shadow: none;
+}
+
+.stm>.el-container>.el-header .el-input__inner:focus {
+    border: 1px solid #ccc;
 }
 
 .stm>.el-container>.el-container>.el-aside {
@@ -662,3 +697,52 @@
 .stm>.el-container>.el-container>.el-main {
     padding: 0;
 }
+
+.el-select-dropdown.el-popper {
+    margin-left: -5%;
+}
+
+.stm .el-tabs--border-card {
+    border-left: none;
+    border-right: none;
+}
+
+.stm .el-tabs__header.is-top {
+    background: #f5f7fa;
+    border: none;
+}
+
+.stm .el-tabs__nav-wrap.is-top {
+    margin: 0;
+}
+
+.stm .el-tabs--card>.el-tabs__header .el-tabs__item {
+    border-radius: 0;
+    border-right: 1px solid #e4e7ed;
+    margin-right: -1px;
+    color: #909399;
+}
+
+.stm .el-tabs__header.is-top {
+}
+
+.stm .el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
+    background: white;
+    color: #409eff;
+}
+
+.stm .el-tabs--card>.el-tabs__header .el-tabs__nav {
+    border-radius: 0;
+    border: navajowhite;
+}
+
+/* 搜索 Start  */
+.stm .el-tabs__content:first-child .el-input{
+    
+}
+.stm .el-tabs__content:first-child .el-input__prefix {
+    left: auto;
+    right: 0;
+}
+.stm el-input el-input--mini el-input--prefix el-input--suffix{}
+/* 搜索 End  */

@@ -1,7 +1,6 @@
 <template>
     <div ref="logPanel"
-         class="ui-widget-content"
-         style="position:fixed;bottom:5%;right:5%;width:80%;height:300px;box-shadow:0 0 5px gray;">
+         class="ui-widget-content">
         <div style="position:relative;height:20px;width:100%;">
             <!-- <span
                         style="position:absolute;right:5px;top:-2px;"
