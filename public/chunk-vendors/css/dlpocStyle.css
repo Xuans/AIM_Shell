@@ -15,7 +15,7 @@
     not supported by any browser */
 }
 
-/* å®¹å™¨ Start */
+/* Ã¥Â®Â¹Ã¥â„¢Â¨ Start */
 .stm {
     position: absolute;
     top: 0;
@@ -35,7 +35,7 @@
     border: none!important;
 }
 
-/* å®¹å™¨ End */
+/* Ã¥Â®Â¹Ã¥â„¢Â¨ End */
 .stm > .stm-title {
     border-bottom: 1px solid #e5e5e5;
     height: 44px;
@@ -54,7 +54,7 @@
     flex-direction: row;
 }
 
-/* å·¦ä¾§ä»»åŠ¡åˆ—è¡¨ Start */
+/* Ã¥Â·Â¦Ã¤Â¾Â§Ã¤Â»Â»Ã¥Å Â¡Ã¥Ë†â€”Ã¨Â¡Â¨ Start */
 .stm-left-ctn {
     display: flex;
     flex-direction: column;
@@ -135,7 +135,7 @@
     top: -1px;
 }
 
-/* å·¦ä¾§æ ‘ Start */
+/* Ã¥Â·Â¦Ã¤Â¾Â§Ã¦Â â€˜ Start */
 .ssm-tree-list {
     flex: 1;
     overflow: auto;
@@ -247,16 +247,16 @@
     display: block;
 }
 
-/* å·¦ä¾§æ ‘ End */
-/* å·¦ä¾§ä»»åŠ¡åˆ—è¡¨ End */
-/* æ–°å¢žä»»åŠ¡åˆ†ç±» Start */
-/* æ–°å¢žä»»åŠ¡åˆ†ç±» End */
+/* Ã¥Â·Â¦Ã¤Â¾Â§Ã¦Â â€˜ End */
+/* Ã¥Â·Â¦Ã¤Â¾Â§Ã¤Â»Â»Ã¥Å Â¡Ã¥Ë†â€”Ã¨Â¡Â¨ End */
+/* Ã¦â€“Â°Ã¥Â¢Å¾Ã¤Â»Â»Ã¥Å Â¡Ã¥Ë†â€ Ã§Â±Â» Start */
+/* Ã¦â€“Â°Ã¥Â¢Å¾Ã¤Â»Â»Ã¥Å Â¡Ã¥Ë†â€ Ã§Â±Â» End */
 .stm [data-role=btn], .stm i[data-role] {
     cursor: pointer;
     user-select: none;
 }
 
-/*æ–°å¢žä»»åŠ¡ Start*/
+/*Ã¦â€“Â°Ã¥Â¢Å¾Ã¤Â»Â»Ã¥Å Â¡ Start*/
 .stm-add-task-modal {
     height: 600px;
     width: 800px;
@@ -295,8 +295,8 @@
     margin: 0;
 }
 
-/*æ–°å¢žä»»åŠ¡ End*/
-/* å³ä¾§ä»»åŠ¡ Start */
+/*Ã¦â€“Â°Ã¥Â¢Å¾Ã¤Â»Â»Ã¥Å Â¡ End*/
+/* Ã¥ÂÂ³Ã¤Â¾Â§Ã¤Â»Â»Ã¥Å Â¡ Start */
 .stm-right-ctn {
     display: flex;
     flex-direction: column;
@@ -510,7 +510,7 @@
     position: absolute;
     right: 0;
     top: -7px;
-    content: 'âœ”';
+    content: 'Ã¢Å“â€';
     color: #fff;
 }
 
@@ -552,8 +552,8 @@
     margin: .25em;
 }
 
-/* å³ä¾§ä»»åŠ¡ End */
-/*è¡¨å• Start*/
+/* Ã¥ÂÂ³Ã¤Â¾Â§Ã¤Â»Â»Ã¥Å Â¡ End */
+/*Ã¨Â¡Â¨Ã¥Ââ€¢ Start*/
 .stm-add-task-modal [data-widget-type="aweb4StepCtn"]>[data-widget-type="aweb3DivCtn"] {
     flex: 1;
     /* width: 80%; */
@@ -636,7 +636,7 @@
     overflow: auto;
 }
 
-/*è¡¨å• End*/
+/*Ã¨Â¡Â¨Ã¥Ââ€¢ End*/
 /*vue */
 .stm>.el-container>.el-header {
     border-bottom: 1px solid #e5e5e5;
@@ -736,7 +736,7 @@
     border: navajowhite;
 }
 
-/* 搜索 Start  */
+/* æœç´¢ Start  */
 .stm .el-tabs__content:first-child .el-input{
     
 }
@@ -745,4 +745,4 @@
     right: 0;
 }
 .stm el-input el-input--mini el-input--prefix el-input--suffix{}
-/* 搜索 End  */
+/* æœç´¢ End  */
