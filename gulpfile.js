@@ -1,5 +1,6 @@
 //打包目录
-const DEST = '/Users/lijiancheng/Agree/AIM3.0/WebContent';
+// const DEST = '/Users/lijiancheng/Agree/AIM3.0/WebContent';
+const DEST = 'D:\\workspace_xian\\Cama4\\WebContent';
 const SRC_FLODER = 'dist';
 const SRC = `./${SRC_FLODER}`;
 

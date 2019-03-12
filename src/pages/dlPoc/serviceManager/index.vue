@@ -149,6 +149,10 @@ export default {
   },
   methods: {
     openFile(item) {
+      app.domain.exports('serviceItem',{
+        data:item
+      });
+
       app.dispatcher.load({
         title: "服务-" + item[this.serviceMapping.label],
         moduleId: "dlPoc",

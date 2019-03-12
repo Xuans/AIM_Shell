@@ -39,7 +39,7 @@ export default {
     handleOfSave (editor, done) {
       const state = this.state
 
-      state.save(editor) // update in fact
+      state.update(editor) // update in fact
 
       this.$saveSerivce(this.target, state.genJson(editor))
           .then(() => state.setDirty(editor))

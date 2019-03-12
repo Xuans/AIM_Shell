@@ -1,7 +1,7 @@
 <template>
-    <el-tabs value="first" type="card" style="width: 100%">
+    <el-tabs :value="activeTab" type="card" style="width: 100%">
         <el-tab-pane label="脚本参数配置" name="first">
-            <props-card header="脚本参数配置" style="margin: 10px;">
+            <props-card :header="store.activeInput.name + 脚本参数配置" style="margin: 10px;">
                 <el-table
                         v-if="store.active"
                         ref="multipleTable"
@@ -36,6 +36,9 @@
                 </el-table>
             </props-card>
         </el-tab-pane>
+        <el-tab-pane label="基本信息" name="secend">
+              {{store.activeInput}}
+        </el-tab-pane>
     </el-tabs>
 </template>
 
@@ -45,6 +48,11 @@
   export default {
     name: 'ShellFlowPanel',
     props: ['store'],
+    data(){
+      return {
+        activeTab:'first',
+      }
+    },
     computed: {
       tableData () {
         let data = []

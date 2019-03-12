@@ -24,7 +24,7 @@
                           key="editor"
                           v-show="visible && state.editor"
                           class="custom-aside custom-aside--editor">
-                <el-aside ref="split" width="4px" class="gutter gutter-horizontal" style="cursor: pointer;background-color: rgb(206, 206, 206);box-shadow:  0px 3px 3px 3px #888888"></el-aside>
+                <el-aside ref="split" width="4px" class="gutter gutter-horizontal" style="cursor: pointer;background-color: rgb(206, 206, 206);"></el-aside>
 
                 <el-container>
 <!--                    <el-header height="3rem" class="custom-aside&#45;&#45;header">

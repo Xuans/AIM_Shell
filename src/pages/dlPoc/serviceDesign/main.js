@@ -1,18 +1,6 @@
 //import Vue from 'vue'
 import App from './App.vue'
-
-class Target {
-  constructor ({serviceId} = {serviceId: 0}) {
-    this.inputId = this.id = serviceId
-    this.type = 0
-    this.versions = Array.of({name: 0}, {name: 1}, {name: 2})
-    this.head = 2
-  }
-
-  get lastest () {
-    return this.head === this.versions[this.versions.length - 1].name
-  }
-}
+import { Target } from './Target';
 
 (function () {
   window.Vue = Vue
@@ -24,10 +12,10 @@ class Target {
     app.dlPoc = app.dlPoc || {}
 
     let isFirst = true
-    const dispay = function (viewId, serviceId) {
+    const dispay = function (viewId, serviceId,item) {
       let ins = new AppCtr({
         propsData: {
-          target: new Target({serviceId})
+          target: new Target(item)
         }
       }).$mount(`#${viewId}`)
 
@@ -37,7 +25,9 @@ class Target {
     }
 
     app.dlPoc.serviceDesign = function (viewId, serviceId) {
-      return dispay(viewId, serviceId)
+      const item =app.domain.get('serviceItem','data');
+
+      return dispay(viewId, serviceId,item)
     }
   } else {
     window.AIM_SHELL = new AppCtr({propsData: { target: new Target() }}).$mount('#app')

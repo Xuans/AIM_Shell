@@ -3,7 +3,7 @@
         <el-tab-pane label="服务参数">
             <service-params></service-params>
         </el-tab-pane>
-        <el-tab-pane label="日志">
+        <el-tab-pane label="基本信息">
 
         </el-tab-pane>
         <el-tab-pane label="任务列表">

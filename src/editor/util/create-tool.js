@@ -77,10 +77,13 @@ const Tool = $AG.Tool.CreationTool.extend({
 const Tool$0 = $AG.Tool.CreationTool.extend({
   constructor(item) {
     this.item = item
-
+    //考虑缓存、懒加载、loading
+    console.log('创建服务节点:',item);
     // const item = this.item
     Vue.$getServiceInstance(item).then(json => {
       const nodes = Object.values(json.data)
+
+      console.log('数据读取成功',json);
 
       let left, right, top, bottom
 

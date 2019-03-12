@@ -3,10 +3,15 @@ import App from './App.vue'
 
 class Target {
   constructor ({serviceId} = {serviceId: 0}) {
-    this.inputId = this.id = serviceId
-    this.type = 0
-    this.versions = Array.of({name: 0}, {name: 1}, {name: 2})
-    this.head = 0
+    this.service_ename= this.id = item.tree_node_name||serviceId
+    this.service_ename =item.tree_node_desc
+    this.tree_p_node_name=item.tree_node_name
+    this.service_content={}
+    this.service_args=[]
+    // this.name=tree_node_desc
+    this.type = 0;
+    this.versions = Array.of({ name: 0 }, { name: 1 }, { name: 2 });
+    this.head = 0;
   }
 
   cloneByVersion (version) {

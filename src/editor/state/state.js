@@ -48,7 +48,7 @@ export class State {
 
   genJson = genJson
 
-  save = update
+  update = update
 }
 
 export default function makeState (target) {

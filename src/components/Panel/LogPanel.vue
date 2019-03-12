@@ -60,7 +60,7 @@
 
     methods: {
       taskChanged (item) {
-        this.target.inputId = item.inputId
+        this.target.service_ename = item.service_ename
       },
       timeFormat (node) {
         return this.$convertTimeFormat(node.duration)
@@ -77,10 +77,10 @@
         }, 1000 * Math.random())
       },
       createStateFilter (queryString) {
-        return ({ value, inputId }) => {
+        return ({ value, service_ename }) => {
           return (
               value.toLowerCase().indexOf(queryString.toLowerCase()) === 0 &&
-              inputId != this.target.inputId
+              service_ename != this.target.service_ename
           )
         }
       },

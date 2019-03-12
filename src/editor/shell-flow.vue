@@ -37,7 +37,9 @@
     props: {
       maximize: Boolean
     },
-
+    mounted(){
+      console.log('编辑器成功加载:',this.target);
+    },
     methods: {
       nodeOrNot (selection) {
         return $AG.EditPart.isNode(selection)

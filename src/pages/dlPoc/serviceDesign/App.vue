@@ -2,9 +2,9 @@
   <workbench :model="model">
 
     <el-button-group slot="centerTool">
-      <el-button icon="el-icon-delete" :disabled="!target.lastest" @click="editorHandle('delete')"></el-button>
-      <el-button icon="el-icon-edit-outline" :disabled="!target.lastest" @click="editorHandle('save')"></el-button>
-      <el-button icon="el-icon-upload2" :disabled="!target.lastest" @click="editorHandle('upload')"></el-button>
+        <el-button icon="el-icon-delete" :disabled="!target.lastest" @click="editorHandle('delete')"></el-button>
+        <el-button icon="el-icon-edit-outline" :disabled="!target.lastest" @click="editorHandle('save')"></el-button>
+        <el-button icon="el-icon-upload2" :disabled="!target.lastest" @click="editorHandle('upload')"></el-button>
     </el-button-group>
 
     <version-select slot="rightTool" v-model="target.head" :versions="target.versions"></version-select>
