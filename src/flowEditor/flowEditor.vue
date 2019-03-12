@@ -4,8 +4,9 @@
       <slot name="palette"></slot>
     </el-aside>
 
-    <el-container ref="main" direction="vertical">
-      <el-main ref="canvas" class="flow-canvas">
+    <el-container ref="main" direction="vertical" style="overflow:none;">
+      <el-main style="overflow:none;position:relative;padding:0;">
+        <div ref="canvas" class="flow-canvas"></div>
         <slot name="canvas"></slot>
       </el-main>
 
@@ -30,6 +31,8 @@
   position: relative;
   background-color: #f1f1f4;
   overflow: auto;
+  width:100%;
+  height:100%;
 }
 
 .gutter.custom-gutter-horizontal {
@@ -161,7 +164,7 @@ export default {
 
   methods: {
     initEditor(config) {
-      this.$refs.canvas.$el.setAttribute('id', this.editorId)
+      this.$refs.canvas.setAttribute('id', this.editorId)
 
       this.editor = new this.EditorConstruction($.extend(true, {}, config));
       this.onEditor(this.eventsOnEditor);
@@ -331,7 +334,7 @@ export default {
 
         oldSvg != null
           ? $(oldSvg).replaceWith(newSvg)
-          : $(this.$refs.canvas.$el).append(newSvg);
+          : $(this.$refs.canvas).append(newSvg);
         this.$emit("change:editor", editor, old);
 
         return old;

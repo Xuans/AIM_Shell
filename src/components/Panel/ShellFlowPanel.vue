@@ -1,7 +1,7 @@
 <template>
     <el-tabs :value="activeTab" type="card" style="width: 100%">
         <el-tab-pane label="脚本参数配置" name="first">
-            <props-card :header="store.activeInput.name + 脚本参数配置" style="margin: 10px;">
+            <props-card :header="脚本参数配置" style="margin: 10px;">
                 <el-table
                         v-if="store.active"
                         ref="multipleTable"

@@ -133,9 +133,9 @@
 <style scoped>
     .custom-aside {
         z-index: 50;
-        top: 42px;
-        bottom: 0px;
-        right: 0px;
+        top: 0;
+        right: 0;
+        height:100%;
         position: absolute;
         border: solid 1px #ebebeb;
         border-radius: 2px;

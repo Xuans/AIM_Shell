@@ -2834,6 +2834,7 @@
     const _dispatcher = {
         lastLocation: [NaN, NaN],
         scale: [1, 1],
+        translate:[0,0],
         setMouseTarget(o) {
             if (this.focusTarget != null) {
                 this.focusTarget.enableEvent();
@@ -2843,8 +2844,8 @@
         getRelativeLocation(event) {
             let location = this.display.getRelativeLocation(event);
 
-            location[0] = Math.round(10 * location[0] / this.scale[0]) / 10;
-            location[1] = Math.round(10 * location[1] / this.scale[1]) / 10;
+            location[0] = Math.round(10 * (location[0]- this.translate[0]) / this.scale[0]) / 10 ;
+            location[1] = Math.round(10 * (location[1]- this.translate[1]) / this.scale[1]) / 10 ;
             return location
         },
         _mousedown(event) {
@@ -4296,12 +4297,15 @@
             dispatcher.scale = Array.of(scaleX, scaleY);
             return this
         },
-        translate(translateX, translateY) {
+        translate(translateX=0, translateY=0) {
+            
+            let dispatcher = this.figure.dispatcher;
             this.layers.forEach(layer => {
                 layer.translateX = translateX;
                 layer.translateY = translateY;
                 layer.applyMatrix();
             });
+            dispatcher.translate=Array.of(translateX,translateY);
             return this
         },
         dispose() {
