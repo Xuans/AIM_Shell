@@ -15,8 +15,6 @@ class Target {
 }
 
 (function () {
-  window.Vue = Vue
-
   const app = window.app
   const AppCtr = Vue.extend(App)
 

@@ -1,33 +1,27 @@
 <template>
-    <el-tabs type="border-card">
-        <el-tab-pane label="服务参数">
-            <service-params></service-params>
+    <el-tabs v-model="activeName" type="border-card" tab-position="bottom">
+        <el-tab-pane name="服务参数" label="服务参数">
+            <mutil-content @close="handleOfClose">
+                <service-params></service-params>
+            </mutil-content>
         </el-tab-pane>
-        <el-tab-pane label="日志">
-            <log-panel></log-panel>
+        <el-tab-pane name="日志" label="日志">
+            <mutil-content @close="handleOfClose">
+                <log-panel></log-panel>
+            </mutil-content>
         </el-tab-pane>
-        <el-tab-pane label="任务列表">
-
+        <el-tab-pane name="任务列表" label="任务列表">
+            <mutil-content @close="handleOfClose"></mutil-content>
         </el-tab-pane>
     </el-tabs>
 </template>
 
 <script>
-  import ServiceParams from './ServiceParams.vue'
-  import LogPanel from './LogPanel.vue'
+  import MutilPanel from './MutilPanel.vue'
 
   export default {
     name: 'MutilPanel$0',
-    props: { store: Object },
-    provide () {
-      return {
-        store: this.store
-      }
-    },
-    components: {
-      LogPanel,
-      ServiceParams
-    }
+    extends: MutilPanel,
   }
 </script>
 
