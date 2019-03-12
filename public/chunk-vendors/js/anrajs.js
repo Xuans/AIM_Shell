@@ -763,8 +763,8 @@
            let rect = elem.getBoundingClientRect();
             let win = elem.ownerDocument.defaultView;
             return {
-                top: rect.top + win.pageYOffset,
-                left: rect.left + win.pageXOffset
+                top: rect.top + win.pageYOffset-elem.scrollTop,
+                left: rect.left + win.pageXOffset-elem.scrollLeft
             };
         },
 
