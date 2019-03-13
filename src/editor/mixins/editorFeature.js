@@ -42,7 +42,10 @@ export default {
       state.update(editor) // update in fact
 
       this.$saveSerivce(this.target, state.genJson(editor))
-          .then(() => state.setDirty(editor))
+          .then(() => state.setDirty(editor)).catch(error=>{
+            let app=window.app;
+            if(app)app.alert(error);
+          })
     },
     handleOfCommand () {
       this.state.setDirty(this.store.activeEditor)

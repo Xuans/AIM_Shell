@@ -9,14 +9,14 @@ export default {
     methods
       .getAgents([{}])
       .then(response => {
-        const ret = response.content.result.data.r.ret
+        const ret = response.r.ret
         const content = JSON.parse(ret.service_content || '{}')
         target.ret = ret
         content.data = content.data || []
         cb(content)
       })
-      .fail(error => {
-        console.log(error)
+      .catch(error => {
+        
         cb({
           data: []
         })
@@ -58,18 +58,20 @@ export default {
       }
     ]
   },
+  $getShellInstance({shell_ename}){
+    return methods.getShells([{shell_ename}]);
+  },
   $getScriptInstanceTree(target = {}) {
     return new Promise(resolve => {
       methods.getTreeNodeLoop([{
         'tree_class': '0001',
         'tree_node_name': ''
       }]).then(response => {
-        console.log('getScriptInstanceTree', target);
         // window.script=response;
-        let result = response.content.result.data.r.ret
+        let result = response.r.ret
 
         resolve(result || [])
-      }).fail(error => {
+      }).catch(error => {
         resolve([])
       })
     })
@@ -81,12 +83,11 @@ export default {
         'tree_class': '0002',
         'tree_node_name': ''
       }]).then(response => {
-        console.log('getServiceInstanceTree', target);
         // window.service=response;
-        let result = response.content.result.data.r.ret
+        let result = response.r.ret
 
         resolve(result || [])
-      }).fail(error => {
+      }).catch(error => {
         resolve([])
       })
     })
@@ -96,24 +97,28 @@ export default {
       methods.getService([target])
         .then(response => {
 
-          const ret = response.content.result.data.r.ret;
+          const ret = response.r.ret;
+          let content;
           if (ret && ret.service_content) {
-            target.service_content = ret.service_content;
-            console.log('编辑器数据读取成功',ret);
-            target.isReady = true;
+            content= JSON.parse(ret.service_content);
+
+            for(let k in ret){
+              target[k]=ret[k];
+            }
+
+            console.log('编辑器数据读取成功', ret);
           } else {
-            console.log('编辑器数据读取失败，执行初始化',response.content.result);
+            console.log('编辑器数据读取失败，执行初始化', response);
             target.isReady = false;
           }
-          // const content=ret?ret.service_content?JSON.parse(ret.service_content||"{}"):{}:{};
-         
-          // target.ret=ret;
-          target.service_content.data = target.service_content.data || [];
 
-          resolve(target.service_content);
+         content = content || [];
+
+          resolve({json:content,params:target.service_args});
         })
-        .fail((error) => {
-          console.log(error);
+        .catch((error) => {
+          ;
+          target.isReady = false;
           resolve({
             data: []
           });
@@ -198,48 +203,60 @@ export default {
 
     ]
   },
+  $updateTreeNode(node) {
+    return methods.updateTreeNode([node]);
+  },
+  $addTreeNode(node) {
+    return methods.addTreeNode([node]);
+  },
+  $delTreeNode(node) {
+    return methods.delTreeNode([node]);
+  },
+  $addServiceByTreeNode(treeNode) {
+    return methods.addService([{
+      "service_ename": treeNode.tree_node_name,
+      "service_name": treeNode.tree_node_desc,
+      "service_content": "{}",
+      "service_args": "[]",
+      "tree_p_node_name": treeNode.tree_p_node_name,
+      "service_desc": treeNode.tree_node_desc,
+      "service_doc": "",
+      "create_user": treeNode.user,
+    }]);
+  },
   $saveSerivce(target, data) {
-    console.log('保存编辑器内容', target,data);
     //isReady为false表示服务需要初始化
-    target.service_content=JSON.stringify(data||{});
-    if (target.isReady)
-      return new Promise(resolve => {
+    target.service_content = JSON.stringify(data || {});
+    let r={
+      ...target
+    }
+   delete r.service_ename;
+    // if (target.isReady)
+      return new Promise((resolve,rej) => {
         methods.updateService([
-          target
-          //   {
-          //   'service_ename': target.inputId,
-          //   'service_name': target.name,
-          //   'service_content': JSON.stringify(data),
-          //   'service_args': JSON.stringify([]),
-          //   'tree_p_node_name': target.parent,
-          //   'service_id': target.ret.service_id
-          // }
+          r
         ]).then(response => {
-          debugger
-          console.log('成功')
           resolve(true)
-        }).fail(response => {
-          debugger
-          console.log('失败')
-          resolve(false)
+        }).catch(response => {
+          rej(response.errorMessage)
         })
       })
-    else {
-      //服务没有初始化时，执行初始化方法
-      console.log('添加新服务',target);
-      return new Promise(
-        resolve=>{
-          methods.addService([target]).then(resp=>{
-            console.log('成功')
-            target.isReady=true;
-            resolve(true)
-          }).fail(resp=>{
-            console.log('失败')
-            resolve(false)
-          })
-        }
-      )
-    }
+    // else {
+    //   //服务没有初始化时，执行初始化方法
+    //   console.log('添加新服务', target);
+    //   return new Promise(
+    //     resolve => {
+    //       methods.addService([target]).then(resp => {
+    //         console.log('成功', resp)
+    //         target.isReady = true;
+    //         resolve(true)
+    //       }).catch(resp => {
+    //         console.log('失败', resp)
+    //         resolve(false)
+    //       })
+    //     }
+    //   )
+    // }
   },
   $field: {
     scriptTree: {

@@ -72,12 +72,26 @@
 	}].forEach(method=>{
 		methods[method.m]=(function(method){
 			return function(p){
-				return loadData({
-					data:{
-						p:p,
-						m:method.m,
-						c:method.c
-					}
+				return new Promise((resv,rej)=>{
+					loadData({
+						data:{
+							p:p,
+							m:method.m,
+							c:method.c
+						}
+					}).then(response=>{
+						let result=response.content.result;
+						if(result.head.errorCode=='00'){
+							console.log(method.m,p,'成功',result.data);
+							resv(result.data);
+						}else{
+							console.log(method.m,p,'失败',result);
+							rej(result.head);
+						}
+					}).fail(response=>{
+						console.log(method.m,p,'失败',response);
+						rej(response);
+					});
 				});
 			};
 		}(method));

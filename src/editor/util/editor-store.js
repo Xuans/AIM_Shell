@@ -1,23 +1,24 @@
 export default class EditorStore {
-  constructor (target) {
+  constructor(target) {
 
     this.target = target
     this.active = null
     this.activeEditor = null
     this.pool = new Map()
+    this.modified=0;
   }
 
-  push (mode, editor) {
+  push(mode, editor) {
     editor && (this.pool.set(mode, editor), this.setEditor(editor))
   }
 
-  reset (data) {
+  reset(data) {
     this.activeEditor.rootEditPart.model.removeAllChildren()
     this.activeEditor.cmdStack.dispose()
     this.activeEditor.rootEditPart.refresh()
   }
 
-  clear () {
+  clear() {
     this.activeEditor && this.activeEditor.dispose()
     this.activeEditor = null
 
@@ -25,105 +26,109 @@ export default class EditorStore {
     this.pool.clear()
   }
 
-  has (mode) {
+  has(mode) {
     return this.pool.has(mode)
   }
 
-  setValueToActive (key, value) {
+  setValueToActive(key, value) {
     this.active && this.active.set(`data.${key}`, value)
+    this.modified++
   }
 
-  addServiceParams (id, key, alias) {
+  addServiceParams(nodeId, item, placeholder) {
     if (this.activeEditor) {
-      const taffyDb = this.activeEditor.store.node
-      const props = taffyDb({id: id}).first()
+      const params = this.activeEditor.config.service_params
+      if (!params)
+        params = {};
 
-      if (props) {
-        const params = this.activeEditor.config.serviceParams
-        for (let {pid, pkey} of params) {
-          if (id === pid && pkey === key) {
-            return // if added
-          }
-        }
-
-        params.push({
-          id, key, alias, name: props.data.name
-        })
+      let nodeParams = params[nodeId]
+      if (!nodeParams){
+        Vue.set(params,nodeId,{});
+        nodeParams=params[nodeId];
       }
+     Vue.set(nodeParams,item.ename,{
+        ...item,
+        placeholder
+      });
+      this.activeEditor.config.service_params = params;
     }
   }
 
-  removeServiceParams (id, key) {
+  removeServiceParams(nodeId, {
+    ename
+  }) {
     if (this.activeEditor) {
-      const params = this.activeEditor.config.serviceParams
-
-      for (let i = 0; i < params.length; i++) {
-        if (id === params[i].id && params[i].key === key) {
-          params.splice(i, 1)
-          return
-        }
+      const params = this.activeEditor.config.service_params
+      if (params && params[nodeId]) {
+        Vue.delete(params[nodeId],ename);
       }
+      this.modified++
     }
   }
-
-  checkExposure (id, key) {
+  /**
+   * 检查该值是否已经被导出
+   * @param {*} id 
+   * @param {*} ename 
+   */
+  checkExposure(id, ename) {
     if (this.activeEditor) {
-      const params = this.activeEditor.config.serviceParams
+      const params = this.activeEditor.config.service_params
+      if (!params)
+        return false;
 
-      for (let i = 0; i < params.length; i++) {
-        if (id === params[i].id && params[i].key === key) {
-          return true
-        }
-      }
+      if (params[id] == null)
+        return false;
 
+      if (params[id][ename] == null)
+        return false;
       return false
     }
 
     throw Error()
   }
 
-  get (mode) {
+  get(mode) {
     return this.pool.get(mode)
   }
 
-  setEditor (editor) {
+  setEditor(editor) {
     if (editor !== this.activeEditor) {
       editor && editor.rootEditPart.$emit('vueHandler', 'selectionChange', [editor.rootEditPart.selection])
       this.activeEditor = editor
     }
   }
 
-  getAndApplyCurrent (mode) {
+  getAndApplyCurrent(mode) {
     this.setEditor(this.get(mode))
 
     return this.activeEditor
   }
 
-  get size () {
+  get size() {
     return this.pool.size
   }
 
-  get serviceParams () {
-    return this.activeEditor ? this.activeEditor.config.serviceParams : []
+  get service_params() {
+    return this.activeEditor ? this.activeEditor.config.service_params : {}
   }
 
-  get activeInput () {
+  get activeInput() {
     return this.active ? this.active.get('data') : null
   }
 
-  get activeId () {
+  get activeId() {
     return this.active ? this.active.get('id') : null
   }
 
-  save () {
+  save() {
     this.activeEditor && this.activeEditor.save()
   }
 
-  delete () {
+  delete() {
     this.activeEditor && this.activeEditor.removeNode(this.active)
   }
 
-  upload () {
+  upload() {
     alert('upload')
   }
 }

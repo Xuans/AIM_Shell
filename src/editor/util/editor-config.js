@@ -25,7 +25,7 @@ import {
 function addDataAndLine(config, dataOfService) {
   let data = []
   let line = []
-
+if(dataOfService)
   for (let [id, dataOfModel] of Object.entries(dataOfService)) {
     data.push(createData({
       id
@@ -48,18 +48,14 @@ function addDataAndLine(config, dataOfService) {
 }
 
 function addServiceParas(config, params) {
-  config.serviceParams = Array.of(
-    /*{
-        'id': '1',
-        'name': 'sadsa',
-        'key': 'agent',
-        'alias': 'Agent'
-      }*/
-  )
+  let p = JSON.parse(params);
+  if(p.constructor!= Object)
+   p={}
+  config.service_params = p;
 }
 
 export class EditorConfig {
-  constructor(target, json) {
+  constructor(target, {json,params}) {
     this.id = `flow-${target.id}-${target.head}`
     this.children = {
       node: editNode()
@@ -168,7 +164,7 @@ export class EditorConfig {
     })
 
     addDataAndLine(this, json.data)
-    addServiceParas(this, json.params)
+    addServiceParas(this, params)
   }
 }
 

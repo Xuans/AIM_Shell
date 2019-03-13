@@ -1,6 +1,6 @@
 <template>
   <div :class="'stm-left-warp'">
-    <div :class="'ssm-tree-list'" v-loading="parent.loading" v-if="model">
+    <div :class="'ssm-tree-list'" v-loading="parent.loading">
       <ul v-for="(cat1,cat1_index) of model" :key="cat1_index">
         <li>
           <div
@@ -120,6 +120,7 @@ export default {
   },
   watch:{
     'parent.treeData'(data){
+      console.log('tree数据发生修改',data);
       this.model=data;
     },
   },

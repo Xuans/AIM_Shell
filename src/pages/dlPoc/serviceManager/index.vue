@@ -1,26 +1,39 @@
 <template>
-    <iworkbench @reveal="reveal" :model="serviceConfig" :mapping="serviceMapping">
-      <div slot="leftPage" class="stm-left-ctn">
-        <div class="stm-header">
-          <span>服务列表</span>
-          <div class="stm-tookit" style="float: right">
-            <span data-role="btn" @click="createItem" title="新增分类">
-              <i class="fa fa-plus"></i> 新增分类
-            </span>
-          </div>
+  <iworkbench @reveal="reveal" :model="serviceConfig" :mapping="serviceMapping">
+    <div slot="leftPage" class="stm-left-ctn">
+      <div class="stm-header">
+        <span>服务列表</span>
+        <div class="stm-tookit" style="float: right">
+          <span data-role="btn" @click="createItem" title="新增分类">
+            <i class="fa fa-plus"></i> 新增分类
+          </span>
         </div>
-          <itree ref="tree" @refresh="refreshBreadCrumb" @open="openFile" @delete="deleteItem" @create="createItem" @edit="editCategory" :mapping="serviceMapping"  ></itree>
-      
       </div>
-      <div slot="centerPage" style="position:relative;width:100%;height:100%;">
-        <el-col :span="24" style="height:100%;">
-          <iresourceManager @refresh="refreshBreadCrumb"  @open="openFile"   @create="createItem" ref='resourceManager' :mapping="serviceMapping"></iresourceManager>
-        </el-col>
-      </div>
-      <!-- <div slot="leftTool">
+      <itree
+        ref="tree"
+        @refresh="refreshBreadCrumb"
+        @open="openFile"
+        @delete="deleteItem"
+        @create="createItem"
+        @edit="editCategory"
+        :mapping="serviceMapping"
+      ></itree>
+    </div>
+    <div slot="centerPage" style="position:relative;width:100%;height:100%;">
+      <el-col :span="24" style="height:100%;">
+        <iresourceManager
+          @refresh="refreshBreadCrumb"
+          @open="openFile"
+          @create="createItem"
+          ref="resourceManager"
+          :mapping="serviceMapping"
+        ></iresourceManager>
+      </el-col>
+    </div>
+    <!-- <div slot="leftTool">
         <el-button type="success" icon="el-icon-plus" size="mini" @click="createItem"></el-button>
-      </div>-->
-      <div v-show="showCreateDialog" class="mask"></div>
+    </div>-->
+    <div v-show="showCreateDialog" class="mask"></div>
     <div
       ref="createItemDialog"
       data-role="ssmAddCatModal"
@@ -67,7 +80,7 @@
         >完成</button>
       </div>
     </div>
-    </iworkbench>
+  </iworkbench>
 </template>
 
 <script>
@@ -77,14 +90,15 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import iworkbench from "../../../components/workbench";
 import itree from "../../../components/tree";
+import ExternalApi from "../../../plugin/externalApi";
 import iresourceManager from "../../../components/resourceManagent";
-import api from "../../../../public/fakeSerivce/serverApi.js";
 
 const methods = global.app.shellEditorApi;
 
 Vue.prototype.axios = axios;
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
+Vue.use(ExternalApi);
 
 //判断是否为生成环境
 const PRODUCT_ENV = !!(window.app && window.app.dispatcher);
@@ -105,36 +119,36 @@ export default {
     };
   },
   data() {
-    let _self=this;
+    let _self = this;
     return {
       _ctype: 0,
       newNode: {},
       serviceConfig: {
         name: "服务管理",
-        resetBreadCrumb:function(selection,callback){
-          let paths=[];
-          if(selection){
-              let target=selection;
-              let pNode;
-              paths=[target];
-              while(pNode =_self.cache[target.tree_p_node_name]){
-                  paths.push(pNode);
-                  target=pNode;
-              }
+        resetBreadCrumb: function(selection, callback) {
+          let paths = [];
+          if (selection) {
+            let target = selection;
+            let pNode;
+            paths = [target];
+            while ((pNode = _self.cache[target.tree_p_node_name])) {
+              paths.push(pNode);
+              target = pNode;
+            }
           }
           callback(paths.reverse());
-        },
+        }
       },
-      cache:{},
-      selection:{},
-      ready:false,
+      cache: {},
+      selection: {},
+      ready: false,
       showCreateDialog: false,
       serviceMapping: {
         type: "tree_node_type",
         id: "tree_node_name",
         label: "tree_node_desc"
       },
-      treeData: [],
+      treeData: []
     };
   },
 
@@ -143,14 +157,13 @@ export default {
     itree,
     iresourceManager
   },
-  watch:{
-    'selection'(){
-    }
+  watch: {
+    selection() {}
   },
   methods: {
     openFile(item) {
-      app.domain.exports('serviceItem',{
-        data:item
+      app.domain.exports("serviceItem", {
+        data: item
       });
 
       app.dispatcher.load({
@@ -160,19 +173,19 @@ export default {
         id: item[this.serviceMapping.label]
       });
     },
-    createItem(selection,level='1'){
-    let pName=selection?selection[this.serviceMapping.id]:'';
-      this.newNode={
-        "tree_p_node_name":pName,
-        "tree_class":"0002",
-         "tree_node_desc":null,
-         "tree_node_name":null,
-         "tree_node_type":level,
-         "tree_node_table":"shell_conf_service",
-      }
-      let $el=$(this.$refs.createItemDialog);
-      this._ctype=0;
-      this.showAddCatModal({$el});
+    createItem(selection, level = "1") {
+      let pName = selection ? selection[this.serviceMapping.id] : "";
+      this.newNode = {
+        tree_p_node_name: pName,
+        tree_class: "0002",
+        tree_node_desc: null,
+        tree_node_name: null,
+        tree_node_type: level,
+        tree_node_table: "shell_conf_service"
+      };
+      let $el = $(this.$refs.createItemDialog);
+      this._ctype = 0;
+      this.showAddCatModal({ $el });
     },
     deleteItem(item) {
       let name = item[this.serviceMapping.id];
@@ -182,32 +195,32 @@ export default {
         title: "删除指定元素",
         content: `删除指定元素${desc}?`,
         confirmHandler: function() {
-          methods
-            .delTreeNode([
+          _self.$delTreeNode(
               {
                 tree_class: "0002",
                 tree_node_name: name,
                 loop: true
               }
-            ])
+            )
             .then(response => {
-              if (response && response.content.result.data.r.ret === true) {
+              // if (response && response.content.result.data.r.ret === true) {
                 app.alert(`删除(${desc})成功！`);
 
                 _self.refreshTree(false);
-              } else {
-                console.error(response.content.result.hdead.errorMessage);
-              }
+              // } else {
+              //   console.error(response.content.result.hdead.errorMessage);
+              // }
             })
-            .fail(error => {
-              console.error(error.message);
+            .catch(error => {
+              app.alert(error);
+              console.error(error);
             });
           return false;
         }
       });
     },
-    editCategory(selection){
-      this.newNode=JSON.parse(JSON.stringify(selection));
+    editCategory(selection) {
+      this.newNode = JSON.parse(JSON.stringify(selection));
       this.$forceUpdate();
       let $el = $(this.$refs.createItemDialog);
       this._ctype = 1;
@@ -216,51 +229,61 @@ export default {
     doCreate(event) {
       if (this._ctype) {
         //修改tree节点
-        methods
-          .updateTreeNode([this.newNode])
-          .then(response => {
-            this.refreshTree(false);
-            this.showCreateDialog = false;
-          })
-          .fail(error => {
-            console.error(error);
-          });
+        
+        if(this.newNode.tree_node_type=='1'){
+          this.$updateTreeNode([this.newNode])
+            .then(response => {
+              this.refreshTree(false);
+              this.showCreateDialog = false;
+            })
+            .catch(error => {
+              app.alert(error);
+            });
+        }else{
+
+        }
       } else {
+        let promise;
+        if(this.newNode.tree_node_type=='1'){
+          promise=this.$addTreeNode(this.newNode);
+        }else
         //添加tree节点
-        methods
-          .addTreeNode([this.newNode])
-          .then(response => {
-            console.log("创建节点成功");
+          promise=this.$addServiceByTreeNode(this.newNode);
+          promise .then(response => {
             this.refreshTree(false);
             this.showCreateDialog = false;
           })
-          .fail(error => {
-            console.error(error);
-          });
+        .catch(error => {
+        app.alert(error);
+        });
       }
     },
-    
-    refreshTree(forceReload=true){
-      //重新加载树结构 
-      this.loading=true;
-        api.$getServiceInstanceTree().then(data=>{
-            // this.$refs.tree.setModel(data);
-            // this.$refs.resourceManager.setModel(data);
-            this.treeData=data;
 
-            this.buildIndex(data);
-            this.loading=false;
+    refreshTree(forceReload = true) {
+      //重新加载树结构
+      this.loading = true;
+      this
+        .$getServiceInstanceTree()
+        .then(data => {
+          // this.$refs.tree.setModel(data);
+          // this.$refs.resourceManager.setModel(data);
+          this.treeData = data;
 
-            if(this.selection){
-              console.log('selection1',this.selection);
-              this.selection = this.cache[this.selection[this.serviceMapping.id]];
-              console.log('selection2',this.selection);
-            }else
-              this.selection=null;
-            this.$forceUpdate();
-            // this.$refs.resourceManager.setSearchable(this.cache);
-        }).catch(()=>{
-            this.loading=false;
+          this.buildIndex(data);
+          this.loading = false;
+
+          if (this.selection) {
+            console.log("selection1", this.selection);
+            this.selection = this.cache[this.selection[this.serviceMapping.id]];
+            console.log("selection2", this.selection);
+          } else this.selection = null;
+          this.$forceUpdate();
+          // this.$refs.resourceManager.setSearchable(this.cache);
+        })
+        .catch(err => {
+          console.error(err);
+          app.alert(err);
+          this.loading = false;
         });
     },
     /**
@@ -274,13 +297,14 @@ export default {
           if (v.children) this.buildIndex(v.children);
         }
     },
-    showAddCatModal ({$el}){
-        this.showCreateDialog=true;
-				//修改模式下，名称只读,_ctype 0创建 1修改
-				$('[name="serviceCatName"]', $el)
-        [ this._ctype ? 'attr' : 'removeAttr']('disabled', 'disabled');
-
-      },
+    showAddCatModal({ $el }) {
+      this.showCreateDialog = true;
+      //修改模式下，名称只读,_ctype 0创建 1修改
+      $('[name="serviceCatName"]', $el)[this._ctype ? "attr" : "removeAttr"](
+        "disabled",
+        "disabled"
+      );
+    }
     // reveal(target){
     //   if(target){
     //     this.selection=target;
@@ -289,7 +313,7 @@ export default {
     //     this.selection=null;
     //      this.$refs.resourceManager.setModel(this.$refs.tree.model);
     //   }
-    },
+  },
   mounted() {
     window.ss = this;
     this.axios
@@ -302,6 +326,7 @@ export default {
         this.$data.output = output;
       })
       .catch(err => {
+          app.alert(err);
         console.error(err);
       });
 

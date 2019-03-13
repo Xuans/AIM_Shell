@@ -1,7 +1,10 @@
 <template>
     <el-card shadow="hover" :body-style="bodyStyle" class="card">
-        <span  slot="header" style="font-weight: 200;font-size: 11px">
-            {{header}}
+        <span  slot="header" style="display:flex;font-weight: 200;font-size: 11px">
+            <span style="flex:2;">{{header}}</span>
+            <span style="flex:1;">
+              <slot name="righttoolbar"></slot>
+            </span>
         </span>
         <slot></slot>
     </el-card>

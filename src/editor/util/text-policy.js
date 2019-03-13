@@ -162,7 +162,7 @@ export const textPolicy0 = $AG.Policy.extend({
       this.setAttribute({'dy': fontHeight - offset})
     }
 
-    return $AG.Policy.TextPolicy('data.ip', locator, options)
+    return $AG.Policy.TextPolicy('data.name', locator, options)
   }
 })
 

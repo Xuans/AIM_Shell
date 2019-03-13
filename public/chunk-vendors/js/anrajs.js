@@ -5777,7 +5777,10 @@
             let val = this.props;
 
             for (let key of keys) {
-                if (val == null) throw Error(`${key} value is null or undefine`);
+                if (val == null) {
+                    console.error(`${key} value is null or undefine`)
+                    return null;    
+                };
                 val = Reflect.get(val, key);
             }
 

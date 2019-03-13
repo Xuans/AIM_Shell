@@ -67,7 +67,7 @@ const Tool = $AG.Tool.CreationTool.extend({
     const item = this.item
 
     let id = createID(this.editor)
-    const data = createData({ id }, { id: id, name: item.tree_p_node_name, params: {} })
+    const data = createData({ id }, { id: id, name: item.tree_node_desc, tree_info: {...item} ,params:{},})
 
     this.model = $AG.Node.create(data)
     this.base()
