@@ -192,6 +192,22 @@
 .ssm-tree-list>ul>li::before {
     display: none;
 }
+.ssm-tree-list .ssm-tree-header:after{
+    content: "";
+    position:relative;
+    /* top: 12px; */
+    color:red;
+    font-weight:bold;
+    left: 10px;
+    display: block;
+    height: 10px;
+    background-color: black;
+    width: 1px;
+}
+.ssm-tree-list .ssm-tree-header.active:after{
+    display:none;   
+}
+
 
 .ssm-tree-list .ssm-tree-header>span {
     display: inline-block;
@@ -242,8 +258,12 @@
 
 .ssm-tree-list .ssm-tree-header+ul {
     display: none;
+    /* padding-bottom: 5px; */
 }
-
+.ssm-tree-list .ssm-tree-header+ul::after{
+    display:block;
+    padding-bottom:10px;
+}
 .ssm-tree-list .ssm-tree-header.active+ul {
     display: block;
 }
