@@ -204,9 +204,9 @@
     background-color: black;
     width: 1px;
 }
-.ssm-tree-list .ssm-tree-header.active:after{
+/* .ssm-tree-list .ssm-tree-header.active:after{
     display:none;   
-}
+} */
 
 
 .ssm-tree-list .ssm-tree-header>span {
@@ -264,7 +264,7 @@
     display:block;
     padding-bottom:10px;
 }
-.ssm-tree-list .ssm-tree-header.active+ul {
+.ssm-tree-list .ssm-tree-header.expand+ul {
     display: block;
 }
 
@@ -531,7 +531,7 @@
     position: absolute;
     right: 0;
     top: -7px;
-    content: '✔';
+    content: '√';
     color: #fff;
 }
 
