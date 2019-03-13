@@ -34,29 +34,30 @@ export default {
 
     return hours + 'h ' + minutes + 'min ' + seconds + 's '
   },
-  $getTasks() {
-    return [{
-        name: '主机部署',
-        time: '2018/03/12',
-        ip: '112.1.2.41',
-        value: '主机部署(112.1.2.41)',
-        inputId: 0
-      },
-      {
-        name: '部署流程',
-        time: '2018/03/14',
-        ip: '112.12.2.41',
-        value: '拉取代码并编译部署(122.121.2.41)',
-        inputId: 1
-      },
-      {
-        name: '三方部署',
-        time: '2018/03/14',
-        ip: '112.12.2.41',
-        value: 'FTP上传(122.1.2.41)',
-        inputId: 1
-      }
-    ]
+  $getTasks({service_id}) {
+    return methods.getSchedules([{service_id}]);
+    // return [{
+    //     name: '主机部署',
+    //     time: '2018/03/12',
+    //     ip: '112.1.2.41',
+    //     value: '主机部署(112.1.2.41)',
+    //     inputId: 0
+    //   },
+    //   {
+    //     name: '部署流程',
+    //     time: '2018/03/14',
+    //     ip: '112.12.2.41',
+    //     value: '拉取代码并编译部署(122.121.2.41)',
+    //     inputId: 1
+    //   },
+    //   {
+    //     name: '三方部署',
+    //     time: '2018/03/14',
+    //     ip: '112.12.2.41',
+    //     value: 'FTP上传(122.1.2.41)',
+    //     inputId: 1
+    //   }
+    // ]
   },
   $getShellInstance({shell_ename}){
     return methods.getShells([{shell_ename}]);
@@ -238,7 +239,7 @@ export default {
         ]).then(response => {
           resolve(true)
         }).catch(response => {
-          rej(response.errorMessage)
+          rej(response)
         })
       })
     // else {

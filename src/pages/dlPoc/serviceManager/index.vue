@@ -207,9 +207,6 @@ export default {
                 app.alert(`删除(${desc})成功！`);
 
                 _self.refreshTree(false);
-              // } else {
-              //   console.error(response.content.result.hdead.errorMessage);
-              // }
             })
             .catch(error => {
               app.alert(error);

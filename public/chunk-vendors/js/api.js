@@ -86,11 +86,11 @@
 							resv(result.data);
 						}else{
 							console.log(method.m,p,'失败',result);
-							rej(result.head);
+							rej(result.head.errorMessage);
 						}
 					}).fail(response=>{
 						console.log(method.m,p,'失败',response);
-						rej(response);
+						rej(response.message);
 					});
 				});
 			};
