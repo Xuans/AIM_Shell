@@ -47,7 +47,9 @@
       activeOrNot (model) {
         return this.store.active === model
       },
-
+      handleOfSwitch(){
+          this.$emit('onswitch');
+      },
       selectionChange (selection) {
         if (selection instanceof Array && selection.length === 1) selection = selection[0]
 

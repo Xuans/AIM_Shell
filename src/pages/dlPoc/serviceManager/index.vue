@@ -25,6 +25,7 @@
           @refresh="refreshBreadCrumb"
           @open="openFile"
           @create="createItem"
+          @getResourceInfo='getResourceInfo'
           ref="resourceManager"
           :mapping="serviceMapping"
         ></iresourceManager>
@@ -161,6 +162,25 @@ export default {
     selection() {}
   },
   methods: {
+    /**
+     * 获取详情信息
+     */
+    getResourceInfo(item,callback){
+      if(item.tree_node_type=='1'){
+        callback({
+          ...item
+        });
+      }else{
+        this.$getServiceInstance({
+          service_ename:item.tree_node_name
+        }).then(resp=>{
+          console.log('resp',resp)
+          callback(resp);
+        }).catch(
+          error=>app.alert(error)
+        );
+      }
+    },
     openFile(item) {
       app.domain.exports("serviceItem", {
         data: item
@@ -228,7 +248,7 @@ export default {
         //修改tree节点
         
         if(this.newNode.tree_node_type=='1'){
-          this.$updateTreeNode([this.newNode])
+          this.$updateTreeNode(this.newNode)
             .then(response => {
               this.refreshTree(false);
               this.showCreateDialog = false;
@@ -264,7 +284,9 @@ export default {
         .then(data => {
           // this.$refs.tree.setModel(data);
           // this.$refs.resourceManager.setModel(data);
+          console.log('刷新树节点',this.treeData,data);
           this.treeData = data;
+          
 
           this.buildIndex(data);
           this.loading = false;

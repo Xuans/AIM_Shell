@@ -24,8 +24,8 @@ export class State {
     const {$getServiceInstance, $getScriptInstanceTree, $getServiceInstanceTree} = Vue
 
     Promise.all(Array.of($getServiceInstance(this.target), $getScriptInstanceTree(this.target), $getServiceInstanceTree(this.target)))
-        .then(([json, scriptTree, serviceTree]) => {
-          this.config = this.createEditorConfig(json)
+        .then(([serviceData, scriptTree, serviceTree]) => {
+          this.config = this.createEditorConfig(serviceData)
           // debugger
           // window.input=[json, scriptTree, serviceTree];
           if (this.target.lastest) {
@@ -42,8 +42,8 @@ export class State {
     editor && (this.dirty = editor.isDirty())
   }
 
-  createEditorConfig (json) {
-    return this.target.lastest ? new EditorConfig(this.target, json) : new DebugEditorConfig(this.target, json)
+  createEditorConfig (serviceData) {
+    return this.target.lastest ? new EditorConfig(this.target,serviceData) : new DebugEditorConfig(this.target,serviceData)
   }
 
   genJson = genJson

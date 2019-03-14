@@ -18,10 +18,12 @@ export function editNode () {
       't': terminalPolicy,
       'tt': textPolicy0,
       'ttt': tooltipPolicy,
-      'tttt': {
+      'expandDetailInfo': {
         config: {
           switch () {
-            this.emit('vueHandler', vue => vue.handleOfSwitch())
+           this.emit('vueHandler', vue => {
+            vue.handleOfSwitch()
+           })
           }
         },
         activate () {

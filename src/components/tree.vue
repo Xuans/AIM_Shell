@@ -1,7 +1,7 @@
 <template>
   <div :class="'stm-left-warp'">
     <div :class="'ssm-tree-list'" v-loading="parent.loading">
-      <ul v-for="(cat1,cat1_index) of model" :key="cat1_index">
+      <ul v-for="(cat1,cat1_index) of parent.treeData" :key="cat1_index">
         <li>
           <div
             class="ssm-tree-header noselect"
@@ -106,11 +106,6 @@ export default {
         return { id: "id", label: "name" };
       }
     },
-    model: {
-      default() {
-        return null;
-      }
-    }
   },
   data() {
     return {
@@ -120,8 +115,6 @@ export default {
   },
   watch:{
     'parent.treeData'(data){
-      console.log('tree数据发生修改',data);
-      this.model=data;
     },
   },
   methods: {
@@ -139,11 +132,6 @@ export default {
         this.$forceUpdate();
       });
     },
-    // setModel(m) {
-    //   console.log("tree: ", m);
-    //   this.model = m;
-    //   this.$forceUpdate();
-    // },
     selectionChanged(selection) {
       // this.$emit("reveal", selection);
       // this.selectedItem = selection;

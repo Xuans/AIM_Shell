@@ -16,7 +16,7 @@ export default {
         cb(content)
       })
       .catch(error => {
-        
+
         cb({
           data: []
         })
@@ -34,8 +34,12 @@ export default {
 
     return hours + 'h ' + minutes + 'min ' + seconds + 's '
   },
-  $getTasks({service_id}) {
-    return methods.getSchedules([{service_id}]);
+  $getTasks({
+    service_id
+  }) {
+    return methods.getSchedules([{
+      service_id
+    }]);
     // return [{
     //     name: '主机部署',
     //     time: '2018/03/12',
@@ -59,8 +63,12 @@ export default {
     //   }
     // ]
   },
-  $getShellInstance({shell_ename}){
-    return methods.getShells([{shell_ename}]);
+  $getShellInstance({
+    shell_ename
+  }) {
+    return methods.getShells([{
+      shell_ename
+    }]);
   },
   $getScriptInstanceTree(target = {}) {
     return new Promise(resolve => {
@@ -98,30 +106,29 @@ export default {
       methods.getService([target])
         .then(response => {
 
-          const ret = response.r.ret;
-          let content;
-          if (ret && ret.service_content) {
-            content= JSON.parse(ret.service_content);
+          // const ret = response.r.ret;
+          // let content;
+          // if (ret && ret.service_content) {
+            // content = JSON.parse(ret.service_content);
 
-            for(let k in ret){
-              target[k]=ret[k];
-            }
+          //   for (let k in ret) {
+          //     target[k] = ret[k];
+          //   }
+          //   target
 
-            console.log('编辑器数据读取成功', ret);
-          } else {
-            console.log('编辑器数据读取失败，执行初始化', response);
-            target.isReady = false;
-          }
+          //   console.log('编辑器数据读取成功', ret);
+          // } else {
+          //   console.log('编辑器数据读取失败，执行初始化', response);
+          //   target.isReady = false;
+          // }
 
-         content = content || [];
+          // content = content || [];
 
-          resolve({json:content,params:target.service_args});
+          resolve(response.r.ret);
         })
         .catch((error) => {
-          ;
           target.isReady = false;
           resolve({
-            data: []
           });
         });
     });
@@ -225,23 +232,16 @@ export default {
       "create_user": treeNode.user,
     }]);
   },
-  $saveSerivce(target, data) {
+  $saveSerivce(target, data,args) {
     //isReady为false表示服务需要初始化
     target.service_content = JSON.stringify(data || {});
-    let r={
+    target.service_args = JSON.stringify(args || {});
+    let r = {
       ...target
     }
-   delete r.service_ename;
+    delete r.service_ename;
     // if (target.isReady)
-      return new Promise((resolve,rej) => {
-        methods.updateService([
-          r
-        ]).then(response => {
-          resolve(true)
-        }).catch(response => {
-          rej(response)
-        })
-      })
+    return  methods.updateService([r]);
     // else {
     //   //服务没有初始化时，执行初始化方法
     //   console.log('添加新服务', target);

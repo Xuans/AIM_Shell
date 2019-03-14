@@ -1,19 +1,11 @@
 <template>
   <div style="position:relative;width:100%;height:100%;">
     <div class="data-base-operate-btn" ref="test">
-      <div
-        class="right-bottom-btn"
-        data-id="left"
-        @click.stop="moveBack()"
-      >
+      <div class="right-bottom-btn" data-id="left" @click.stop="moveBack()">
         <i class="fa fa-arrow-left"></i>
         <span>后退</span>
       </div>
-      <div
-        class="right-bottom-btn"
-        data-id="right"
-        @click.stop="movePrev()"
-      >
+      <div class="right-bottom-btn" data-id="right" @click.stop="movePrev()">
         <i class="fa fa-arrow-right"></i>
         <span>前进</span>
       </div>
@@ -77,6 +69,7 @@
               </div>
               <div
                 @dblclick.stop="doubleclick(child)"
+                @click.stop="select(child)"
                 :key="ind"
                 v-for="(child,ind) of item.children"
                 :class="{'bi-computer-card-item': child.tree_node_type === '1' ? 'cate-file':'file'}"
@@ -99,7 +92,7 @@
       <div class="data-file-search active animated fadeIn" v-show="showSearchPanel">
         <div class="search-input-content">
           <input type="text" id="searchInfoModal" v-model="queryString" placeholder="请输入关键字进行搜索">
-           <i class="fa fa-search"></i>
+          <i class="fa fa-search"></i>
         </div>
         <div class="data-file-content" ref="fileContent">
           <div
@@ -118,41 +111,70 @@
         </div>
       </div>
 
-        <div class="data-file-detail animated fadeIn" v-show="showDetailPanel">
-            <el-tabs v-model="activeTag">
-              <el-tab-pane label="基本信息" name="info">基本信息</el-tab-pane>
-              <el-tab-pane label="文档" name="document">文档</el-tab-pane>
-              <el-tab-pane label="画像" name="second">配置管理</el-tab-pane>
-            </el-tabs>
-        </div>
-
+      <div class="data-file-detail animated fadeIn" v-show="showDetailPanel">
+        <el-tabs v-model="activeTag">
+          <template v-if="currentNodeType=='2'">
+            <el-tab-pane label="基本信息" name="info">
+              <service-info :data="focusTarget"></service-info>
+            </el-tab-pane>
+            <el-tab-pane label="文档" name="document">文档</el-tab-pane>
+            <el-tab-pane label="画像" name="second">配置管理</el-tab-pane>
+          </template>
+          <template v-else>
+            <el-tab-pane label="基本信息" name="info">
+              {{focusTarget}}
+            </el-tab-pane>
+          </template>
+        </el-tabs>
+      </div>
     </div>
-</div>
+  </div>
 </template>
 <script>
 import iresource from "./resource";
+import ServiceInfo from "../components/Panel/ServiceInfo";
+
 export default {
-  inject: ['parent'],
-  watch:{
-    'parent.selection'(s){
-        this.expand(s);
-    },
+  inject: ["parent"],
+  watch: {
+    "parent.selection"(s) {
+      this.expand(s);
+    }
+  },
+
+  components: {
+    ServiceInfo
   },
   methods: {
+    select(item) {
+      let c = { ...this.focusTarget };
+      //清空焦点数据
+      for (let k in c) {
+        Vue.delete(this.focusTarget, k);
+      }
+      this.baseInfoLoading = true;
+
+      this.$emit("getResourceInfo", item, r => {
+        for (let k in r) {
+          Vue.set(this.focusTarget, k, r[k]);
+        }
+        this.baseInfoLoading = false;
+      });
+    },
     setModel(model) {
       this.expand(model);
     },
-    refresh(){
+    refresh() {
       this.expand(this.parent.selection);
-    }, 
-    expand(s){
-       if(!this.stacking){
-         //存放旧list
-         this.backStack.push(this.list);
-         this.prevStack=[];
-       }
-       this.stacking=false;
-       this.list = s?[s]:this.parent.treeData;
+    },
+    expand(s) {
+      if (!this.stacking) {
+        //存放旧list
+        this.backStack.push(this.list);
+        this.prevStack = [];
+      }
+      this.stacking = false;
+      this.list = s ? [s] : this.parent.treeData;
 
       if (this.list.length > 1) {
         //最外层
@@ -188,40 +210,36 @@ export default {
       // this.selected = item;
       if (item.tree_node_type == "1") {
         // this.$emit("reveal", item);
-        this.parent.selection=this.getRealItem(item);
+        this.parent.selection = this.getRealItem(item);
       } else this.$emit("open", item);
     },
-    getRealItem(item){
+    getRealItem(item) {
       return this.parent.cache[item.tree_node_name];
     },
     moveBack() {
       let b = this.backStack.splice(-1);
-        console.log('moveback',b)
+      console.log("moveback", b);
       if (b.length) {
-        this.stacking=true;
+        this.stacking = true;
         this.prevStack.push(this.list);
         // this.expand(b[0]);
 
-        console.log('moveback',b[0])
-        let len=b[0].length;
-        if(len==1)
-          this.parent.selection=this.getRealItem(b[0][0]);
-        else if(len>1)
-          this.parent.selection=null;
+        console.log("moveback", b[0]);
+        let len = b[0].length;
+        if (len == 1) this.parent.selection = this.getRealItem(b[0][0]);
+        else if (len > 1) this.parent.selection = null;
       }
     },
     movePrev() {
       let b = this.prevStack.splice(-1);
-       let l;
-     if (b.length) {
-        this.stacking=true;
+      let l;
+      if (b.length) {
+        this.stacking = true;
         this.backStack.push(this.list);
         // this.expand(b[0]);
-        let len=b[0].length;
-        if(len==1)
-          this.parent.selection=this.getRealItem(b[0][0]);
-        else if(len>1)
-          this.parent.selection=null;
+        let len = b[0].length;
+        if (len == 1) this.parent.selection = this.getRealItem(b[0][0]);
+        else if (len > 1) this.parent.selection = null;
       }
     }
   },
@@ -230,10 +248,10 @@ export default {
     window.resMgr = this;
   },
   data() {
-    
     return {
-      stacking:false,
-      focusTarget:null,
+      stacking: false,
+      focusTarget: {},
+      baseInfoLoading: false,
       backStack: [],
       prevStack: [],
       currentNodeType: 0,
@@ -282,9 +300,9 @@ export default {
   margin: 0.5em auto;
   padding: 0 1em;
 }
-.search-input-content>i{
+.search-input-content > i {
   font-size: 1em;
-  color:#666;
+  color: #666;
 }
 .data-base-operate-btn {
   display: flex;
@@ -450,19 +468,19 @@ export default {
 }
 
 .data-file-search input {
-    width: 85%;
-    font-size: 12px;
-    height: 22px;
-    text-indent: 10px;
-    margin: 0;
-    border: none;
-    box-shadow: none;
+  width: 85%;
+  font-size: 12px;
+  height: 22px;
+  text-indent: 10px;
+  margin: 0;
+  border: none;
+  box-shadow: none;
 }
 
 .data-file-search input:active,
-.data-file-search input:focus{
-   border: none;
-   box-shadow: none;
+.data-file-search input:focus {
+  border: none;
+  box-shadow: none;
 }
 
 .bi-computer-card-content > .bi-computer-card-item {

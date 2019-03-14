@@ -55,10 +55,13 @@
 		m:'getInstance'
 	},{
 		c:'tc.cama.aweb.shell.service.IShellSerInstanceService',
-		m:'addInstance'
+		m:'delInstance'
 	},{
 		c:'tc.cama.aweb.shell.service.IShellSerInstanceService',
-		m:'getInstance'
+		m:'getInstances'
+	},{
+		c:'tc.cama.aweb.shell.service.IShellSerInstanceService',
+		m:'updateInstance'
 	},{
 		c:'tc.cama.aweb.shell.service.IShellSerInstanceService',
 		m:'getSchedules'
@@ -69,6 +72,18 @@
 	},{
 		c:'tc.cama.aweb.shell.service.IShellInstanceService',
 		m:'getAgents'
+	},{
+		//发布接口
+		c:'tc.cama.aweb.shell.service.IShellSerVersionService',
+		m:'publishVersion'
+	},{
+		//查询版本接口
+		c:'tc.cama.aweb.shell.service.IShellSerVersionService',
+		m:'getVersion'
+	},{
+		//查询版本历史接口
+		c:'tc.cama.aweb.shell.service.IShellSerVersionService',
+		m:'getVersionHistory'
 	}].forEach(method=>{
 		methods[method.m]=(function(method){
 			return function(p){
@@ -86,7 +101,10 @@
 							resv(result.data);
 						}else{
 							console.log(method.m,p,'失败',result);
-							rej(result.head.errorMessage);
+							if(result.head)
+								rej(result.head.errorMessage);
+							else
+								rej(result);
 						}
 					}).fail(response=>{
 						console.log(method.m,p,'失败',response);

@@ -39,11 +39,14 @@ export default {
     handleOfSave (editor, done) {
       const state = this.state
 
+      let app=window.app;
       state.update(editor) // update in fact
-
-      this.$saveSerivce(this.target, state.genJson(editor))
-          .then(() => state.setDirty(editor)).catch(error=>{
-            let app=window.app;
+window.editor=editor;
+      this.$saveSerivce(this.target, state.genJson(editor),editor.config.service_args)
+          .then(() => {
+            if(app)app.alert('保存成功');
+            state.setDirty(editor)
+          }).catch(error=>{
             if(app)app.alert(error);
           })
     },

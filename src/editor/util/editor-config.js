@@ -25,37 +25,58 @@ import {
 function addDataAndLine(config, dataOfService) {
   let data = []
   let line = []
-if(dataOfService)
-  for (let [id, dataOfModel] of Object.entries(dataOfService)) {
-    data.push(createData({
-      id
-    }, dataOfModel))
+  if (dataOfService)
+    for (let [id, dataOfModel] of Object.entries(dataOfService)) {
+      data.push(createData({
+        id
+      }, dataOfModel))
 
-    if (dataOfModel.target) {
-      for (let [terminalId, targetId] of Object.entries(dataOfModel.target)) {
-        line.push(createLine({
-          sourceId: id,
-          targetId: targetId,
-          exit: terminalId,
-          entr: 'n'
-        }))
+      if (dataOfModel.target) {
+        for (let [terminalId, targetId] of Object.entries(dataOfModel.target)) {
+          line.push(createLine({
+            sourceId: id,
+            targetId: targetId,
+            exit: terminalId,
+            entr: 'n'
+          }))
+        }
       }
     }
-  }
 
   config.data = data
   config.line = line
 }
 
-function addServiceParas(config, params) {
-  let p = JSON.parse(params);
-  if(p.constructor!= Object)
-   p={}
-  config.service_params = p;
+function addServiceParas(config, p) {
+  if (p.constructor != Object)
+    p = {}
+  config.service_args = p;
 }
 
 export class EditorConfig {
-  constructor(target, {json,params}) {
+  constructor(target, serviceData) {
+
+    for (let k in serviceData) {
+      target[k] = serviceData[k];
+    }
+    //数据初始化
+    try {
+      target.service_content = JSON.parse(target.service_content);
+    } catch (e) {
+      console.error('init target.service_content', target.service_content);
+      target.service_content = {
+        data: {}
+      };
+    }
+
+    try {
+      target.service_args = JSON.parse(target.service_args);
+    } catch (e) {
+      console.error('init target.service_args', target.service_args);
+      target.service_args = {
+      };
+    }
+
     this.id = `flow-${target.id}-${target.head}`
     this.children = {
       node: editNode()
@@ -163,13 +184,29 @@ export class EditorConfig {
       }
     })
 
-    addDataAndLine(this, json.data)
-    addServiceParas(this, params)
+    addDataAndLine(this, target.service_content.data)
+    addServiceParas(this, target.service_args)
   }
 }
 
 export class DebugEditorConfig {
-  constructor(target, json) {
+  constructor(target, serviceData) {
+    for (let k in serviceData) {
+      target[k] = serviceData[k];
+    }
+    //数据初始化
+    if (!target.service_content) {
+      target.service_content = JSON.parse(target.service_content);
+    } else
+      target.service_content = {
+        data: {}
+      };
+    if (!target.service_args) {
+      target.service_args = JSON.parse(service_args);
+    } else
+      target.service_args = {};
+
+
     this.id = `debug-${target.id}-${target.head}`
     this.children = {
       node: noeditNode()
@@ -196,13 +233,28 @@ export class DebugEditorConfig {
       }
     })
 
-    addDataAndLine(this, json.data)
-    addServiceParas(this, json.params)
+    addDataAndLine(this, target.service_content.data)
+    addServiceParas(this, target.service_args)
   }
 }
 
 export class VersionsEditorConfig {
-  constructor(target, json) {
+  constructor(target, serviceData) {
+    for (let k in serviceData) {
+      target[k] = serviceData[k];
+    }
+    //数据初始化
+    if (!target.service_content) {
+      target.service_content = JSON.parse(target.service_content);
+    } else
+      target.service_content = {
+        data: {}
+      };
+    if (!target.service_args) {
+      target.service_args = JSON.parse(service_args);
+    } else
+      target.service_args = {};
+
     this.id = `version-${target.id}-${target.head}`
     this.background = 'lightgrey'
     this.children = {
@@ -230,11 +282,11 @@ export class VersionsEditorConfig {
       }
     })
 
-    addDataAndLine(this, json.data)
-    addServiceParas(this, json.params)
+    addDataAndLine(this, target.service_content.data)
+    addServiceParas(this, target.service_args)
   }
 }
 
-export default function getEditorConfig(target, json) {
-  return target.lastest ? new EditorConfig(target, json) : new DebugEditorConfig(target, json)
+export default function getEditorConfig(target, serviceData) {
+  return target.lastest ? new EditorConfig(target, serviceData) : new DebugEditorConfig(target, serviceData)
 }

@@ -20,8 +20,8 @@
           tooltip-effect="dark"
           style="width: 100%"
         >
-          <el-table-column prop="ename" label="英文名" fixed="left" width="80"></el-table-column>
-          <el-table-column prop="cname" label="中文名" fixed="left" width="80"></el-table-column>
+          <el-table-column prop="ename" label="英文名" fixed="left" width="100"></el-table-column>
+          <el-table-column prop="cname" label="中文名" fixed="left" width="100"></el-table-column>
           <el-table-column prop="value" label="值">
             <template slot-scope="scope">
               <el-input
@@ -143,7 +143,7 @@ export default {
           return data;
         }
       }
-
+      this.loading=false;
       let input, item, id;
       input = this.store.active.get("data.params");
       if (!input) {
@@ -169,13 +169,20 @@ export default {
           : input[option.ename]=""
         console.log(item,option)
 
-        if (option.exposure) {
+        if (item.exposure) {
           item.isExposure = this.store.checkExposure(id, option.ename);
         }
 
         data.push(item);
       }
-    console.log(data)
+      data.insert(0,0,{
+        ename:'shell_agent',
+        cname:'执行服务器',
+        writable:true,
+        exposure:true,
+        key:'agent',
+        isExposure : this.store.checkExposure(id, 'shell_agent'),
+      });
       return data;
     }
   },

@@ -37,7 +37,7 @@ export default class EditorStore {
 
   addServiceParams(nodeId, item, placeholder) {
     if (this.activeEditor) {
-      const params = this.activeEditor.config.service_params
+      const params = this.activeEditor.config.service_args
       if (!params)
         params = {};
 
@@ -50,7 +50,7 @@ export default class EditorStore {
         ...item,
         placeholder
       });
-      this.activeEditor.config.service_params = params;
+      this.activeEditor.config.service_args = params;
     }
   }
 
@@ -58,7 +58,7 @@ export default class EditorStore {
     ename
   }) {
     if (this.activeEditor) {
-      const params = this.activeEditor.config.service_params
+      const params = this.activeEditor.config.service_args
       if (params && params[nodeId]) {
         Vue.delete(params[nodeId],ename);
       }
@@ -72,7 +72,7 @@ export default class EditorStore {
    */
   checkExposure(id, ename) {
     if (this.activeEditor) {
-      const params = this.activeEditor.config.service_params
+      const params = this.activeEditor.config.service_args
       if (!params)
         return false;
 
@@ -81,7 +81,7 @@ export default class EditorStore {
 
       if (params[id][ename] == null)
         return false;
-      return false
+      return true
     }
 
     throw Error()
@@ -108,8 +108,8 @@ export default class EditorStore {
     return this.pool.size
   }
 
-  get service_params() {
-    return this.activeEditor ? this.activeEditor.config.service_params : {}
+  get service_args() {
+    return this.activeEditor ? this.activeEditor.config.service_args : {}
   }
 
   get activeInput() {
@@ -128,7 +128,7 @@ export default class EditorStore {
     this.activeEditor && this.activeEditor.removeNode(this.active)
   }
 
-  upload() {
-    alert('upload')
+  upload(container) {
+    container&&container.upload&&container.upload();
   }
 }
