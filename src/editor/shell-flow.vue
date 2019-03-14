@@ -5,6 +5,7 @@
           :config="state.config"
           :eventsOnEditor="{vueHandler: handleOfFlowCallback}"
           :maximize="maximize === undefined ? !state.palette : maximize"
+          autofocus
           @init="handleOfInit"
           @save="handleOfSave"
           @command="handleOfCommand">

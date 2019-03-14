@@ -245,11 +245,11 @@ export default {
           }
         );
 
-        $(this.$el).click(e => {
+        $(this.$refs.canvas).click(e => {
           isfocus = true;
         });
       } else {
-        $(this.$el).click(e => {
+        $(this.$refs.canvas).click(e => {
           this.focus();
         });
       }
@@ -259,7 +259,7 @@ export default {
       if (this.autofocus) {
         $(document).off(`click.${this.editorId}`);
       }
-      $(this.$el).off("click", "**");
+      $(this.$refs.canvas).off("click", "**");
     },
 
     isDirty() {
