@@ -36,7 +36,6 @@
             v-model="newVersion"
             :fetch-suggestions="searchVersions"
             placeholder="请输入内容"
-            value="service_version"
           ></el-autocomplete>
         </el-form-item>
       </el-form>
@@ -129,18 +128,27 @@ export default {
       window.sd = this;
     },
     searchVersions(query, cb) {
+      if(true){
+        cb([
+          {value:1},
+          {value:2},
+        ])
+      }
+
       this.$getVersionHistory({ service_id: this.store.target.service_id })
         .then(resp => {
           let versionHistory = [];
           if (resp.r.ret) {
             for (let item of resp.r.ret) {
-              if (
-                query == null ||
-                item.service_version
-                  .toLowerCase()
-                  .indexOf(query.toLowerCase()) > -1
-              )
-                versionHistory.push(item);
+              // if (
+              //   query == null ||
+              //   item.service_version
+              //     .toLowerCase()
+              //     .indexOf(query.toLowerCase()) > -1
+              // )
+                versionHistory.push({
+                  value:item.service_version,
+                });
             }
           }
           console.log(versionHistory);

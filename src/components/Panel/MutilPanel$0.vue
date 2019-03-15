@@ -5,13 +5,15 @@
                 <service-params></service-params>
             </mutil-content>
         </el-tab-pane>
-        <el-tab-pane name="日志" label="日志">
-            <mutil-content @close="handleOfClose">
-                <log-panel></log-panel>
-            </mutil-content>
+        <el-tab-pane label="基本信息" name="2">
+        <mutil-content @close="handleOfClose">
+            <service-info :data="store.target"></service-info>
+        </mutil-content>
         </el-tab-pane>
         <el-tab-pane name="任务列表" label="任务列表">
-            <mutil-content @close="handleOfClose"></mutil-content>
+            <mutil-content @close="handleOfClose">
+                  <task-list></task-list>
+            </mutil-content>
         </el-tab-pane>
     </el-tabs>
 </template>

@@ -1,8 +1,5 @@
 export class Target {
   constructor(item) {
-    // for (let v in item) {
-    //   this[v] = item[v];
-    // }
     this.service_ename= this.service_id= this.id = item.tree_node_name
     this.service_name =item.tree_node_desc
     this.tree_p_node_name=item.tree_p_node_name

@@ -63,6 +63,9 @@ export default {
     //   }
     // ]
   },
+  $execServce({instance_id}){
+    return methods.shellExec([{instance_id}]);
+  },
   $getShellInstance({
     shell_ename
   }) {

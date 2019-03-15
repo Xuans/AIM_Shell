@@ -2,12 +2,14 @@
 import App from './App.vue'
 
 class Target {
-  constructor ({serviceId} = {serviceId: 0}) {
-    this.service_ename= this.id = item.tree_node_name||serviceId
-    this.service_ename =item.tree_node_desc
-    this.tree_p_node_name=item.tree_node_name
+  constructor (item,version) {
+    this.service_ename= this.service_id= this.id = item.tree_node_name
+    this.service_name =item.tree_node_desc
+    this.tree_p_node_name=item.tree_p_node_name
     this.service_content={}
-    this.service_args=[]
+    this.service_args={}
+    this.service_doc=""
+    this.create_user="未知"
     // this.name=tree_node_desc
     this.type = 0;
     this.versions = Array.of({ name: 0 }, { name: 1 }, { name: 2 });
@@ -15,7 +17,7 @@ class Target {
   }
 
   cloneByVersion (version) {
-    let target = new Target({serviceId: this.id})
+    let target = new Target(this.item,version)
 
     target.head = version.name
 
