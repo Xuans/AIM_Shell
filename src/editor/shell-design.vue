@@ -1,4 +1,5 @@
 <template>
+  <div style="width:100%;height:100%;">
     <shell-flow
       ref="shell-flow"
       :target="target"
@@ -22,34 +23,29 @@
       </dblf-transition>
     </shell-flow>
 
-    <!-- <el-dialog :title="`发布服务版本`" :visible.sync="dialogFormVisible">
-      <el-form :model="store.target">
-        <el-form-item label="服务名称" :label-width="formLabelWidth">{{store.target.service_cname}}</el-form-item>
+    <el-dialog
+      ref="publishDialog"
+      slot="canvasUnder"
+      :title="`发布服务版本`"
+      :visible.sync="dialogFormVisible"
+    >
+      <el-form :model="versionModel">
+        <el-form-item label="服务名称" :label-width="formLabelWidth">{{versionModel.service_name}}</el-form-item>
         <el-form-item label="版本号" :label-width="formLabelWidth">
-          <el-select
-            v-model="lastVersion"
-            multiple
-            filterable
-            remote
-            reserve-keyword
-            placeholder="下拉展示历史版本"
-            :remote-method="searchVersions"
-            :loading="versionLoading"
-          >
-            <el-option
-              v-for="item in versionHistory"
-              :key="item.service_version"
-              :label="item.service_version"
-              :value="item.service_version"
-            ></el-option>
-          </el-select>
+          <el-autocomplete
+            v-model="newVersion"
+            :fetch-suggestions="searchVersions"
+            placeholder="请输入内容"
+            value="service_version"
+          ></el-autocomplete>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="publishVersion">确 定</el-button>
       </div>
-    </el-dialog> -->
+    </el-dialog>
+  </div>
 </template>
 <script type="text/javascript">
 import dblfTransition from "./transition.vue";
@@ -68,6 +64,15 @@ export default {
   mounted() {
     this.store = this.$refs["shell-flow"].store;
   },
+  computed: {
+    versionModel() {
+      let v = {};
+      if (this.store) {
+        v = this.store.target;
+      }
+      return v;
+    }
+  },
 
   data() {
     return {
@@ -77,9 +82,7 @@ export default {
       maximize: false,
       dialogFormVisible: false,
       formLabelWidth: "120px",
-      versionLoading: false,
-      versionHistory:[],
-      lastVersion:'',
+      newVersion: ""
     };
   },
 
@@ -121,21 +124,47 @@ export default {
       this.store[action](this);
     },
     upload() {
+      console.log("upload");
       this.dialogFormVisible = true;
+      window.sd = this;
     },
-    searchVersions() {},
-    publishVersion(query) {
-      if (query !== "") {
-        this.versionLoading = true;
-        this.$getVersionHistory(resp => {
-          this.versionLoading = false;
-          this.versionHistory = this.list.filter(item => {
-            return item.service_version.toLowerCase().indexOf(query.toLowerCase()) > -1;
+    searchVersions(query, cb) {
+      this.$getVersionHistory({ service_id: this.store.target.service_id })
+        .then(resp => {
+          let versionHistory = [];
+          if (resp.r.ret) {
+            for (let item of resp.r.ret) {
+              if (
+                query == null ||
+                item.service_version
+                  .toLowerCase()
+                  .indexOf(query.toLowerCase()) > -1
+              )
+                versionHistory.push(item);
+            }
+          }
+          console.log(versionHistory);
+          cb(versionHistory);
+        })
+        .catch(error => {
+          console.error(error);
+          app.alert(error);
+        });
+    },
+    publishVersion() {
+      this.dialogFormVisible = false;
+      if (this.newVersion)
+        this.$publishVersion({
+          service_id: this.store.target.service_id,
+          service_version: this.newVersion
+        })
+          .then(resp => {
+            app.alert("发布成功");
+            this.newVersion = null;
+          })
+          .catch(error => {
+            app.alert(error);
           });
-        }, 200);
-      } else {
-        this.versionHistory = [];
-      }
     }
   },
 

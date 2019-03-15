@@ -175,12 +175,13 @@ export default {
 
         data.push(item);
       }
-      data.insert(0,0,{
+      data.splice(0,0,{
         ename:'shell_agent',
         cname:'执行服务器',
         writable:true,
         exposure:true,
         key:'agent',
+        value:this.store.active.get('data.agent'),
         isExposure : this.store.checkExposure(id, 'shell_agent'),
       });
       return data;
@@ -193,6 +194,7 @@ export default {
       this.$forceUpdate();
     },
     handleOfExposure(value, item) {
+      console.log(value,item)
       let id=this.store.activeId;
       if(value){
         //生成占位符

@@ -1,23 +1,15 @@
 <template>
-  <div style="display:flex;">
+  <div>
+    <el-row>
+      <el-button @click="reload()" size="mini">刷新</el-button>
+    </el-row>
     <el-table v-loading='loading' ref="multipleTable" :data="taskData" border size="mini" stripe tooltip-effect="dark">
-      <el-table-column prop="nodeId" label="所属节点" width="50"></el-table-column>
-      <el-table-column prop="ename" label="英文名" width="120"></el-table-column>
-      <el-table-column prop="cname" label="中文名" width="120"></el-table-column>
-      <el-table-column prop="placeholder" label="占位符" width="200"></el-table-column>
-
-      <el-table-column prop="value" label="值" width="220">
-        <template slot-scope="scope">
-          <el-input
-            size="mini"
-            v-model="scope.row.value"
-            @input="val => handleOfValue(val, scope.row)"
-          ></el-input>
-        </template>
-      </el-table-column>
+      <el-table-column prop="instance_ename" label="任务名" width="120"></el-table-column>
+      <el-table-column prop="instance_name" label="任务描述" width="120"></el-table-column>
+      <el-table-column prop="job_timeout" label="超时" width="120"></el-table-column>
       <el-table-column prop="value" label="" width="220">
         <template slot-scope="scope">
-          <el-button @click="jumpTo(scope)">跳转</el-button>
+          <el-button size='mini' @click="jumpTo(scope)">跳转</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -44,7 +36,8 @@ export default {
       this.$getTasks(this.store.target)
         .then(resp => {
             this.loading=false;
-            console.log(resp)
+            console.log('task',resp)
+            this.tasks=resp.r.ret;
         })
         .catch(error => {
             app.alert(error)

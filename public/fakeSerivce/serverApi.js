@@ -37,7 +37,7 @@ export default {
   $getTasks({
     service_id
   }) {
-    return methods.getSchedules([{
+    return methods.getInstances([{
       service_id
     }]);
     // return [{
@@ -134,6 +134,17 @@ export default {
     });
 
     // return Promise.resolve(nodes[1])
+  },
+  $getVersionHistory({service_id}){
+    return methods.getVersionHistory([{service_id}]);
+  },
+  
+  $getVersion({service_id}){
+    return methods.getVersion([{service_id}]);
+  },
+  
+  $publishVersion({service_id,service_version}){
+    return methods.publishVersion([{service_id,service_version}]);
   },
   $getLogs() {
     return [{
