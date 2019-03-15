@@ -770,15 +770,22 @@
 .data-file-detail>.el-tabs>.el-tabs__content>.el-tab-pane{
     height:100%;
 }
+.stm .el-tab-pane .el-card{
+    border:none;
+    margin:0!important;
+    box-shadow:none!important;
+}
 .data-file-detail>.el-tabs>.el-tabs__content>.el-tab-pane .el-card{
     border:none;
     margin:-10px 0 0 0!important;
     box-shadow:none!important;
 }
+.stm .el-card .el-col,
 .data-file-detail>.el-tabs>.el-tabs__content>.el-tab-pane .el-card .el-col{
     line-height:32px;
 }
 
+.stm .el-card__header>span,
 .data-file-detail>.el-tabs>.el-tabs__content>.el-tab-pane .el-card__header>span{
     font-size:14px!important;
     font-weight:normal!important;
@@ -812,8 +819,7 @@
     left:auto!important;
     right:2em;
     top:-.45em;
-}
-.el-icon-flow-twofirstlevel1[class*=" el-icon-"], 
+}body .el-icon-flow-twofirstlevel1[class*=" el-icon-"], 
 .el-icon-flow-twofirstlevel1[class^=el-icon-]{
     font-family: fontFamily!important;
 }
@@ -835,4 +841,14 @@
     padding:0;
 }
 
-.el-dialog__body {}
+.stm .el-table__header-wrapper>table,
+.stm .el-table__body-wrapper .el-table__empty-block{
+    width:100% !important;
+    table-layout: fixed;
+}
+.stm .is-scrolling-none{
+    border:none;
+}
+.stm .el-tabs--bottom .el-tab-pane .el-dialog__body{
+    
+}
