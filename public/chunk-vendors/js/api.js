@@ -85,9 +85,13 @@
 		c:'tc.cama.aweb.shell.service.IShellSerVersionService',
 		m:'getVersionHistory'
 	},{
-		//查询版本历史接口
+		//执行脚本
 		c:'tc.cama.aweb.shell.service.IShellServiceExec',
 		m:'shellExec'
+	},{
+		//发布脚本
+		c:'tc.cama.aweb.shell.service.IShellServiceExec',
+		m:'publishShell'
 	}].forEach(method=>{
 		methods[method.m]=(function(method){
 			return function(p){

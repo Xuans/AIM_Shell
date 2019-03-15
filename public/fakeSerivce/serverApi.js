@@ -63,8 +63,12 @@ export default {
     //   }
     // ]
   },
-  $execServce({instance_id}){
-    return methods.shellExec([{instance_id}]);
+  $execServce({
+    instance_id
+  }) {
+    return methods.shellExec([{
+      instance_id
+    }]);
   },
   $getShellInstance({
     shell_ename
@@ -107,25 +111,43 @@ export default {
   $getServiceInstance: function (target) {
     return new Promise(resolve => {
       methods.getService([target])
-          .then(response => {
+        .then(response => {
+          console.error(target,target.assign)
+          if (target.assign)
             target.assign(response.r.ret).parseContent()
-          })
-          .catch(() => {
+          resolve(response.r.ret)
+        })
+        .catch(e => {
+          if (target.toBeNotReady)
             target.toBeNotReady().parseContent()
-          })
-          .finally(resolve)
+          resolve({});
+        })
     });
   },
-  $getVersionHistory({service_id}){
-    return methods.getVersionHistory([{service_id}]);
+  $getVersionHistory({
+    service_id
+  }) {
+    return methods.getVersionHistory([{
+      service_id
+    }]);
   },
-  
-  $getVersion({service_id}){
-    return methods.getVersion([{service_id}]);
+
+  $getVersion({
+    service_id
+  }) {
+    return methods.getVersion([{
+      service_id
+    }]);
   },
-  
-  $publishVersion({service_id,service_version}){
-    return methods.publishVersion([{service_id,service_version}]);
+
+  $publishVersion({
+    service_id,
+    service_version
+  }) {
+    return methods.publishVersion([{
+      service_id,
+      service_version
+    }]);
   },
   $getLogs() {
     return [{
@@ -224,7 +246,7 @@ export default {
       "create_user": treeNode.user,
     }]);
   },
-  $saveSerivce(target, data,args) {
+  $saveSerivce(target, data, args) {
     //isReady为false表示服务需要初始化
     target.service_content = JSON.stringify(data || {});
     target.service_args = JSON.stringify(args || {});
@@ -233,7 +255,7 @@ export default {
     }
     delete r.service_ename;
     // if (target.isReady)
-    return  methods.updateService([r]);
+    return methods.updateService([r]);
     // else {
     //   //服务没有初始化时，执行初始化方法
     //   console.log('添加新服务', target);

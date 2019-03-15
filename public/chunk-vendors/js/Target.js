@@ -45,7 +45,7 @@ export class Target {
     return this
   }
 
-  assgin (target) {
+  assign (target) {
     return Object.assign(this, target)
   }
 
