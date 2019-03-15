@@ -2,7 +2,7 @@ import devepmentApi from "../../public/fakeSerivce/deveplmentApi"
 import serverApi from '../../public/fakeSerivce/serverApi'
 
 function isDevepment () {
-  return false
+  return !(app && app.dispatcher)
 }
 
 export default function (vue) {

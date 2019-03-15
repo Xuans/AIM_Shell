@@ -54,28 +54,7 @@ function addServiceParas(config, p) {
 }
 
 export class EditorConfig {
-  constructor(target, serviceData) {
-
-    for (let k in serviceData) {
-      target[k] = serviceData[k];
-    }
-    //数据初始化
-    try {
-      target.service_content = JSON.parse(target.service_content);
-    } catch (e) {
-      console.error('init target.service_content', target.service_content);
-      target.service_content = {
-        data: {}
-      };
-    }
-
-    try {
-      target.service_args = JSON.parse(target.service_args);
-    } catch (e) {
-      console.error('init target.service_args', target.service_args);
-      target.service_args = {
-      };
-    }
+  constructor(target) {
 
     this.id = `flow-${target.id}-${target.head}`
     this.children = {
@@ -190,23 +169,7 @@ export class EditorConfig {
 }
 
 export class DebugEditorConfig {
-  constructor(target, serviceData) {
-    for (let k in serviceData) {
-      target[k] = serviceData[k];
-    }
-    //数据初始化
-    if (!target.service_content) {
-      target.service_content = JSON.parse(target.service_content);
-    } else
-      target.service_content = {
-        data: {}
-      };
-    if (!target.service_args) {
-      target.service_args = JSON.parse(service_args);
-    } else
-      target.service_args = {};
-
-
+  constructor(target) {
     this.id = `debug-${target.id}-${target.head}`
     this.children = {
       node: noeditNode()
@@ -239,21 +202,7 @@ export class DebugEditorConfig {
 }
 
 export class VersionsEditorConfig {
-  constructor(target, serviceData) {
-    for (let k in serviceData) {
-      target[k] = serviceData[k];
-    }
-    //数据初始化
-    if (!target.service_content) {
-      target.service_content = JSON.parse(target.service_content);
-    } else
-      target.service_content = {
-        data: {}
-      };
-    if (!target.service_args) {
-      target.service_args = JSON.parse(service_args);
-    } else
-      target.service_args = {};
+  constructor(target) {
 
     this.id = `version-${target.id}-${target.head}`
     this.background = 'lightgrey'
@@ -287,6 +236,6 @@ export class VersionsEditorConfig {
   }
 }
 
-export default function getEditorConfig(target, serviceData) {
-  return target.lastest ? new EditorConfig(target, serviceData) : new DebugEditorConfig(target, serviceData)
+export default function getEditorConfig(target) {
+  return target.lastest ? new EditorConfig(target) : new DebugEditorConfig(target)
 }

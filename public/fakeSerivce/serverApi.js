@@ -107,36 +107,14 @@ export default {
   $getServiceInstance: function (target) {
     return new Promise(resolve => {
       methods.getService([target])
-        .then(response => {
-
-          // const ret = response.r.ret;
-          // let content;
-          // if (ret && ret.service_content) {
-            // content = JSON.parse(ret.service_content);
-
-          //   for (let k in ret) {
-          //     target[k] = ret[k];
-          //   }
-          //   target
-
-          //   console.log('编辑器数据读取成功', ret);
-          // } else {
-          //   console.log('编辑器数据读取失败，执行初始化', response);
-          //   target.isReady = false;
-          // }
-
-          // content = content || [];
-
-          resolve(response.r.ret);
-        })
-        .catch((error) => {
-          target.isReady = false;
-          resolve({
-          });
-        });
+          .then(response => {
+            target.assign(response.r.ret).parseContent()
+          })
+          .catch(() => {
+            target.toBeNotReady().parseContent()
+          })
+          .finally(resolve)
     });
-
-    // return Promise.resolve(nodes[1])
   },
   $getVersionHistory({service_id}){
     return methods.getVersionHistory([{service_id}]);

@@ -25,9 +25,8 @@ export class State {
 
     Promise.all(Array.of($getServiceInstance(this.target), $getScriptInstanceTree(this.target), $getServiceInstanceTree(this.target)))
         .then(([serviceData, scriptTree, serviceTree]) => {
-          this.config = this.createEditorConfig(serviceData)
-          // debugger
-          // window.input=[json, scriptTree, serviceTree];
+          this.config = this.createEditorConfig()
+
           if (this.target.lastest) {
             this.config.scriptTree = scriptTree
             this.config.serviceTree = serviceTree
@@ -42,8 +41,8 @@ export class State {
     editor && (this.dirty = editor.isDirty())
   }
 
-  createEditorConfig (serviceData) {
-    return this.target.lastest ? new EditorConfig(this.target,serviceData) : new DebugEditorConfig(this.target,serviceData)
+  createEditorConfig () {
+    return this.target.lastest ? new EditorConfig(this.target) : new DebugEditorConfig(this.target)
   }
 
   genJson = genJson

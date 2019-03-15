@@ -1,6 +1,6 @@
 //import Vue from 'vue'
 import App from './App.vue'
-import { Target } from './Target';
+import { Target } from '../../../../public/chunk-vendors/js/Target';
 
 (function () {
   const app = window.app
@@ -28,6 +28,6 @@ import { Target } from './Target';
       return dispay(viewId, serviceId,item)
     }
   } else {
-    window.AIM_SHELL = new AppCtr({propsData: { target: new Target() }}).$mount('#app')
+    window.AIM_SHELL = new AppCtr({propsData: { target: Target.makeNull() }}).$mount('#app')
   }
 }())

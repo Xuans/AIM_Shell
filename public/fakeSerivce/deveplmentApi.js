@@ -16,7 +16,7 @@ export default {
     return hours + 'h ' + minutes + 'min ' + seconds + 's '
   },
   $getTasks () {
-    return [{
+    return Promise.resolve([{
       name: '主机部署',
       time: '2018/03/12',
       ip: '112.1.2.41',
@@ -37,7 +37,7 @@ export default {
       value: 'FTP上传(122.1.2.41)',
       inputId: 1
     }
-    ]
+    ])
   },
   $getScriptInstanceTree (target = {}) {
     return Promise.resolve([
@@ -239,6 +239,7 @@ export default {
     ])
   },
   $getServiceInstance: function (target) {
+    target.service_content = nodes[target.head]
     return Promise.resolve(nodes[target.head])
   },
   $getLogs () {
@@ -316,13 +317,6 @@ export default {
     }
 
     ]
-  },
-  $createSerivceCtr () {
-    return {
-      id: 'a service ctr',
-      type: 0,
-      inputId: -1
-    }
   },
   $saveSerivce (target, data) {
 

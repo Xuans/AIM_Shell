@@ -1,33 +1,7 @@
 //import Vue from 'vue'
 import App from './App.vue'
+import { VersionTarget as Target } from "../../../../public/chunk-vendors/js/Target";
 
-class Target {
-  constructor (item,version) {
-    this.service_ename= this.service_id= this.id = item.tree_node_name
-    this.service_name =item.tree_node_desc
-    this.tree_p_node_name=item.tree_p_node_name
-    this.service_content={}
-    this.service_args={}
-    this.service_doc=""
-    this.create_user="未知"
-    // this.name=tree_node_desc
-    this.type = 0;
-    this.versions = Array.of({ name: 0 }, { name: 1 }, { name: 2 });
-    this.head = 0;
-  }
-
-  cloneByVersion (version) {
-    let target = new Target(this.item,version)
-
-    target.head = version.name
-
-    return target
-  }
-
-  get lastest () {
-    return this.head === this.versions[this.versions.length - 1].name
-  }
-}
 
 (function () {
   const app = window.app
@@ -53,6 +27,6 @@ class Target {
       return dispay(viewId, serviceId)
     }
   } else {
-    window.AIM_SHELL = new AppCtr({propsData: { target: new Target() }}).$mount('#app')
+    window.AIM_SHELL = new AppCtr({propsData: { target: Target.makeNull() }}).$mount('#app')
   }
 }())
