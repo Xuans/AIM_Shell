@@ -232,7 +232,7 @@ export default {
             }
           })
           .catch(e => {
-            app.alert(e);
+            app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
           });
     }
   },

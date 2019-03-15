@@ -177,7 +177,7 @@ export default {
           console.log('resp',resp)
           callback(resp);
         }).catch(
-          error=>app.alert(error)
+          e=>app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR)
         );
       }
     },
@@ -224,13 +224,13 @@ export default {
             )
             .then(response => {
               // if (response && response.content.result.data.r.ret === true) {
-                app.alert(`删除(${desc})成功！`);
+                app.alert('删除成功',`删除(${desc})成功！`,app.alertShowType.SUCCESS);
 
                 _self.refreshTree(false);
             })
-            .catch(error => {
-              app.alert(error);
-              console.error(error);
+            .catch(e => {
+              app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
+              console.error(e);
             });
           return false;
         }
@@ -253,8 +253,8 @@ export default {
               this.refreshTree(false);
               this.showCreateDialog = false;
             })
-            .catch(error => {
-              app.alert(error);
+            .catch(e => {
+              app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
             });
         }else{
 
@@ -270,8 +270,8 @@ export default {
             this.refreshTree(false);
             this.showCreateDialog = false;
           })
-        .catch(error => {
-        app.alert(error);
+        .catch(e => {
+        app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
         });
       }
     },
@@ -299,9 +299,9 @@ export default {
           this.$forceUpdate();
           // this.$refs.resourceManager.setSearchable(this.cache);
         })
-        .catch(err => {
-          console.error(err);
-          app.alert(err);
+        .catch(e => {
+          console.error(e);
+          app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
           this.loading = false;
         });
     },
@@ -344,9 +344,9 @@ export default {
         this.$data.input = input;
         this.$data.output = output;
       })
-      .catch(err => {
-          app.alert(err);
-        console.error(err);
+      .catch(e => {
+         app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
+        console.error(e);
       });
 
     this.refreshTree();

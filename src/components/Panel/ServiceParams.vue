@@ -12,6 +12,7 @@
       border
       size="mini"
       stripe
+      :fit="!0"
       tooltip-effect="dark"
     >
       <el-table-column prop="nodeId" label="所属节点" width="50"></el-table-column>

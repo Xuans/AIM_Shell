@@ -33,10 +33,10 @@ export default {
 window.editor=editor;
       this.$saveSerivce(this.target, state.genJson(editor),editor.config.service_args)
           .then(() => {
-            if(app)app.alert('保存成功');
+            if(app)app.alert('保存成功','保存成功',app.alertShowType.SUCCESS);
             state.setDirty(editor)
-          }).catch(error=>{
-            if(app)app.alert(error);
+          }).catch(e=>{
+            if(app)app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
           })
     },
     handleOfCommand () {

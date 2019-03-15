@@ -159,9 +159,9 @@ export default {
           }
           cb(this.versionFilter(query,this.versionHistory));
         })
-        .catch(error => {
-          console.error(error);
-          app.alert(error);
+        .catch(e => {
+          console.error(e);
+          app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
           cb([])
         });
     },
@@ -173,11 +173,11 @@ export default {
           service_version: this.newVersion
         })
           .then(resp => {
-            app.alert("发布成功");
+            app.alert("发布成功","发布成功",app.alertShowType.SUCCESS);
             this.newVersion = null;
           })
-          .catch(error => {
-            app.alert(error);
+          .catch(e => {
+            app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
           });
     }
   },

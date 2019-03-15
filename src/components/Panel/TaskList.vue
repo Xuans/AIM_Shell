@@ -39,8 +39,8 @@ export default {
             console.log('task',resp)
             this.tasks=resp.r.ret;
         })
-        .catch(error => {
-            app.alert(error)
+        .catch(e => {
+            app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
         });
     }
   },

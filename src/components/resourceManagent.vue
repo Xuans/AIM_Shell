@@ -117,8 +117,8 @@
             <el-tab-pane label="基本信息" name="info">
               <service-info :data="focusTarget"></service-info>
             </el-tab-pane>
-            <el-tab-pane label="文档" name="document">文档</el-tab-pane>
-            <el-tab-pane label="画像" name="second">配置管理</el-tab-pane>
+            <!-- <el-tab-pane label="文档" name="document">文档</el-tab-pane> -->
+            <!-- <el-tab-pane label="画像" name="second">配置管理</el-tab-pane> -->
           </template>
           <template v-else>
             <el-tab-pane label="基本信息" name="info">
@@ -519,6 +519,7 @@ export default {
   box-sizing: border-box;
   word-break: break-word;
   text-overflow: ellipsis;
+  user-select: none;
 }
 .card-content-icon {
   text-align: center;
