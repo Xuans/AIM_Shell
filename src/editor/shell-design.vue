@@ -81,7 +81,8 @@ export default {
       maximize: false,
       dialogFormVisible: false,
       formLabelWidth: "120px",
-      newVersion: ""
+      newVersion: "",
+      versionHistory: null
     };
   },
 
@@ -124,39 +125,44 @@ export default {
     },
     upload() {
       console.log("upload");
+      this.versionHistory = null;
       this.dialogFormVisible = true;
       window.sd = this;
     },
-    searchVersions(query, cb) {
-      if(true){
-        cb([
-          {value:1},
-          {value:2},
-        ])
+    versionFilter(query,arr){
+      let r=[];
+      for(let item of arr){
+        if (
+                query == null ||
+                item.value
+                  .toLowerCase()
+                  .indexOf(query.toLowerCase()) > -1
+              )
+              r.push(item);
       }
-
+      return r;
+    },
+    searchVersions(query, cb) {
+      if (this.versionHistory) {
+        cb(this.versionFilter(query,this.versionHistory));
+        return;
+      }
       this.$getVersionHistory({ service_id: this.store.target.service_id })
         .then(resp => {
-          let versionHistory = [];
+          this.versionHistory = [];
           if (resp.r.ret) {
             for (let item of resp.r.ret) {
-              // if (
-              //   query == null ||
-              //   item.service_version
-              //     .toLowerCase()
-              //     .indexOf(query.toLowerCase()) > -1
-              // )
-                versionHistory.push({
-                  value:item.service_version,
-                });
+              this.versionHistory.push({
+                value: item.service_version
+              });
             }
           }
-          console.log(versionHistory);
-          cb(versionHistory);
+          cb(this.versionFilter(query,this.versionHistory));
         })
         .catch(error => {
           console.error(error);
           app.alert(error);
+          cb([])
         });
     },
     publishVersion() {

@@ -111,8 +111,8 @@
 								rej(result);
 						}
 					}).fail(response=>{
-						console.log(method.m,p,'失败',response);
-						rej(response.message);
+						console.log(method.m,p,'错误',response);
+						rej(response);
 					});
 				});
 			};
