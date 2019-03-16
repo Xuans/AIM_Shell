@@ -1,56 +1,65 @@
 <template>
-    <el-row>
-        <el-select placeholder="添加版本对比" :value="null" @change="handleOfChange">
-            <el-option v-for="item in versionsLeft"
-                       :key="item.name"
-                       :label="versionForm(item.name)"
-                       :value="item.name">
-            </el-option>
-        </el-select>
+  <el-row>
+    <el-select placeholder="添加对比版本" :value="null" @change="handleOfChange">
+      <el-option
+        v-for="item in versionsLeft"
+        :key="item.sv_id"
+        :label="versionForm(item)"
+        :value="item.sv_id"
+      ></el-option>
+    </el-select>
 
-        <el-tag v-for="version in compareVersions"
-                :key="version.name"
-                closable
-                @close="() => handleOfClose(version)">
-            {{versionForm(version.name)}}
-        </el-tag>
-    </el-row>
+    <el-tag
+      v-for="version in compareVersions"
+      :key="version.sv_id"
+      closable
+      @close="() => handleOfClose(version)"
+    >
+      {{versionForm(version)}}
+    </el-tag>
+  </el-row>
 </template>
 
 <script>
-  export default {
-    name: 'VersionCompareSelect',
-    props: ['head', 'compareVersions', 'versions'],
+export default {
+  name: "VersionCompareSelect",
+  /**
+   * sv_id:服务标识
+   * compareVersion:比较中的版本数组
+   * versions:全部版本数组
+   */
+  props: ["sv_id", "compareVersions", "versions"],
 
-    computed: {
-      versionsLeft () {
-        return this.versions.filter(version => version.name !== this.head)
+  computed: {
+    versionsLeft() {
+      return this.versions.filter(version => version.sv_id !== this.sv_id);
+    }
+  },
+  mounted() {
+    window.vsc = this;
+  },
+  methods: {
+    handleOfChange(version) {
+      for (let i = 0; i < this.versionsLeft.length; i++) {
+        if (this.versionsLeft[i].sv_id === version) {
+          this.compareVersions.push(this.versionsLeft[i]);
+          this.versionsLeft.splice(i, 1);
+          break;
+        }
       }
     },
+    handleOfClose(version) {
+      let index = this.compareVersions.indexOf(version);
 
-    methods: {
-      handleOfChange (versionName) {
-        for (let i = 0; i < this.versionsLeft.length; i++) {
-          if (this.versionsLeft[i].name === versionName) {
-            this.compareVersions.push(this.versionsLeft[i])
-            this.versionsLeft.splice(i, 1)
-            break
-          }
-        }
-      },
-      handleOfClose (version) {
-        let index = this.compareVersions.indexOf(version)
-
-        this.compareVersions.splice(index, 1)
-        this.versionsLeft.push(version)
-      },
-      versionForm (version) {
-        return `v${version}.0`
-      }
+      this.compareVersions.splice(index, 1);
+      this.versionsLeft.push(version);
+    },
+    versionForm(version) {
+      return version.service_version;
     }
   }
+};
 </script>
 
 <style scoped>
-
 </style>

@@ -25,6 +25,8 @@
         return makeState
       }
     },
+    mounted(){
+    },
 
     components: {
       mutilPanel,

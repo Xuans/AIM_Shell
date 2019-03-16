@@ -1,18 +1,21 @@
 export class Target {
-  constructor(item,sv_id) {
-    this.service_ename= this.id = item.tree_node_name
+  constructor(item) {
+    console.log('init target',item)
+    this.service_ename= item.tree_node_name
     this.service_name =item.tree_node_desc
     this.tree_p_node_name=item.tree_p_node_name
+    this.service_id=item.service_id;
     this.service_content={}
     this.service_args={}
     this.service_doc=""
+    
     this.create_user="未知"
-    this.service_id=null,
     //版本标识
-    this.sv_id = sv_id;
+    this.sv_id = item.sv_id;
     // this.name=tree_node_desc
     this.type = 0;
     this.versions = Array.of({ name: 0 }, { name: 1 }, { name: 2 });
+    this.id = this.service_ename||this.service_id;
   }
 
   parse () {

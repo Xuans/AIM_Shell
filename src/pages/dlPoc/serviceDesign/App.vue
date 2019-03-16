@@ -2,8 +2,9 @@
   <workbench :model="model">
     <div slot="centerTool" style="display:flex;">
       <div v-if="target.lastest">
-        <el-tooltip effect="light" content="删除节点" placement="bottom"> 
-          <el-button size='mini'
+        <el-tooltip effect="light" content="删除节点" placement="bottom">
+          <el-button
+            size="mini"
             icon="el-icon-delete"
             :disabled="!target.lastest"
             @click="editorHandle('delete')"
@@ -11,24 +12,36 @@
         </el-tooltip>
       </div>
       <span v-if="target.lastest">|</span>
-      <div >
-        <el-button size='mini' v-if="target.lastest"
+      <div>
+        <el-button
+          size="mini"
+          v-if="target.lastest"
           icon="el-icon-edit-outline"
           :disabled="!target.lastest"
           @click="editorHandle('save')"
         >保存</el-button>
-        <el-button size='mini' v-if="target.lastest"
+        <el-button
+          size="mini"
+          v-if="target.lastest"
           icon="el-icon-upload2"
           :disabled="!target.lastest"
           @click="editorHandle('upload')"
         >发布</el-button>
-        <el-button  icon="el-icon-menu" size='mini' @click="versionCompare('upload')">
-          比对版本
-        </el-button>
+        <el-button
+          v-loading="versionLoading"
+          icon="el-icon-menu"
+          size="mini"
+          @click="versionCompare('upload')"
+        >比对版本</el-button>
       </div>
     </div>
 
-    <version-select slot="rightTool"  :target="target"  :service_id="target.service_id" :versions="target.versions"></version-select>
+    <version-select
+      slot="rightTool"
+      :target="target"
+      :service_id="target.service_id"
+      :versions="target.versions"
+    ></version-select>
 
     <shell-design ref="editor" slot="mainPage" :target="target">
       <template slot="form" slot-scope="{store}">
@@ -67,6 +80,7 @@ export default {
     return {
       cache: null,
       selection: null,
+      versionLoading: false,
       model: {
         name: "服务编排",
         paths: [{ name: "path" }, { to: "to" }, { me: "me" }]
@@ -75,16 +89,35 @@ export default {
   },
 
   methods: {
-    versionCompare(){
-      app.domain.exports("serviceVersions", {
-      });
+    versionCompare() {
+      if (this.versionLoading) {
+        app.alert("正在加载版本信息");
+        return;
+      }
+      this.versionLoading = true;
+      this.$getVersionHistory({ service_id: this.target.service_id })
+        .then(resp => {
+          this.versionLoading = false;
+          //传参给serviceVersions/main.js
+          app.domain.exports("serviceVersions", {
+            versions: resp.r.ret,
+            sv_id: this.target.sv_id,
+            service_id:this.target.service_id,
+          });
 
-      app.dispatcher.load({
-        title: "版本比对-" + this.target.service_name,
-        moduleId: "dlPoc",
-        section: "serviceVersions",
-        id: this.target.service_id,
-      });
+          app.dispatcher.load({
+            title: "版本比对-" + this.target.service_name,
+            moduleId: "dlPoc",
+            section: "serviceVersions",
+            id: this.target.service_id
+          });
+        })
+        .catch(e => {
+          app.alert("加载版本信息失败");
+          app.alert(e);
+
+          this.versionLoading = false;
+        });
     },
     editorHandle(action) {
       this.$refs.editor.request(action);

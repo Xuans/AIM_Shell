@@ -63,7 +63,7 @@ export class EditorConfig {
     this.lines = {
       '0': line
     }
-    this.background="#FDFDFD";
+    this.background="#F1F2F2";
     this.types = types
     this.layoutable = layoutPolicy
     this.onHooks = Array.of(ReaderListener)
@@ -205,7 +205,6 @@ export class DebugEditorConfig {
 
 export class VersionsEditorConfig {
   constructor(target) {
-
     this.id = `version-${target.id}-${target.sv_id}`
     this.background = 'lightgrey'
     this.children = {
@@ -233,6 +232,12 @@ export class VersionsEditorConfig {
       }
     })
 
+    if(target.service_content&&target.service_content.constructor == String){
+      target.service_content=JSON.parse(target.service_content)
+    }
+    if(target.service_args&&target.service_args.constructor == String){
+      target.service_args=JSON.parse(target.service_args)
+    }
     addDataAndLine(this, target.service_content.data)
     addServiceParas(this, target.service_args)
   }
