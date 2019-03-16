@@ -14,12 +14,10 @@ const socket = {
             if (log) {
                 this.control = setTimeout(
                     function () {
-                        console.log("当前节点" + index)
                         // c({ index: (index + 1), prevIndex: index, result: 1, log: "执行完毕:" + data.data[flow[index]].name });
                         let node = data.data[index];
                         if (node.target) {
                             let i = node.target[log.result];
-                            console.log("下一个节点", i, index);
                             c({ index: i, prevIndex: index, result: log.result, log });
                             func(i, c);
                         } else {

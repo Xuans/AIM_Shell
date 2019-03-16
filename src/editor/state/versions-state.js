@@ -14,9 +14,9 @@ class VersionsState extends State {
   }
 
   refresh () {
-    const {$getServiceInstance} = Vue
+    const {$buildTarget} = Vue
 
-    $getServiceInstance(this.target).then(json => {
+    $buildTarget(this.target).then(json => {
       this.config = this.createEditorConfig(json)
       this.render = true
     })

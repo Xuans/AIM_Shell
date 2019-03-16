@@ -1,16 +1,18 @@
 export class Target {
-  constructor(item) {
-    this.service_ename= this.service_id= this.id = item.tree_node_name
+  constructor(item,sv_id) {
+    this.service_ename= this.id = item.tree_node_name
     this.service_name =item.tree_node_desc
     this.tree_p_node_name=item.tree_p_node_name
     this.service_content={}
     this.service_args={}
     this.service_doc=""
     this.create_user="未知"
+    this.service_id=null,
+    //版本标识
+    this.sv_id = sv_id;
     // this.name=tree_node_desc
     this.type = 0;
     this.versions = Array.of({ name: 0 }, { name: 1 }, { name: 2 });
-    this.head = 2;
   }
 
   parse () {
@@ -50,7 +52,7 @@ export class Target {
   }
 
   get lastest() {
-    return this.head === this.versions[this.versions.length - 1].name;
+    return !this.sv_id
   }
 
   static makeNull () {
@@ -69,26 +71,26 @@ export class Target {
     // this.name=tree_node_desc
     this.type = 0;
     this.versions = Array.of({ name: 0 }, { name: 1 }, { name: 2 });
-    this.head = 0;
+    this.sv_id = 0;
   }
 
   cloneByVersion (version) {
     let target = new Target(this.item,version)
 
-    target.head = version.name
+    target.sv_id = version.name
 
     return target
   }
 
   get lastest () {
-    return this.head === this.versions[this.versions.length - 1].name
+    return this.sv_id === this.versions[this.versions.length - 1].name
   }
 }  */
 export class VersionTarget extends Target {
   cloneByVersion (version) {
     let target = new Target(this.item,version)
 
-    target.head = version.name
+    target.sv_id = version.sv_id
 
     return target
   }

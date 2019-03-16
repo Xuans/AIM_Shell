@@ -124,7 +124,6 @@ export default {
       this.store[action](this);
     },
     upload() {
-      console.log("upload");
       this.versionHistory = null;
       this.dialogFormVisible = true;
       window.sd = this;
@@ -153,7 +152,8 @@ export default {
           if (resp.r.ret) {
             for (let item of resp.r.ret) {
               this.versionHistory.push({
-                value: item.service_version
+                ...item,
+                value: item.service_version,
               });
             }
           }

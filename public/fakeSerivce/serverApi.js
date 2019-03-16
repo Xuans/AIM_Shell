@@ -108,11 +108,27 @@ export default {
       })
     })
   },
-  $getServiceInstance: function (target) {
+  /**
+   * 根据target获取服务实例，并且初始化Target内容
+   * @param {*} target 
+   */
+  $buildTarget(target) {
+    if(target.sv_id){
+      return methods.getVersion([target])
+      .then(response => {
+        if (target.assign)
+          target.assign(response.r.ret).parseContent()
+        return(response.r.ret)
+      })
+      .catch(e => {
+        if (target.toBeNotReady)
+          target.toBeNotReady().parseContent()
+        return({});
+      })
+    }
     return new Promise(resolve => {
       methods.getService([target])
         .then(response => {
-          console.error(target,target.assign)
           if (target.assign)
             target.assign(response.r.ret).parseContent()
           resolve(response.r.ret)
@@ -124,6 +140,12 @@ export default {
         })
     });
   },
+  $getServiceInstance: function (target) {
+    return methods.getService([target])
+      .then(response => {
+        return response.r.ret
+      });
+  },
   $getVersionHistory({
     service_id
   }) {
@@ -133,10 +155,10 @@ export default {
   },
 
   $getVersion({
-    service_id
+    sv_id
   }) {
     return methods.getVersion([{
-      service_id
+      sv_id
     }]);
   },
 

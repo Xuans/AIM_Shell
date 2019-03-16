@@ -12,7 +12,6 @@
 
       <slot name="canvasUnder"></slot>
     </el-container>
-
   </el-container>
 </template>
 
@@ -31,8 +30,8 @@
   position: relative;
   background-color: #f1f1f4;
   overflow: auto;
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
 }
 
 .gutter.custom-gutter-horizontal {
@@ -164,12 +163,12 @@ export default {
 
   methods: {
     initEditor(config) {
-      this.$refs.canvas.setAttribute('id', this.editorId)
+      this.$refs.canvas.setAttribute("id", this.editorId);
 
       this.editor = new this.EditorConstruction($.extend(true, {}, config));
       this.onEditor(this.eventsOnEditor);
       this.$emit(INIT, this.editor);
-      this.editor.doSave = done => this.$emit("save", this.editor,done);
+      this.editor.doSave = done => this.$emit("save", this.editor, done);
       this.initContextMenu();
       this.initCommandListener();
     },
@@ -322,19 +321,25 @@ export default {
       }
     },
 
-    replaceEditor(editor) {
-      if (editor === this.editor) return;
-      if ($AG.isEditor(editor)) {
+    replaceEditor(newEditor) {
+      if (newEditor === this.editor) return;
+      if ($AG.isEditor(newEditor)) {
         let old, oldSvg, newSvg;
 
         old = this.editor;
         oldSvg = this.getSvg();
-        this.editor = editor;
+
+        this.editor = newEditor;
         newSvg = this.getSvg();
 
         oldSvg != null
           ? $(oldSvg).replaceWith(newSvg)
           : $(this.$refs.canvas).append(newSvg);
+        if (oldSvg)
+          newEditor.style({
+            background: newEditor.config.background
+          });
+
         this.$emit("change:editor", editor, old);
 
         return old;

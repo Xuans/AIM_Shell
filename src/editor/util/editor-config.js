@@ -56,13 +56,14 @@ function addServiceParas(config, p) {
 export class EditorConfig {
   constructor(target) {
 
-    this.id = `flow-${target.id}-${target.head}`
+    this.id = `flow-${target.id}-${target.sv_id}`
     this.children = {
       node: editNode()
     }
     this.lines = {
       '0': line
     }
+    this.background="#FDFDFD";
     this.types = types
     this.layoutable = layoutPolicy
     this.onHooks = Array.of(ReaderListener)
@@ -170,13 +171,14 @@ export class EditorConfig {
 
 export class DebugEditorConfig {
   constructor(target) {
-    this.id = `debug-${target.id}-${target.head}`
+    this.id = `debug-${target.id}-${target.sv_id}`
     this.children = {
       node: noeditNode()
     }
     this.lines = {
       '0': lineOfUnselectable
     }
+    this.background ='RGB(203,190,173)'
     this.types = types
     this.onHooks = Array.of(ReaderListener)
     this.policies = {
@@ -204,7 +206,7 @@ export class DebugEditorConfig {
 export class VersionsEditorConfig {
   constructor(target) {
 
-    this.id = `version-${target.id}-${target.head}`
+    this.id = `version-${target.id}-${target.sv_id}`
     this.background = 'lightgrey'
     this.children = {
       node: versionNode()

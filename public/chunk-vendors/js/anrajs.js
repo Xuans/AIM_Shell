@@ -5549,6 +5549,9 @@
             root.addNotify();
             root.activate();
         },
+        style(s){
+            Object.assign(this.canvas.element.style,s);
+        },
         _save: function () {
             this.doSave(()=>{
                 this.cmdStack.markSaveLocation();

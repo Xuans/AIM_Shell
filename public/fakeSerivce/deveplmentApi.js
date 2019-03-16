@@ -239,8 +239,8 @@ export default {
     ])
   },
   $getServiceInstance: function (target) {
-    target.service_content = nodes[target.head]
-    return Promise.resolve(nodes[target.head])
+    target.service_content = nodes[target.sv_id]
+    return Promise.resolve(nodes[target.sv_id])
   },
   $getLogs () {
     return [{

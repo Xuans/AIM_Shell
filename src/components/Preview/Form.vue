@@ -58,7 +58,6 @@ export default {
   },
   methods: {
     change(...args) {
-      console.log(args);
     },
     getValue(value) {
       return value === null || value === undefined || value === "" ? "" : value;

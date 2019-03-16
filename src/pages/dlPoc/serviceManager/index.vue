@@ -174,7 +174,6 @@ export default {
         this.$getServiceInstance({
           service_ename:item.tree_node_name
         }).then(resp=>{
-          console.log('resp',resp)
           callback(resp);
         }).catch(
           e=>app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR)
@@ -292,9 +291,7 @@ export default {
           this.loading = false;
 
           if (this.selection) {
-            console.log("selection1", this.selection);
             this.selection = this.cache[this.selection[this.serviceMapping.id]];
-            console.log("selection2", this.selection);
           } else this.selection = null;
           this.$forceUpdate();
           // this.$refs.resourceManager.setSearchable(this.cache);

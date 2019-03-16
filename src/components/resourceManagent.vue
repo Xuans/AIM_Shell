@@ -218,13 +218,11 @@ export default {
     },
     moveBack() {
       let b = this.backStack.splice(-1);
-      console.log("moveback", b);
       if (b.length) {
         this.stacking = true;
         this.prevStack.push(this.list);
         // this.expand(b[0]);
 
-        console.log("moveback", b[0]);
         let len = b[0].length;
         if (len == 1) this.parent.selection = this.getRealItem(b[0][0]);
         else if (len > 1) this.parent.selection = null;

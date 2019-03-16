@@ -85,7 +85,6 @@
         }
       },
       handleSelect (row, event, column) {
-        console.log(this.store.activeEditor.rootEditPart)
         let editor = this.store.activeEditor
         if (editor) {
           let root = editor.rootEditPart

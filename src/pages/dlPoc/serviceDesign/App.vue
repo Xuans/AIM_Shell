@@ -1,7 +1,7 @@
 <template>
   <workbench :model="model">
     <div slot="centerTool" style="display:flex;">
-      <div>
+      <div v-if="target.lastest">
         <el-tooltip effect="light" content="删除节点" placement="bottom"> 
           <el-button size='mini'
             icon="el-icon-delete"
@@ -10,22 +10,25 @@
           ></el-button>
         </el-tooltip>
       </div>
-      <span>|</span>
-      <div>
-        <el-button size='mini'
+      <span v-if="target.lastest">|</span>
+      <div >
+        <el-button size='mini' v-if="target.lastest"
           icon="el-icon-edit-outline"
           :disabled="!target.lastest"
           @click="editorHandle('save')"
         >保存</el-button>
-        <el-button size='mini'
+        <el-button size='mini' v-if="target.lastest"
           icon="el-icon-upload2"
           :disabled="!target.lastest"
           @click="editorHandle('upload')"
         >发布</el-button>
+        <el-button  icon="el-icon-menu" size='mini' @click="versionCompare('upload')">
+          比对版本
+        </el-button>
       </div>
     </div>
 
-    <version-select slot="rightTool" v-model="target.head" :versions="target.versions"></version-select>
+    <version-select slot="rightTool"  :target="target"  :service_id="target.service_id" :versions="target.versions"></version-select>
 
     <shell-design ref="editor" slot="mainPage" :target="target">
       <template slot="form" slot-scope="{store}">
@@ -72,6 +75,17 @@ export default {
   },
 
   methods: {
+    versionCompare(){
+      app.domain.exports("serviceVersions", {
+      });
+
+      app.dispatcher.load({
+        title: "版本比对-" + this.target.service_name,
+        moduleId: "dlPoc",
+        section: "serviceVersions",
+        id: this.target.service_id,
+      });
+    },
     editorHandle(action) {
       this.$refs.editor.request(action);
     }

@@ -3,8 +3,7 @@
 
     <el-row slot="rightTool">
 
-      <version-select v-model="target.head"
-                      :versions="target.versions"
+      <version-select :target="target"
                       :disabled="compareVersions.length > 0">
       </version-select>
 
@@ -13,7 +12,7 @@
     </el-row>
 
     <version-compare-select slot="centerTool"
-                            :head="target.head"
+                            :head="target.sv_id"
                             :compareVersions="compareVersions"
                             :versions="target.versions">
     </version-compare-select>

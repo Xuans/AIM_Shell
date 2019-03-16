@@ -116,7 +116,6 @@ export default {
   },
   computed: {
     inputArr() {
-      console.log(this.input);
       if (!this.input) {
         return empty.input;
       } else if (!this.input.args) {
@@ -152,7 +151,6 @@ export default {
     //   console.log(JSON.stringify(this.$data));
     // },
     save() {
-      console.log(JSON.stringify(this.$data));
     }
   },
   mounted() {

@@ -1,6 +1,6 @@
 <template>
     <el-row>
-        <el-select placeholder="版本对比" :value="null" @change="handleOfChange">
+        <el-select placeholder="添加版本对比" :value="null" @change="handleOfChange">
             <el-option v-for="item in versionsLeft"
                        :key="item.name"
                        :label="versionForm(item.name)"

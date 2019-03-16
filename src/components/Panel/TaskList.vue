@@ -36,7 +36,6 @@ export default {
       this.$getTasks(this.store.target)
         .then(resp => {
             this.loading=false;
-            console.log('task',resp)
             this.tasks=resp.r.ret;
         })
         .catch(e => {

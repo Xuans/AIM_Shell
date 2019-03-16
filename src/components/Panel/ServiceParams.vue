@@ -47,7 +47,6 @@ export default {
   inject: ["store"],
   watch: {
     "store.modified"() {
-      console.log("modified");
       this.$forceUpdate();
     }
   },
@@ -58,7 +57,6 @@ export default {
   },
   computed: {
     params() {
-      console.log("params computed", this.store.service_args);
       let treeData = [];
 
       for (let nodeId in this.store.service_args) {

@@ -21,9 +21,11 @@ export class State {
   }
 
   refresh () {
-    const {$getServiceInstance, $getScriptInstanceTree, $getServiceInstanceTree} = Vue
 
-    Promise.all(Array.of($getServiceInstance(this.target), $getScriptInstanceTree(this.target), $getServiceInstanceTree(this.target)))
+    
+    const {$buildTarget, $getScriptInstanceTree, $getServiceInstanceTree} = Vue
+
+    Promise.all(Array.of($buildTarget(this.target), $getScriptInstanceTree(this.target), $getServiceInstanceTree(this.target)))
         .then(([serviceData, scriptTree, serviceTree]) => {
           this.config = this.createEditorConfig()
 

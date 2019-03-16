@@ -30,7 +30,6 @@ export default {
 
       let app=window.app;
       state.update(editor) // update in fact
-window.editor=editor;
       this.$saveSerivce(this.target, state.genJson(editor),editor.config.service_args)
           .then(() => {
             if(app)app.alert('保存成功','保存成功',app.alertShowType.SUCCESS);
@@ -43,7 +42,7 @@ window.editor=editor;
       this.state.setDirty(this.store.activeEditor)
     },
     handleOfInit (editor) {
-      this.store.push(this.target.head, editor)
+      this.store.push(this.target.sv_id, editor)
     },
     handleOfFlowCallback (fn, params = []) {
       if ($.isFunction(fn)) {

@@ -167,7 +167,6 @@ export default {
         item.value = Reflect.has(input, option.ename)
           ? input[option.ename]
           : input[option.ename]=""
-        console.log(item,option)
 
         if (item.exposure) {
           item.isExposure = this.store.checkExposure(id, option.ename);
@@ -194,7 +193,6 @@ export default {
       this.$forceUpdate();
     },
     handleOfExposure(value, item) {
-      console.log(value,item)
       let id=this.store.activeId;
       if(value){
         //生成占位符

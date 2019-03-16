@@ -26,7 +26,7 @@
     extends: editorFeature,
 
     watch: {
-      'target.head' (vision) {
+      'target.sv_id' (vision) {
         if (this.store.has(vision)) {
           this.$refs.editor.replaceEditor(this.store.getAndApplyCurrent(vision))
         } else {
