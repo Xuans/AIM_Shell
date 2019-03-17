@@ -9,7 +9,7 @@
       <props-card :header="`脚本[${shellName}]参数配置`" style="margin: 10px;">
         <!-- <template slot="righttoolbar">
           <el-button @click="save" size="mini">保存</el-button>
-        </template> -->
+        </template>-->
         <el-table
           v-if="store.active"
           ref="multipleTable"
@@ -24,17 +24,24 @@
           <el-table-column prop="cname" label="中文名" fixed="left" width="100"></el-table-column>
           <el-table-column prop="value" label="值">
             <template slot-scope="scope">
+              <el-autocomplete
+                v-if="scope.row.key=='agent'"
+                v-model="scope.row.value"
+                :fetch-suggestions="searchAgent"
+                placeholder="请输入代理名称/IP"
+                value-key="agent_name"
+                @select="item=>handleOfValue(item['agent_name'],scope.row)"
+              ></el-autocomplete>
               <el-input
-                v-if="scope.row.writable"
+                v-else-if="scope.row.writable"
                 :disabled="scope.row.isExposure"
-                size="mini"
                 v-model="scope.row.value"
                 @input="val => handleOfValue(val, scope.row)"
               ></el-input>
               <span v-else>{{scope.row.value}}</span>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="对外暴露" width="80">
+          <el-table-column fixed="right" label="外部填写" width="80">
             <template slot-scope="scope">
               <el-checkbox
                 v-if="store.target.lastest || scope.row.exposure"
@@ -143,7 +150,7 @@ export default {
           return data;
         }
       }
-      this.loading=false;
+      this.loading = false;
       let input, item, id;
       input = this.store.active.get("data.params");
       if (!input) {
@@ -160,13 +167,12 @@ export default {
           ...option,
           writable: true,
           exposure: true,
-          key: 'params.'+option.ename,
+          key: "params." + option.ename
         };
-
 
         item.value = Reflect.has(input, option.ename)
           ? input[option.ename]
-          : input[option.ename]=""
+          : (input[option.ename] = "");
 
         if (item.exposure) {
           item.isExposure = this.store.checkExposure(id, option.ename);
@@ -174,39 +180,51 @@ export default {
 
         data.push(item);
       }
-      data.splice(0,0,{
-        ename:'shell_agent',
-        cname:'执行服务器',
-        writable:true,
-        exposure:true,
-        key:'agent',
-        value:this.store.active.get('data.agent'),
-        isExposure : this.store.checkExposure(id, 'shell_agent'),
+      data.splice(0, 0, {
+        ename: "shell_agent",
+        cname: "执行服务器",
+        writable: true,
+        exposure: true,
+        key: "agent",
+        value: this.store.active.get("data.agent"),
+        isExposure: this.store.checkExposure(id, "shell_agent")
       });
       return data;
     }
   },
 
   methods: {
+    searchAgent(queryString, cb) {
+      this.$getAgent()
+        .then(resp=>{
+          cb(resp);
+        })
+        .catch(e => {
+          app.alert("加载代理列表失败");
+          app.alert(e);
+        });
+    },
     handleOfValue(val, item) {
       this.store.setValueToActive(item.key, val);
       this.$forceUpdate();
     },
     handleOfExposure(value, item) {
-      let id=this.store.activeId;
-      if(value){
+      let id = this.store.activeId;
+      if (value) {
         //生成占位符
-        let data=this.store.active.get('data');
+        let data = this.store.active.get("data");
         //${节点id_节点英文名_关键字}
-        let placeholder=`\${${id}_${data.tree_info.tree_node_name}_${item.key}}`
+        let placeholder = `\${${id}_${data.tree_info.tree_node_name}_${
+          item.key
+        }}`;
 
-        this.store.addServiceParams(id,item, placeholder)
+        this.store.addServiceParams(id, item, placeholder);
 
         //设置占位符
-        item.value=placeholder;
-        this.handleOfValue(placeholder,item);
-      }else{
-        this.store.removeServiceParams(id,item)
+        item.value = placeholder;
+        this.handleOfValue(placeholder, item);
+      } else {
+        this.store.removeServiceParams(id, item);
       }
     },
     /**
@@ -230,7 +248,11 @@ export default {
             }
           })
           .catch(e => {
-            app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
+            app.alert(
+              "错误提示",
+              (e && e.message) || e,
+              app.alertShowType.ERROR
+            );
           });
     }
   },

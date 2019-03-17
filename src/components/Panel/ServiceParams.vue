@@ -15,26 +15,23 @@
       :fit="!0"
       tooltip-effect="dark"
     >
-      <el-table-column prop="nodeId" label="所属节点" width="50"></el-table-column>
+      <el-table-column prop="nodeId" label="所属节点" width="100"></el-table-column>
       <el-table-column prop="ename" label="英文名" width="120"></el-table-column>
 
       <el-table-column prop="placeholder" label="占位符" width="300"></el-table-column>
-      <el-table-column prop="cname" label="中文名" width="220">
+      <el-table-column prop="cname" label="中文名（别名）" width="220">
         <template slot-scope="scope">
           <el-input
-            size="mini"
             v-model="scope.row.cname"
             @input="val => handleOfValue(val, scope.row,'cname')"
           ></el-input>
         </template>
       </el-table-column>
-      <el-table-column prop="value" label="默认值" width="220">
+      <el-table-column prop="cname" label="" width="120">
         <template slot-scope="scope">
-          <el-input
-            size="mini"
-            v-model="scope.row.value"
-            @input="val => handleOfValue(val, scope.row,'value')"
-          ></el-input>
+          <el-button
+            size="mini" @click="reveal(scope.row)"
+          >定位</el-button>
         </template>
       </el-table-column>
     </el-table>

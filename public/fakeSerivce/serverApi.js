@@ -5,21 +5,11 @@ import {
 const methods = global.app.shellEditorApi
 
 export default {
-  $getAgent(cb) {
-    methods
+  $getAgent() {
+    return methods
       .getAgents([{}])
       .then(response => {
-        const ret = response.r.ret
-        const content = JSON.parse(ret.service_content || '{}')
-        target.ret = ret
-        content.data = content.data || []
-        cb(content)
-      })
-      .catch(error => {
-
-        cb({
-          data: []
-        })
+        return response.r.ret
       })
   },
   $convertTimeFormat(ms) {
@@ -113,18 +103,18 @@ export default {
    * @param {*} target 
    */
   $buildTarget(target) {
-    if(target.sv_id){
+    if (target.sv_id) {
       return methods.getVersion([target])
-      .then(response => {
-        if (target.assign)
-          target.assign(response.r.ret).parseContent()
-        return(response.r.ret)
-      })
-      .catch(e => {
-        if (target.toBeNotReady)
-          target.toBeNotReady().parseContent()
-        return({});
-      })
+        .then(response => {
+          if (target.assign)
+            target.assign(response.r.ret).parseContent()
+          return (response.r.ret)
+        })
+        .catch(e => {
+          if (target.toBeNotReady)
+            target.toBeNotReady().parseContent()
+          return ({});
+        })
     }
     return new Promise(resolve => {
       methods.getService([target])
