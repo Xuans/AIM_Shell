@@ -182,7 +182,7 @@ export default {
     },
     openFile(item) {
       app.domain.exports("serviceItem", {
-        data: item
+        data: JSON.parse(JSON.stringify(item))
       });
 
       app.dispatcher.load({

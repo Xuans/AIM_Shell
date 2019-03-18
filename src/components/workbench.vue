@@ -15,12 +15,12 @@
       <el-col :span="5">
         <!-- 展示path用的面包屑 -->
         <div class="ibreadcrumb" style="width:100%;height:100%;overflow:auto;">
-            <!-- <span  :key="index">
-                <span @click.stop="reveal()">{{model.name}}</span>
+            <span  :key="index">
+                <span @click.stop="reveal()">Root</span>
                 <i class="el-icon-arrow-right" v-if=" paths&& paths.length>0"></i>
-            </span> -->
+            </span>
             <span  v-for="(path,index) in paths"  :key="index">
-                <span @click.stop="reveal(path)">{{path[mapping.label]}}</span>
+                <span @click.stop="reveal(path)">{{path[mapping.id]}}</span>
                 <i class="el-icon-arrow-right" v-if="index<paths.length-1"></i>
             </span>
         </div>

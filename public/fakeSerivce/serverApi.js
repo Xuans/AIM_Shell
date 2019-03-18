@@ -287,11 +287,11 @@ export default {
   },
   $field: {
     scriptTree: {
-      label: 'tree_node_desc',
+      label: 'tree_node_name',
       children: 'children'
     },
     serviceTree: {
-      label: 'tree_node_desc',
+      label: 'tree_node_name',
       children: 'children'
     }
   },

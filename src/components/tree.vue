@@ -12,7 +12,7 @@
             :class="{selected:cat1==selectedItem}"
           >
             <span  @click.stop="selectionChanged(cat1)">
-              {{cat1[mapping['label']]}}
+              {{cat1[mapping['id']]}}
               <i
                 data-role="expand"
                 class="fa fa-caret-down"
@@ -41,7 +41,7 @@
                   >
                     <span 
                     @click.stop="selectionChanged(cat2)">
-                    {{cat2[mapping['label']]}}
+                    {{cat2[mapping['id']]}}
                     <i
                       class="fa fa-caret-down"
                       @click.stop="expand(cat2)"
@@ -72,7 +72,7 @@
                             :title="item[mapping['label']]"
                             @dblclick.stop="open(item)"
                           >
-                            <span>{{item[mapping['label']]}}</span>
+                            <span>{{item[mapping['id']]}}</span>
                             <div class="tookit">
                               <i
                                 data-role="del"
@@ -115,6 +115,7 @@ export default {
   },
   watch:{
     'parent.treeData'(data){
+      console.log('树节点发生改变',data);
     },
   },
   methods: {
