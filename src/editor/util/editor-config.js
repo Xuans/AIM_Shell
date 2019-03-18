@@ -48,8 +48,10 @@ function addDataAndLine(config, dataOfService) {
 }
 
 function addServiceParas(config, p) {
+  if(p=='')
+    p={}
   if (p.constructor != Object)
-    p = {}
+    p = JSON.parse(p);
   config.service_args = p;
 }
 

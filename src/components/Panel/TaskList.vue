@@ -9,7 +9,7 @@
       <el-table-column prop="job_timeout" label="超时" width="120"></el-table-column>
       <el-table-column prop="value" label="" width="220">
         <template slot-scope="scope">
-          <el-button size='mini' @click="jumpTo(scope)">跳转</el-button>
+          <el-button size='mini' @click="jumpTo(scope.row)">跳转</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -31,6 +31,18 @@ export default {
     this.reload();
   },
   methods: {
+    jumpTo(task){
+      app.domain.exports("shell", {
+              shell_ename: task.instance_name
+            });
+
+            app.dispatcher.load({
+              title: "任务定义",
+              moduleId: "dlPoc",
+              section: "shellTaskMangement",
+              id: task.instance_ename
+            });
+    },
     reload() {
       this.loading = true;
       this.$getTasks(this.store.target)

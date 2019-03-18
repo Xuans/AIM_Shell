@@ -24,21 +24,21 @@
           <el-table-column prop="cname" label="中文名" fixed="left" width="100"></el-table-column>
           <el-table-column prop="value" label="值">
             <template slot-scope="scope">
+              <span v-if="scope.row.isExposure||!scope.row.writable">{{scope.row.value}}</span>
               <el-autocomplete
-                v-if="scope.row.key=='agent'"
+                v-else-if="scope.row.key=='agent'"
                 v-model="scope.row.value"
+                :readonly="scope.row.isExposure"
                 :fetch-suggestions="searchAgent"
                 placeholder="请输入代理名称/IP"
                 value-key="agent_name"
                 @select="item=>handleOfValue(item['agent_name'],scope.row)"
               ></el-autocomplete>
               <el-input
-                v-else-if="scope.row.writable"
-                :disabled="scope.row.isExposure"
+                v-else
                 v-model="scope.row.value"
                 @input="val => handleOfValue(val, scope.row)"
               ></el-input>
-              <span v-else>{{scope.row.value}}</span>
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="外部填写" width="80">
@@ -150,7 +150,7 @@ export default {
           return data;
         }
       }
-      this.loading = false;
+      this.loading=false;
       let input, item, id;
       input = this.store.active.get("data.params");
       if (!input) {
@@ -196,13 +196,25 @@ export default {
   methods: {
     searchAgent(queryString, cb) {
       this.$getAgent()
-        .then(resp=>{
+        .then(resp => {
           cb(resp);
         })
         .catch(e => {
           app.alert("加载代理列表失败");
           app.alert(e);
         });
+    },
+    openShell() {
+      app.domain.exports("shell", {
+        shell_ename: this.shellName
+      });
+
+      app.dispatcher.load({
+        title: "脚本编排:"+this.shellName,
+        moduleId: "dlPoc",
+        section: "shellEditor",
+        id: this.shellName
+      });
     },
     handleOfValue(val, item) {
       this.store.setValueToActive(item.key, val);
@@ -240,8 +252,8 @@ export default {
           .then(resp => {
             this.loading = false;
             if (resp.r.ret) {
-                this.store.active.set("data.shell_def", resp.r.ret);
-                this.$forceUpdate();
+              this.store.active.set("data.shell_def", resp.r.ret);
+              this.$forceUpdate();
             }
           })
           .catch(e => {
