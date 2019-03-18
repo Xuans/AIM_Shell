@@ -1,5 +1,5 @@
 <template>
-  <workbench :model="model">
+  <workbench :model="model" class="serviceDesign_app">
     <div slot="centerTool" style="display:flex;">
       <div v-if="target.lastest">
         <el-tooltip effect="light" content="删除节点" placement="bottom">

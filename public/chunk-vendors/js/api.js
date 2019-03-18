@@ -70,6 +70,10 @@
 		c:'tc.cama.aweb.shell.service.IShellService',
 		m:'getShells'
 	},{
+		//13.查询脚本列表
+		c:'tc.cama.aweb.shell.service.IShellService',
+		m:'getShell'
+	},{
 		c:'tc.cama.aweb.shell.service.IShellInstanceService',
 		m:'getAgents'
 	},{

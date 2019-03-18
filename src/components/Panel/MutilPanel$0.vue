@@ -1,5 +1,5 @@
 <template>
-    <el-tabs v-model="activeName" type="border-card" tab-position="bottom">
+    <el-tabs v-model="activeName" type="border-card" tab-position="bottom" class="MutiPanel">
         <el-tab-pane name="服务参数" label="服务参数">
             <mutil-content @close="handleOfClose">
                 <service-params></service-params>

@@ -1,5 +1,5 @@
 <template>
-  <el-tabs :value="activeTab" type="card" style="width: 100%">
+  <el-tabs :value="activeTab" type="card" style="width: 100%" class="shellFlowPanel">
     <el-tab-pane
       label="脚本参数配置"
       name="first"
@@ -181,13 +181,13 @@ export default {
         data.push(item);
       }
       data.splice(0, 0, {
-        ename: "shell_agent",
-        cname: "执行服务器",
+        ename: "agent",
+        cname: "脚本服务器",
         writable: true,
         exposure: true,
         key: "agent",
         value: this.store.active.get("data.agent"),
-        isExposure: this.store.checkExposure(id, "shell_agent")
+        isExposure: this.store.checkExposure(id, "agent")
       });
       return data;
     }
@@ -240,11 +240,8 @@ export default {
           .then(resp => {
             this.loading = false;
             if (resp.r.ret) {
-              let shellDef;
-              if ((shellDef = resp.r.ret[0])) {
-                this.store.active.set("data.shell_def", shellDef);
+                this.store.active.set("data.shell_def", resp.r.ret);
                 this.$forceUpdate();
-              }
             }
           })
           .catch(e => {

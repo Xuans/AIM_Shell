@@ -63,7 +63,7 @@ export default {
   $getShellInstance({
     shell_ename
   }) {
-    return methods.getShells([{
+    return methods.getShell([{
       shell_ename
     }]);
   },
