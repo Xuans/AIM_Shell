@@ -6,10 +6,10 @@
     <el-table v-loading='loading' ref="multipleTable" :data="taskData" border size="mini" stripe tooltip-effect="dark">
       <el-table-column prop="instance_ename" label="任务名" width="120"></el-table-column>
       <el-table-column prop="instance_name" label="任务描述" width="120"></el-table-column>
-      <el-table-column prop="job_timeout" label="超时" width="120"></el-table-column>
+      <el-table-column prop="job_timeout" label="超时时间" width="120"></el-table-column>
       <el-table-column prop="value" label="" width="220">
         <template slot-scope="scope">
-          <el-button size='mini' @click="jumpTo(scope.row)">跳转</el-button>
+          <el-button size='mini' @click="jumpTo(scope.row)">查看任务</el-button>
         </template>
       </el-table-column>
     </el-table>

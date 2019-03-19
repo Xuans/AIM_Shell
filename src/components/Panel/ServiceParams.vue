@@ -31,7 +31,7 @@
         <template slot-scope="scope">
           <el-button
             size="mini" @click="reveal(scope.row)"
-          >定位</el-button>
+          >定位节点</el-button>
         </template>
       </el-table-column>
     </el-table>

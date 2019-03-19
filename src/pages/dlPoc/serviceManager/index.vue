@@ -186,10 +186,10 @@ export default {
       });
 
       app.dispatcher.load({
-        title: "服务-" + item[this.serviceMapping.label],
+        title: "服务-" + item[this.serviceMapping.id],
         moduleId: "dlPoc",
         section: "serviceDesign",
-        id: item[this.serviceMapping.label]
+        id: item[this.serviceMapping.id]
       });
     },
     createItem(selection, level = "1") {
