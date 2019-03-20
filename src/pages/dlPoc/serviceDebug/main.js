@@ -93,9 +93,9 @@ import {
     }
 
     app.dlPoc.serviceDebug = function (viewId, serviceId) {
-      const sv_id = app.domain.get('serviceVersions', 'sv_id');//版本id
-      let sid = app.domain.get('serviceVersions', 'service_id')||serviceId||"5fb66b72-da8f-4885-9743-a223571c51c7";//服务id
-      const logs = app.domain.get('serviceVersions', 'logs');//所有log
+      const sv_id = app.domain.get('serviceDebug', 'sv_id');//版本id
+      let sid = app.domain.get('serviceDebug', 'service_id')||serviceId||"5fb66b72-da8f-4885-9743-a223571c51c7";//服务id
+      const logs = app.domain.get('serviceDebug', 'logs');//所有log
       // console.log('app.dlpoc',{viewId,versions,sv_id,sid,serviceId});
       return dispay(viewId, sid, sv_id,logs)
     }

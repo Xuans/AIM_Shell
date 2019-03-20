@@ -1,11 +1,7 @@
 <template>
-  <workbench :model="workbenchConfig">
-
-    <el-row slot="mainPage" class="sv-ctn">
-      <shell-debug ref="editor" :target="target"></shell-debug>
-
-    </el-row>
-  </workbench>
+  <div class="stm">
+    <shell-debug ref="editor" :target="target"></shell-debug>
+  </div>
 </template>
 
 
@@ -17,8 +13,6 @@ import "../../../assets/flow-style.css";
 import "../../../assets/flow1/iconfont.css";
 import ElementUi from "element-ui";
 import ExternalApi from "../../../plugin/externalApi";
-import workbench from "../../../components/workbench.vue";
-
 
 Vue.config.productionTip = false;
 Vue.use(ElementUi);
@@ -32,19 +26,18 @@ export default {
   },
   data() {
     return {
-      workbenchConfig:{
-        name:'服务追踪',
+      workbenchConfig: {
+        name: "服务追踪"
       },
       selection: null,
       compareVersions: Array.of()
     };
   },
   mounted() {
-    window.svs=this;
+    window.svs = this;
   },
   components: {
-    ShellDebug,
-    workbench
+    ShellDebug
   }
 };
 </script>
