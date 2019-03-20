@@ -83,6 +83,11 @@
     font-size: 14px;
     padding: 0 2px;
 }
+.stm-header-details{
+    flex:1;
+    padding-left: 2em;
+    font-size: 12px;
+}
 
 .stm-tookit {
     font-size: 12px;
