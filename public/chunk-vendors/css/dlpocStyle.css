@@ -15,7 +15,7 @@
     not supported by any browser */
 }
 
-/* Ã¥Â®Â¹Ã¥â„¢Â¨ Start */
+/* ÃƒÂ¥Ã‚Â®Ã‚Â¹ÃƒÂ¥Ã¢â€žÂ¢Ã‚Â¨ Start */
 .stm {
     position: absolute;
     top: 0;
@@ -35,7 +35,7 @@
     border: none!important;
 }
 
-/* Ã¥Â®Â¹Ã¥â„¢Â¨ End */
+/* ÃƒÂ¥Ã‚Â®Ã‚Â¹ÃƒÂ¥Ã¢â€žÂ¢Ã‚Â¨ End */
 .stm > .stm-title {
     border-bottom: 1px solid #e5e5e5;
     height: 44px;
@@ -54,7 +54,7 @@
     flex-direction: row;
 }
 
-/* Ã¥Â·Â¦Ã¤Â¾Â§Ã¤Â»Â»Ã¥Å Â¡Ã¥Ë†â€”Ã¨Â¡Â¨ Start */
+/* ÃƒÂ¥Ã‚Â·Ã‚Â¦ÃƒÂ¤Ã‚Â¾Ã‚Â§ÃƒÂ¤Ã‚Â»Ã‚Â»ÃƒÂ¥Ã…Â Ã‚Â¡ÃƒÂ¥Ã‹â€ Ã¢â‚¬â€ÃƒÂ¨Ã‚Â¡Ã‚Â¨ Start */
 .stm-left-ctn {
     display: flex;
     flex-direction: column;
@@ -140,7 +140,7 @@
     top: -1px;
 }
 
-/* Ã¥Â·Â¦Ã¤Â¾Â§Ã¦Â â€˜ Start */
+/* ÃƒÂ¥Ã‚Â·Ã‚Â¦ÃƒÂ¤Ã‚Â¾Ã‚Â§ÃƒÂ¦Ã‚Â Ã¢â‚¬Ëœ Start */
 .ssm-tree-list {
     flex: 1;
     overflow-y: auto;
@@ -273,16 +273,16 @@
     display: block;
 }
 
-/* Ã¥Â·Â¦Ã¤Â¾Â§Ã¦Â â€˜ End */
-/* Ã¥Â·Â¦Ã¤Â¾Â§Ã¤Â»Â»Ã¥Å Â¡Ã¥Ë†â€”Ã¨Â¡Â¨ End */
-/* Ã¦â€“Â°Ã¥Â¢Å¾Ã¤Â»Â»Ã¥Å Â¡Ã¥Ë†â€ Ã§Â±Â» Start */
-/* Ã¦â€“Â°Ã¥Â¢Å¾Ã¤Â»Â»Ã¥Å Â¡Ã¥Ë†â€ Ã§Â±Â» End */
+/* ÃƒÂ¥Ã‚Â·Ã‚Â¦ÃƒÂ¤Ã‚Â¾Ã‚Â§ÃƒÂ¦Ã‚Â Ã¢â‚¬Ëœ End */
+/* ÃƒÂ¥Ã‚Â·Ã‚Â¦ÃƒÂ¤Ã‚Â¾Ã‚Â§ÃƒÂ¤Ã‚Â»Ã‚Â»ÃƒÂ¥Ã…Â Ã‚Â¡ÃƒÂ¥Ã‹â€ Ã¢â‚¬â€ÃƒÂ¨Ã‚Â¡Ã‚Â¨ End */
+/* ÃƒÂ¦Ã¢â‚¬â€œÃ‚Â°ÃƒÂ¥Ã‚Â¢Ã…Â¾ÃƒÂ¤Ã‚Â»Ã‚Â»ÃƒÂ¥Ã…Â Ã‚Â¡ÃƒÂ¥Ã‹â€ Ã¢â‚¬Â ÃƒÂ§Ã‚Â±Ã‚Â» Start */
+/* ÃƒÂ¦Ã¢â‚¬â€œÃ‚Â°ÃƒÂ¥Ã‚Â¢Ã…Â¾ÃƒÂ¤Ã‚Â»Ã‚Â»ÃƒÂ¥Ã…Â Ã‚Â¡ÃƒÂ¥Ã‹â€ Ã¢â‚¬Â ÃƒÂ§Ã‚Â±Ã‚Â» End */
 .stm [data-role=btn], .stm i[data-role] {
     cursor: pointer;
     user-select: none;
 }
 
-/*Ã¦â€“Â°Ã¥Â¢Å¾Ã¤Â»Â»Ã¥Å Â¡ Start*/
+/*ÃƒÂ¦Ã¢â‚¬â€œÃ‚Â°ÃƒÂ¥Ã‚Â¢Ã…Â¾ÃƒÂ¤Ã‚Â»Ã‚Â»ÃƒÂ¥Ã…Â Ã‚Â¡ Start*/
 .stm-add-task-modal {
     height: 600px;
     width: 800px;
@@ -321,8 +321,8 @@
     margin: 0;
 }
 
-/*Ã¦â€“Â°Ã¥Â¢Å¾Ã¤Â»Â»Ã¥Å Â¡ End*/
-/* Ã¥ÂÂ³Ã¤Â¾Â§Ã¤Â»Â»Ã¥Å Â¡ Start */
+/*ÃƒÂ¦Ã¢â‚¬â€œÃ‚Â°ÃƒÂ¥Ã‚Â¢Ã…Â¾ÃƒÂ¤Ã‚Â»Ã‚Â»ÃƒÂ¥Ã…Â Ã‚Â¡ End*/
+/* ÃƒÂ¥Ã‚ÂÃ‚Â³ÃƒÂ¤Ã‚Â¾Ã‚Â§ÃƒÂ¤Ã‚Â»Ã‚Â»ÃƒÂ¥Ã…Â Ã‚Â¡ Start */
 .stm-right-ctn {
     display: flex;
     flex-direction: column;
@@ -409,6 +409,11 @@
 .stm-right-ctt > .tab-content > .tab-pane {
     height: 100%;
     overflow: auto;
+    position: relative;
+}
+.stm-right-ctt > .tab-content > .tab-pane>.stm{
+    border-radius:0;
+    bottom:0;    
 }
 
 .stm .item-row {
@@ -536,7 +541,7 @@
     position: absolute;
     right: 0;
     top: -7px;
-    content: '√';
+    content: 'âˆš';
     color: #fff;
 }
 
@@ -578,8 +583,8 @@
     margin: .25em;
 }
 
-/* Ã¥ÂÂ³Ã¤Â¾Â§Ã¤Â»Â»Ã¥Å Â¡ End */
-/*Ã¨Â¡Â¨Ã¥Ââ€¢ Start*/
+/* ÃƒÂ¥Ã‚ÂÃ‚Â³ÃƒÂ¤Ã‚Â¾Ã‚Â§ÃƒÂ¤Ã‚Â»Ã‚Â»ÃƒÂ¥Ã…Â Ã‚Â¡ End */
+/*ÃƒÂ¨Ã‚Â¡Ã‚Â¨ÃƒÂ¥Ã‚ÂÃ¢â‚¬Â¢ Start*/
 .stm-add-task-modal [data-widget-type="aweb4StepCtn"]>[data-widget-type="aweb3DivCtn"] {
     flex: 1;
     /* width: 80%; */
@@ -662,7 +667,7 @@
     overflow: auto;
 }
 
-/*Ã¨Â¡Â¨Ã¥Ââ€¢ End*/
+/*ÃƒÂ¨Ã‚Â¡Ã‚Â¨ÃƒÂ¥Ã‚ÂÃ¢â‚¬Â¢ End*/
 /*vue */
 .stm>.el-container>.el-header {
     border-bottom: 1px solid #e5e5e5;
@@ -853,7 +858,4 @@
 }
 .stm .is-scrolling-none{
     border:none;
-}
-.stm .el-tabs--bottom .el-tab-pane .el-dialog__body{
-    
 }

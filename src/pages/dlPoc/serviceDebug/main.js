@@ -12,8 +12,6 @@ import {
   if (app && app.dispatcher) {
     app.dlPoc = app.dlPoc || {}
 
-    let isFirst = true
-
     //Log 测试数据
     const log_data = [{
       "instance_id": "4575167f-7019-4388-9f82-029cdf8c42e7",
@@ -92,13 +90,14 @@ import {
       return ins
     }
 
-    app.dlPoc.serviceDebug = function (viewId, serviceId) {
-      const sv_id = app.domain.get('serviceDebug', 'sv_id');//版本id
-      let sid = app.domain.get('serviceDebug', 'service_id')||serviceId||"5fb66b72-da8f-4885-9743-a223571c51c7";//服务id
-      const logs = app.domain.get('serviceDebug', 'logs');//所有log
-      // console.log('app.dlpoc',{viewId,versions,sv_id,sid,serviceId});
-      return dispay(viewId, sid, sv_id,logs)
-    }
+    // app.dlPoc.serviceDebug = function (viewId, serviceId) {
+    //   const sv_id = app.domain.get('serviceDebug', 'sv_id');//版本id
+    //   let sid = app.domain.get('serviceDebug', 'service_id')||serviceId||"5fb66b72-da8f-4885-9743-a223571c51c7";//服务id
+    //   const logs = app.domain.get('serviceDebug', 'logs');//所有log
+    //   // console.log('app.dlpoc',{viewId,versions,sv_id,sid,serviceId});
+    //   return dispay(viewId, sid, sv_id,logs)
+    // }
+    app.dlPoc.serviceDebug=dispay;
   } else {
     window.AIM_SHELL = new AppCtr({
       propsData: {
