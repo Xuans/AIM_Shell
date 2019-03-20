@@ -98,3 +98,11 @@ export class VersionTarget extends Target {
     return target
   }
 }
+
+
+export class DebugTarget extends Target {
+  constructor (target) {
+    super(target);
+    this.logs=target.logs;
+  }
+}

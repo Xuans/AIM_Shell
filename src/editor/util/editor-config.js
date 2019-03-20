@@ -180,15 +180,17 @@ export class DebugEditorConfig {
     this.lines = {
       '0': lineOfUnselectable
     }
-    this.background ='RGB(203,190,173)'
+    this.background ='RGB(103,190,173)'
     this.types = types
     this.onHooks = Array.of(ReaderListener)
     this.policies = {
       dblfPolicy,
       debugRootPolicy
     }
+
+    const t=target;
     this.operations = Array.of({
-      id: 'debugger',
+      id: 'debug-stop',
       name: '关闭Log',
       type: 2,
       key: 'f11',
@@ -198,7 +200,20 @@ export class DebugEditorConfig {
       run() {
         this.editor.rootEditPart.$emit('debug-stop')
       }
-    })
+    },
+    {
+      id: 'debug-start',
+      name: '查看Log',
+      type: 2,
+      key: 'f11',
+      check() {
+        return true
+      },
+      run() {
+        this.editor.rootEditPart.$emit('debug-start',t.logs,1000)
+      }
+    }
+    )
 
     addDataAndLine(this, target.service_content.data)
     addServiceParas(this, target.service_args)

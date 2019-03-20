@@ -47,7 +47,7 @@ export const debugRootPolicy = {
                 });
             }
         },
-        start() {
+        start(logs, duration = 100) {
             // comsole.log("start");
             this.debugging = true;
             this.cleanChildren();
@@ -58,6 +58,29 @@ export const debugRootPolicy = {
                 for (let i = 0; i < children.length; i++) {
                     children[i].$emit("debug-start-node");
                 }
+            console.log(logs);
+            if (logs) {
+                //获取即将展现的logs
+                for (let i = 0, len = logs.length; i < len; i++) {
+                    let log = logs[i];
+                    setTimeout(() => {
+                        console.log('nodeId:',log.node_id);
+                        this.intoNode({
+                            index: log.node_id
+                        });
+                        this.overNode({
+                            index: log.node_id,
+                            result: log.schedule_result,
+                            log: {
+                                time: new Date(log.schedule_time).Format('yyyy-MM-dd hh:mm:ss'),
+                                duration:log.schedule_taketime,
+                                log:log.schedule_log,
+                            }
+                        });
+                    }, duration * i);
+
+                }
+            }
         },
         stop() {
             this.debugging = false;
@@ -247,7 +270,7 @@ export const debugUIPolicy = {
         }
     },
     activate() {
-        // comsole.log("node debug ui activate");
+        console.log("node debug ui activate");
         this.color = this.getHost().model.get('color');
         this.getHost().$on("debug-into", this.into);
         this.getHost().$on("debug-over", this.over);

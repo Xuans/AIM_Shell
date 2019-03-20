@@ -1,28 +1,29 @@
 <template>
   <div style="width:100%;height:100%;">
-    <shell-flow
-      ref="shell-flow"
-      :target="target"
-      :maximize="target.lastest ? maximize : true"
-      @selection-change="handleOfSelectionChange"
-      @selection-remove="handleOfSelectionRemove"
-      @onswitch="handleOfSwitch"
-    >
-      <mutil-panel slot="panels" :store="store"></mutil-panel>
-
-      <dblf-transition
-        slot="canvass"
-        ref="transition"
-        :visible="visible"
-        :expand.sync="expand"
-        @click-control="handleOfExpand"
-        @click-back="handleOfCollapse"
-        @editor-open="handleOfOpening"
+    <keep-alive>
+      <shell-flow
+        ref="shell-flow"
+        :target="target"
+        :maximize="target.lastest ? maximize : true"
+        @selection-change="handleOfSelectionChange"
+        @selection-remove="handleOfSelectionRemove"
+        @onswitch="handleOfSwitch"
       >
-        <slot name="form" :store="store"></slot>
-      </dblf-transition>
-    </shell-flow>
+        <mutil-panel slot="panels" :store="store"></mutil-panel>
 
+        <dblf-transition
+          slot="canvass"
+          ref="transition"
+          :visible="visible"
+          :expand.sync="expand"
+          @click-control="handleOfExpand"
+          @click-back="handleOfCollapse"
+          @editor-open="handleOfOpening"
+        >
+          <slot name="form" :store="store"></slot>
+        </dblf-transition>
+      </shell-flow>
+    </keep-alive>
     <el-dialog
       ref="publishDialog"
       slot="canvasUnder"
@@ -128,22 +129,20 @@ export default {
       this.dialogFormVisible = true;
       window.sd = this;
     },
-    versionFilter(query,arr){
-      let r=[];
-      for(let item of arr){
+    versionFilter(query, arr) {
+      let r = [];
+      for (let item of arr) {
         if (
-                query == null ||
-                item.value
-                  .toLowerCase()
-                  .indexOf(query.toLowerCase()) > -1
-              )
-              r.push(item);
+          query == null ||
+          item.value.toLowerCase().indexOf(query.toLowerCase()) > -1
+        )
+          r.push(item);
       }
       return r;
     },
     searchVersions(query, cb) {
       if (this.versionHistory) {
-        cb(this.versionFilter(query,this.versionHistory));
+        cb(this.versionFilter(query, this.versionHistory));
         return;
       }
       this.$getVersionHistory({ service_id: this.store.target.service_id })
@@ -153,16 +152,16 @@ export default {
             for (let item of resp.r.ret) {
               this.versionHistory.push({
                 ...item,
-                value: item.service_version,
+                value: item.service_version
               });
             }
           }
-          cb(this.versionFilter(query,this.versionHistory));
+          cb(this.versionFilter(query, this.versionHistory));
         })
         .catch(e => {
           console.error(e);
-          app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
-          cb([])
+          app.alert("错误提示", (e && e.message) || e, app.alertShowType.ERROR);
+          cb([]);
         });
     },
     publishVersion() {
@@ -173,11 +172,15 @@ export default {
           service_version: this.newVersion
         })
           .then(resp => {
-            app.alert("发布成功","发布成功",app.alertShowType.SUCCESS);
+            app.alert("发布成功", "发布成功", app.alertShowType.SUCCESS);
             this.newVersion = null;
           })
           .catch(e => {
-            app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
+            app.alert(
+              "错误提示",
+              (e && e.message) || e,
+              app.alertShowType.ERROR
+            );
           });
     }
   },
