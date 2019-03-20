@@ -97,6 +97,9 @@ export default {
       });
     }
   },
+  mounted(){
+    console.log('workbench mounted')
+  },
   //data() {},
   methods:{
       calPath(index){

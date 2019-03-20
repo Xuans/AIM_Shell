@@ -121,9 +121,7 @@
             <!-- <el-tab-pane label="画像" name="second">配置管理</el-tab-pane> -->
           </template>
           <template v-else>
-            <el-tab-pane label="基本信息" name="info">
-              {{focusTarget}}
-            </el-tab-pane>
+            <el-tab-pane label="基本信息" name="info">{{focusTarget}}</el-tab-pane>
           </template>
         </el-tabs>
       </div>
@@ -138,7 +136,11 @@ export default {
   inject: ["parent"],
   watch: {
     "parent.selection"(s) {
+      console.log("selection changed:" + s);
       this.expand(s);
+    },
+    list(l){
+      console.log('list',l);
     }
   },
 
@@ -168,13 +170,14 @@ export default {
       this.expand(this.parent.selection);
     },
     expand(s) {
+      console.log('expand',s)
       if (!this.stacking) {
         //存放旧list
         this.backStack.push(this.list);
         this.prevStack = [];
       }
       this.stacking = false;
-      this.list = s ? [s] : this.parent.treeData;
+      this.list = s ? [s] : JSON.parse(JSON.stringify(this.parent.treeData));
 
       if (this.list.length > 1) {
         //最外层
@@ -243,6 +246,7 @@ export default {
   },
   computed: {},
   mounted() {
+    console.log('resource manger mounted');
     window.resMgr = this;
   },
   data() {

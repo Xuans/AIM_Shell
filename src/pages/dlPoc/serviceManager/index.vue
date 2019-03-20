@@ -1,87 +1,94 @@
 <template>
-  <iworkbench @reveal="reveal" :model="serviceConfig" :mapping="serviceMapping">
-    <div slot="leftPage" class="stm-left-ctn">
-      <div class="stm-header">
-        <span>服务列表</span>
-        <div class="stm-tookit" style="float: right">
-          <span data-role="btn" @click="createItem" title="新增分类">
-            <i class="fa fa-plus"></i> 新增分类
-          </span>
+  <keep-alive>
+    <iworkbench @reveal="reveal" :model="serviceConfig" :mapping="serviceMapping">
+      <div slot="leftPage" class="stm-left-ctn">
+        <div class="stm-header">
+          <span>服务列表</span>
+          <div class="stm-tookit" style="float: right">
+            <span data-role="btn" @click="createItem" title="新增分类">
+              <i class="fa fa-plus"></i> 新增分类
+            </span>
+          </div>
         </div>
+        <keep-alive>
+          <itree
+            ref="tree"
+            @open="openFile"
+            @delete="deleteItem"
+            @create="createItem"
+            @edit="editCategory"
+            :mapping="serviceMapping"
+          ></itree>
+        </keep-alive>
       </div>
-      <itree
-        ref="tree"
-        @refresh="refreshBreadCrumb"
-        @open="openFile"
-        @delete="deleteItem"
-        @create="createItem"
-        @edit="editCategory"
-        :mapping="serviceMapping"
-      ></itree>
-    </div>
-    <div slot="centerPage" style="position:relative;width:100%;height:100%;">
-      <el-col :span="24" style="height:100%;">
-        <iresourceManager
-          @refresh="refreshBreadCrumb"
-          @open="openFile"
-          @create="createItem"
-          @getResourceInfo='getResourceInfo'
-          ref="resourceManager"
-          :mapping="serviceMapping"
-        ></iresourceManager>
-      </el-col>
-    </div>
-    <!-- <div slot="leftTool">
+      <div slot="centerPage" style="position:relative;width:100%;height:100%;">
+        <el-col :span="24" style="height:100%;">
+          <keep-alive>
+            <iresourceManager
+              @open="openFile"
+              @create="createItem"
+              @getResourceInfo="getResourceInfo"
+              ref="resourceManager"
+            ></iresourceManager>
+          </keep-alive>
+        </el-col>
+      </div>
+      <!-- <div slot="leftTool">
         <el-button type="success" icon="el-icon-plus" size="mini" @click="createItem"></el-button>
-    </div>-->
-    <div v-show="showCreateDialog" class="mask"></div>
-    <div
-      ref="createItemDialog"
-      data-role="ssmAddCatModal"
-      style="z-index:1070"
-      v-show="showCreateDialog"
-      class="modal in fade ws-add-modal"
-      aria-hidden="false"
-    >
-      <div class="modal-header ui-draggable-handle">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="ui-draggable-handle">新增/编辑服务{{newNode[serviceMapping.type]=='1'?'分类':''}}</h4>
-      </div>
-      <div class="modal-body ssm-modal-body">
-        <div class="stm-form">
-          <div>
-            <span>服务{{newNode[serviceMapping.type]=='1'?'分类':''}}名称：</span>
-            <input
-              name="serviceCatName"
-              v-model="newNode[serviceMapping.id]"
-              class="ssm-modal-add-input"
-              type="text"
-              placeholder="此处输入服务分类名称"
-              style="flex: 1; position: relative; top: -1px"
-            >
-          </div>
-          <div>
-            <span>服务{{newNode[serviceMapping.type]=='1'?'分类':''}}描述：</span>
-            <textarea
-              name="serviceCatDesc"
-              class="ssm-modal-add-texta"
-              v-model="newNode[serviceMapping.label]"
-              placeholder="此处输入服务分类描述，200字以内"
-              style="flex: 1; position: relative; top: -1px"
-            ></textarea>
+      </div>-->
+      <div v-show="showCreateDialog" class="mask"></div>
+      <div
+        ref="createItemDialog"
+        data-role="ssmAddCatModal"
+        style="z-index:1070"
+        v-show="showCreateDialog"
+        class="modal in fade ws-add-modal"
+        aria-hidden="false"
+      >
+        <div class="modal-header ui-draggable-handle">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="ui-draggable-handle">新增/编辑服务{{newNode[serviceMapping.type]=='1'?'分类':''}}</h4>
+        </div>
+        <div class="modal-body ssm-modal-body">
+          <div class="stm-form">
+            <div>
+              <span>服务{{newNode[serviceMapping.type]=='1'?'分类':''}}名称：</span>
+              <input
+                name="serviceCatName"
+                v-model="newNode[serviceMapping.id]"
+                class="ssm-modal-add-input"
+                type="text"
+                placeholder="此处输入服务分类名称"
+                style="flex: 1; position: relative; top: -1px"
+              >
+            </div>
+            <div>
+              <span>服务{{newNode[serviceMapping.type]=='1'?'分类':''}}描述：</span>
+              <textarea
+                name="serviceCatDesc"
+                class="ssm-modal-add-texta"
+                v-model="newNode[serviceMapping.label]"
+                placeholder="此处输入服务分类描述，200字以内"
+                style="flex: 1; position: relative; top: -1px"
+              ></textarea>
+            </div>
           </div>
         </div>
+        <div class="modal-footer">
+          <button
+            class="modal-btn gray"
+            data-dismiss="modal"
+            @click.stop="showCreateDialog=false"
+          >取消</button>
+          <button
+            data-role="smtAddCatBtn"
+            class="modal-btn blue marginL15"
+            @click.stop="doCreate($event)"
+          >完成</button>
+        </div>
       </div>
-      <div class="modal-footer">
-        <button class="modal-btn gray" data-dismiss="modal" @click.stop="showCreateDialog=false">取消</button>
-        <button
-          data-role="smtAddCatBtn"
-          class="modal-btn blue marginL15"
-          @click.stop="doCreate($event)"
-        >完成</button>
-      </div>
-    </div>
-  </iworkbench>
+    </iworkbench>
+  </keep-alive>
 </template>
 
 <script>
@@ -158,26 +165,30 @@ export default {
     itree,
     iresourceManager
   },
-  watch: {
-    selection() {}
-  },
+  watch: {},
   methods: {
     /**
      * 获取详情信息
      */
-    getResourceInfo(item,callback){
-      if(item.tree_node_type=='1'){
+    getResourceInfo(item, callback) {
+      if (item.tree_node_type == "1") {
         callback({
           ...item
         });
-      }else{
+      } else {
         this.$getServiceInstance({
-          service_ename:item.tree_node_name
-        }).then(resp=>{
-          callback(resp);
-        }).catch(
-          e=>app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR)
-        );
+          service_ename: item.tree_node_name
+        })
+          .then(resp => {
+            callback(resp);
+          })
+          .catch(e =>
+            app.alert(
+              "错误提示",
+              (e && e.message) || e,
+              app.alertShowType.ERROR
+            )
+          );
       }
     },
     openFile(item) {
@@ -214,21 +225,28 @@ export default {
         title: "删除指定元素",
         content: `删除指定元素${desc}?`,
         confirmHandler: function() {
-          _self.$delTreeNode(
-              {
-                tree_class: "0002",
-                tree_node_name: name,
-                loop: true
-              }
-            )
+          _self
+            .$delTreeNode({
+              tree_class: "0002",
+              tree_node_name: name,
+              loop: true
+            })
             .then(response => {
               // if (response && response.content.result.data.r.ret === true) {
-                app.alert('删除成功',`删除(${desc})成功！`,app.alertShowType.SUCCESS);
+              app.alert(
+                "删除成功",
+                `删除(${desc})成功！`,
+                app.alertShowType.SUCCESS
+              );
 
-                _self.refreshTree(false);
+              _self.refreshTree(false);
             })
             .catch(e => {
-              app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
+              app.alert(
+                "错误提示",
+                (e && e.message) || e,
+                app.alertShowType.ERROR
+              );
               console.error(e);
             });
           return false;
@@ -245,47 +263,53 @@ export default {
     doCreate(event) {
       if (this._ctype) {
         //修改tree节点
-        
-        if(this.newNode.tree_node_type=='1'){
+
+        if (this.newNode.tree_node_type == "1") {
           this.$updateTreeNode(this.newNode)
             .then(response => {
               this.refreshTree(false);
               this.showCreateDialog = false;
             })
             .catch(e => {
-              app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
+              app.alert(
+                "错误提示",
+                (e && e.message) || e,
+                app.alertShowType.ERROR
+              );
             });
-        }else{
-
+        } else {
         }
       } else {
         let promise;
-        if(this.newNode.tree_node_type=='1'){
-          promise=this.$addTreeNode(this.newNode);
-        }else
+        if (this.newNode.tree_node_type == "1") {
+          promise = this.$addTreeNode(this.newNode);
+        }
         //添加tree节点
-          promise=this.$addServiceByTreeNode(this.newNode);
-          promise .then(response => {
+        else promise = this.$addServiceByTreeNode(this.newNode);
+        promise
+          .then(response => {
             this.refreshTree(false);
             this.showCreateDialog = false;
           })
-        .catch(e => {
-        app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
-        });
+          .catch(e => {
+            app.alert(
+              "错误提示",
+              (e && e.message) || e,
+              app.alertShowType.ERROR
+            );
+          });
       }
     },
 
     refreshTree(forceReload = true) {
       //重新加载树结构
       this.loading = true;
-      this
-        .$getServiceInstanceTree()
+      this.$getServiceInstanceTree()
         .then(data => {
           // this.$refs.tree.setModel(data);
           // this.$refs.resourceManager.setModel(data);
-          console.log('刷新树节点',this.treeData,data);
+          console.log("刷新树节点", this.treeData, data);
           this.treeData = data;
-          
 
           this.buildIndex(data);
           this.loading = false;
@@ -298,7 +322,7 @@ export default {
         })
         .catch(e => {
           console.error(e);
-          app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
+          app.alert("错误提示", (e && e.message) || e, app.alertShowType.ERROR);
           this.loading = false;
         });
     },
@@ -331,6 +355,7 @@ export default {
     //   }
   },
   mounted() {
+    console.log("index mounted");
     window.ss = this;
     this.axios
       .get(URL.GET_FORM)
@@ -342,7 +367,7 @@ export default {
         this.$data.output = output;
       })
       .catch(e => {
-         app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);
+        app.alert("错误提示", (e && e.message) || e, app.alertShowType.ERROR);
         console.error(e);
       });
 

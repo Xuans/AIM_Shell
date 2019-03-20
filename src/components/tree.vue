@@ -94,7 +94,6 @@
         <li></li>
       </ul>
     </div>
-    <div v-else class="noselect">没有内容</div>
   </div>
 </template>
 <script>
@@ -106,6 +105,9 @@ export default {
         return { id: "id", label: "name" };
       }
     },
+  },
+  mounted(){
+    console.log('tree mounted');
   },
   data() {
     return {
