@@ -48,10 +48,12 @@ function addDataAndLine(config, dataOfService) {
 }
 
 function addServiceParas(config, p) {
-  if(p=='')
+  if(p==''||!p)
     p={}
-  if (p.constructor != Object)
+  if (p.constructor != Object && p.constructor != Array){
+    console.log('服务参数转换:',p);
     p = JSON.parse(p);
+  }
   config.service_args = p;
 }
 

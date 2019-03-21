@@ -1,5 +1,5 @@
 <template>
-  <div style="width:100%;height:100%;">
+  <div style="flex:1">
     <keep-alive>
       <shell-flow
         ref="shell-flow"
