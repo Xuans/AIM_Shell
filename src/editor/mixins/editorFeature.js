@@ -25,7 +25,7 @@ export default {
 
   methods: {
     handleOfCreate: handleOfCreate,
-    handleOfSave (editor) {
+    handleOfSave (editor,done) {
       const state = this.state
 
       let app=window.app;
@@ -33,6 +33,7 @@ export default {
       this.$saveSerivce(this.target, state.genJson(editor),editor.config.service_args)
           .then(() => {
             if(app)app.alert('保存成功','保存成功',app.alertShowType.SUCCESS);
+            done();
             state.setDirty(editor)
           }).catch(e=>{
             if(app)app.alert('错误提示',e && e.message||e,app.alertShowType.ERROR);

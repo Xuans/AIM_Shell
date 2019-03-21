@@ -1,29 +1,27 @@
 <template>
   <div style="flex:1">
-    <keep-alive>
-      <shell-flow
-        ref="shell-flow"
-        :target="target"
-        :maximize="target.lastest ? maximize : true"
-        @selection-change="handleOfSelectionChange"
-        @selection-remove="handleOfSelectionRemove"
-        @onswitch="handleOfSwitch"
-      >
-        <mutil-panel slot="panels" :store="store"></mutil-panel>
+    <shell-flow
+      ref="shell-flow"
+      :target="target"
+      :maximize="target.lastest ? maximize : true"
+      @selection-change="handleOfSelectionChange"
+      @selection-remove="handleOfSelectionRemove"
+      @onswitch="handleOfSwitch"
+    >
+      <mutil-panel slot="panels" :store="store"></mutil-panel>
 
-        <dblf-transition
-          slot="canvass"
-          ref="transition"
-          :visible="visible"
-          :expand.sync="expand"
-          @click-control="handleOfExpand"
-          @click-back="handleOfCollapse"
-          @editor-open="handleOfOpening"
-        >
-          <slot name="form" :store="store"></slot>
-        </dblf-transition>
-      </shell-flow>
-    </keep-alive>
+      <dblf-transition
+        slot="canvass"
+        ref="transition"
+        :visible="visible"
+        :expand.sync="expand"
+        @click-control="handleOfExpand"
+        @click-back="handleOfCollapse"
+        @editor-open="handleOfOpening"
+      >
+        <slot name="form" :store="store"></slot>
+      </dblf-transition>
+    </shell-flow>
     <el-dialog
       ref="publishDialog"
       slot="canvasUnder"
@@ -122,12 +120,16 @@ export default {
       this.abbreviateWhenOpen(this.store.activeEditor, this.store.active, el);
     },
     request(action) {
-      this.store[action](this);
+      return this.store[action](this);
     },
     upload() {
+      // console.log(this.store.isDirty());
+      if (this.store.isDirty()) {
+        app.alert("发布版本之前，必须保存编辑器内容");
+        return;
+      }
       this.versionHistory = null;
       this.dialogFormVisible = true;
-      window.sd = this;
     },
     versionFilter(query, arr) {
       let r = [];
@@ -165,8 +167,18 @@ export default {
         });
     },
     publishVersion() {
+
       this.dialogFormVisible = false;
-      if (this.newVersion)
+      if (this.newVersion) {
+        //检查数据合法性
+        let data = this.$refs["shell-flow"].state.genJson(editor);
+        let msg;
+        if ((msg = this.$checkServiceContent(data))) {
+          app.alert(msg);
+          app.alert("错误提示", msg, app.alertShowType.ERROR);
+          return;
+        }
+
         this.$publishVersion({
           service_id: this.store.target.service_id,
           service_version: this.newVersion
@@ -182,6 +194,7 @@ export default {
               app.alertShowType.ERROR
             );
           });
+      }
     }
   },
 

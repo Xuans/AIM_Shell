@@ -258,6 +258,19 @@ export default {
       "create_user": treeNode.user,
     }]);
   },
+ $checkServiceContent(data){
+    //检查保存的数据里是否参数齐全
+    let nodes=data.data;
+    for(let k in nodes){
+      let node=nodes[k];
+     for(let pk in node.params){
+       let v=node.params[pk]
+       console.log(v);
+        if(v==null||v=='')
+          return `节点${k}需要完善参数${pk}`
+      }
+    }
+  },
   $saveSerivce(target, data, args) {
     //isReady为false表示服务需要初始化
     target.service_content = JSON.stringify(data || {});

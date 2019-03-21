@@ -5,7 +5,7 @@ export default class EditorStore {
     this.active = null
     this.activeEditor = null
     this.pool = new Map()
-    this.modified=0;
+    this.modified = 0;
   }
 
   push(mode, editor) {
@@ -42,11 +42,11 @@ export default class EditorStore {
         params = {};
 
       let nodeParams = params[nodeId]
-      if (!nodeParams){
-        Vue.set(params,nodeId,{});
-        nodeParams=params[nodeId];
+      if (!nodeParams) {
+        Vue.set(params, nodeId, {});
+        nodeParams = params[nodeId];
       }
-     Vue.set(nodeParams,item.ename,{
+      Vue.set(nodeParams, item.ename, {
         ...item,
         placeholder
       });
@@ -60,7 +60,7 @@ export default class EditorStore {
     if (this.activeEditor) {
       const params = this.activeEditor.config.service_args
       if (params && params[nodeId]) {
-        Vue.delete(params[nodeId],ename);
+        Vue.delete(params[nodeId], ename);
       }
       this.modified++
     }
@@ -124,11 +124,15 @@ export default class EditorStore {
     this.activeEditor && this.activeEditor.save()
   }
 
+  isDirty() {
+    return this.activeEditor && this.activeEditor.isDirty();
+  }
+
   delete() {
     this.activeEditor && this.activeEditor.removeNode(this.active)
   }
 
   upload(container) {
-    container&&container.upload&&container.upload();
+    container && container.upload && container.upload();
   }
 }

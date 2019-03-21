@@ -7,6 +7,7 @@
       <el-table-column prop="instance_ename" label="任务名" width="120"></el-table-column>
       <el-table-column prop="instance_name" label="任务描述" width="120"></el-table-column>
       <el-table-column prop="job_timeout" label="超时时间" width="120"></el-table-column>
+      <el-table-column prop="service_version" label="服务版本" width="120"></el-table-column>
       <el-table-column prop="value" label="" width="220">
         <template slot-scope="scope">
           <el-button size='mini' @click="jumpTo(scope.row)">查看任务</el-button>
