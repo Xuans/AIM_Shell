@@ -1,6 +1,6 @@
 import { terminalPolicy } from "../util/terminal";
 import selectable from '../util/state-policy'
-import { textPolicy0 } from "../util/text-policy";
+import textPolicy from "../util/text-policy";
 import tooltipPolicy from '../util/tooltip-policy'
 import { debugUIPolicy } from "../util/debug-policy";
 import {refresh} from "../util/layout-policy";
@@ -16,7 +16,7 @@ export function editNode () {
     type: 'rect',
     policies: {
       't': terminalPolicy,
-      'tt': textPolicy0,
+      'tt': textPolicy,
       'ttt': tooltipPolicy,
       'expandDetailInfo': {
         config: {
@@ -48,7 +48,7 @@ export function noeditNode () {
     type: 'rect',
     policies: {
       't': terminalPolicy,
-      'tt': textPolicy0,
+      'tt': textPolicy,
       'ttt': tooltipPolicy,
       debugUI: debugUIPolicy
     },
@@ -67,7 +67,7 @@ export function versionNode () {
     type: 'rect',
     policies: {
       't': terminalPolicy,
-      'tt': textPolicy0,
+      'tt': textPolicy,
       'ttt': tooltipPolicy,
       debugUI: debugUIPolicy
     },
