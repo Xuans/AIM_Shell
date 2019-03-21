@@ -242,6 +242,10 @@ export default {
     target.service_content = nodes[target.sv_id]
     return Promise.resolve(nodes[target.sv_id])
   },
+  $buildTarget (target) {
+    target.service_content = nodes[target.sv_id]
+    return Promise.resolve(nodes[target.sv_id])
+  },
   $getLogs () {
     return [{
       time: '2019/2/25 12:11:01',
