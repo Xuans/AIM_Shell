@@ -1,6 +1,7 @@
 <template>
   <keep-alive>
-    <iworkbench @reveal="reveal" :model="serviceConfig" :mapping="serviceMapping">
+    <iworkbench @reveal="reveal" :model="serviceConfig" :mapping="serviceMapping" v-loading="loading" 
+      :element-loading-text="`加载内容中...`">
       <div slot="leftPage" class="stm-left-ctn">
         <div class="stm-header">
           <span>服务列表</span>
@@ -123,8 +124,13 @@ export default {
   name: "app",
   provide() {
     return {
-      parent: this
+      parent: this,
     };
+  },
+  props:{
+    selection:{
+        default(){return {};},
+      },
   },
   data() {
     let _self = this;
@@ -148,7 +154,6 @@ export default {
         }
       },
       cache: {},
-      selection: {},
       ready: false,
       showCreateDialog: false,
       serviceMapping: {

@@ -5,8 +5,8 @@ const StateHandle = $AG.Handle.extend({
   },
   initProp () {
     this.setAttribute({
-      'stroke-width': '1',
-      'stroke': '#466183',
+      'stroke-width': '2',
+      'stroke': '#C66183',
       'fill': 'none'
     })
     this.defaultEvent = {'pointer-events': 'none'}

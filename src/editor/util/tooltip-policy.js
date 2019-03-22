@@ -3,10 +3,10 @@ export default {
     handleOfUpdateTooltip () {
       const model = this.getHost().model
       const figure = this.getHostFigure()
-
-      let text = `名称：${model.get('data.name') || ''}
-地址：${model.get('data.ip')}:${model.get('data.port') || '' }
-参数：${model.get('data.params.output') || ''}`
+      let text = `英文名：${model.get('data.shell_def.shell_ename') || ''}
+名称：${model.get('data.name') || ''}
+代理：${model.get('data.agent')|| '' }
+创建人：${model.get('data.shell_def.create_user')|| '' }`
 
       figure.addToolTip(text)
     }
@@ -14,15 +14,13 @@ export default {
   activate () {
     const model = this.getHost().model
 
-    model.addPropertyListener(this.handleOfUpdateTooltip, 'data.ip')
-    model.addPropertyListener(this.handleOfUpdateTooltip, 'data.port')
+    model.addPropertyListener(this.handleOfUpdateTooltip, 'data.agent')
 
     this.handleOfUpdateTooltip()
   },
   deactivate() {
     const model = this.getHost().model
 
-    model.removePropertyListener(this.handleOfUpdateTooltip, 'data.ip')
-    model.removePropertyListener(this.handleOfUpdateTooltip, 'data.port')
+    model.removePropertyListener(this.handleOfUpdateTooltip, 'data.agent')
   }
 }

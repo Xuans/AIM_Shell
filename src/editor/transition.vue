@@ -14,7 +14,7 @@
                            style="transform: translateY(-40px)"
                            @click="handleOfExpand">
                 </el-button>
-                <span>配置<br/>(双击)</span>
+                <span>脚本<br/>属性<br/>(双击)</span>
             </div>
         </transition>
 

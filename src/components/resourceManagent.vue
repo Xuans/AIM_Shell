@@ -50,12 +50,15 @@
                 <i class="fa fa-caret-down"></i>
               </div>
               <div class="bi-computer-list-title" data-parent="0" :data-id="item.tree_node_name">
-                <div class="title-name-computer">
+                <div
+                  class="title-name-computer"
+                  @click="()=>{contentVisible[index]=contentVisible[index]==false?true:false;$forceUpdate();}"
+                >
                   <span class="file-name">{{item.tree_node_desc}}</span>
                 </div>
               </div>
             </div>
-            <div class="bi-computer-card-content">
+            <div class="bi-computer-card-content" v-show="contentVisible[index]!=false">
               <div
                 class="bi-computer-card-item"
                 @click.stop="$emit('create',item,currentNodeType)"
@@ -262,7 +265,9 @@ export default {
       list: [],
       showDetailPanel: false,
       showSearchPanel: false,
-      queryString: null
+      queryString: null,
+      //控制单个节点显示隐藏
+      contentVisible:[true,true,true,true,true,true,true,true,true],
     };
   }
 };

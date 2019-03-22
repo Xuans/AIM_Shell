@@ -21,17 +21,12 @@
       <el-table-column prop="placeholder" label="占位符" width="300"></el-table-column>
       <el-table-column prop="cname" label="中文名（别名）" width="220">
         <template slot-scope="scope">
-          <el-input
-            v-model="scope.row.cname"
-            @input="val => handleOfValue(val, scope.row,'cname')"
-          ></el-input>
+          <el-input v-model="scope.row.cname" @input="val => handleOfValue(val, scope.row,'cname')"></el-input>
         </template>
       </el-table-column>
-      <el-table-column prop="cname" label="" width="120">
+      <el-table-column prop="cname" label width="120">
         <template slot-scope="scope">
-          <el-button
-            size="mini" @click="reveal(scope.row)"
-          >定位节点</el-button>
+          <el-button size="mini" @click="reveal(scope.row)">定位节点</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -50,6 +45,14 @@ export default {
   methods: {
     handleOfValue(val, item, key) {
       this.store.service_args[item.nodeId][item.ename][key] = val;
+    },
+    reveal(item) {
+      let editpart = this.store.activeEditor.rootEditPart.getEditPartById(item.nodeId);
+      if (editpart){
+        this.store.activeEditor.reveal(editpart);
+        this.store.activeEditor.rootEditPart.setSelection(editpart);
+      }
+      else app.alert("找不到指定ID的节点:" + item.nodeId);
     }
   },
   computed: {
