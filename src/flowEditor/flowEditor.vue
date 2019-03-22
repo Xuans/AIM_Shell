@@ -4,7 +4,7 @@
       <slot name="palette"></slot>
     </el-aside>
 
-    <el-container ref="main" direction="vertical" style="overflow:none;">
+    <el-container v-once ref="main" direction="vertical" style="overflow:none;">
       <el-main style="overflow:none;position:relative;padding:0;">
         <div ref="canvas" class="flow-canvas"></div>
         <slot name="canvas"></slot>
@@ -145,23 +145,42 @@ export default {
   },
 
   mounted() {
-    this.initEditor(this.config);
-    this.activateKeyManager();
-    this.activeAutofocus();
-    Split.create(this);
+    console.log("editor mounted", this.config);
+    this.init();
   },
-
-  beforeDestroy() {
-    Split.destroy(this);
-    this.deactivateAutofocus();
-    this.deactivateKeyManager();
-    if (this.editor) {
-      this.editor.dispose();
-      this.editor = null;
+  deactivated() {
+    console.log("flowEditor deactivated");
+  },
+  updated() {
+    let canvas = $(this.$refs.canvas);
+    if (this.getSvg() && !canvas.is(":has(svg)")) {
+      // canvas.append(this.getSvg());
+      // this.replaceEditor(this.editor, true);
+      this.dispose();
+      this.init();
     }
+  },
+  beforeDestroy() {
+    console.log("flowEditor beforeDestroy");
+    this.dispose();
   },
 
   methods: {
+    init() {
+      this.initEditor(this.config);
+      this.activateKeyManager();
+      this.activeAutofocus();
+      Split.create(this);
+    },
+    dispose() {
+      Split.destroy(this);
+      this.deactivateAutofocus();
+      this.deactivateKeyManager();
+      if (this.editor) {
+        this.editor.dispose();
+        this.editor = null;
+      }
+    },
     initEditor(config) {
       this.$refs.canvas.setAttribute("id", this.editorId);
 
@@ -311,6 +330,7 @@ export default {
     },
 
     detachEditor() {
+      console.log("detachEditor", this.config);
       if (this.editor) {
         const editor = this.editor;
         if (editor != null) {
@@ -321,8 +341,9 @@ export default {
       }
     },
 
-    replaceEditor(newEditor) {
-      if (newEditor === this.editor) return;
+    replaceEditor(newEditor, force = false) {
+      console.log("replaceEditor", newEditor);
+      if (!force && newEditor === this.editor) return;
       if ($AG.isEditor(newEditor)) {
         let old, oldSvg, newSvg;
 
@@ -340,7 +361,7 @@ export default {
             background: newEditor.config.background
           });
 
-        this.$emit("change:editor", editor, old);
+        this.$emit("change:editor", this.editor, old);
 
         return old;
       }

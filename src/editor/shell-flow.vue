@@ -21,6 +21,7 @@ import flowEditor from "../flowEditor/flowEditor.vue";
 import editorFeature from "./mixins/editorFeature";
 
 export default {
+  name:'shellFlow',
   extends: editorFeature,
 
   watch: {
@@ -36,6 +37,10 @@ export default {
   props: {
     maximize: Boolean
   },
+
+  beforeDestroy() {
+    console.log("shell-flow beforeDestroy");
+  },
   mounted() {
     console.log("编辑器成功加载:", this.target);
   },
@@ -50,6 +55,7 @@ export default {
       this.$emit("onswitch");
     },
     selectionChange(selection) {
+      console.log('shell-flow selectionChanged',selection);
       if (selection instanceof Array && selection.length === 1)
         selection = selection[0];
 

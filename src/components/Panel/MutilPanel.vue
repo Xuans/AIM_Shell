@@ -38,7 +38,12 @@ export default {
       activeName: null
     };
   },
+  
+  beforeDestroy() {
+    console.log("multiPanel beforeDestroy");
+  },
   mounted() {
+    console.log('multiPanel mounted');
     $(this.$el)
       .children(".el-tabs__content")
       .css("padding", 0);

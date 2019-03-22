@@ -38,7 +38,7 @@ const AbbreviationTool = $AG.Tool.scrollByDragTool.extend({
     this.recoverSnapshot()
   },
   locate (target) {
-    this.editor.locate(target, {x:  parseFloat($(this.coverEl).width()), y: 0})
+    this.editor.reveal(target, {x:  parseFloat($(this.coverEl).width()), y: 0})
   },
   mouseDown (e, p) {
     this.locate(p)

@@ -76,6 +76,7 @@
       }
     },
     mounted () {
+      console.log('transition mounted');
       let _x, isDrag, offset0
       let width = $(this.$refs.editor.$el).css('left')
       let offset = 0
@@ -100,6 +101,7 @@
       })
     },
     beforeDestroy () {
+      console.log('transition destory');
       $(document).off('.resize')
       // this.split.destroy()
     },

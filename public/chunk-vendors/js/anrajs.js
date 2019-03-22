@@ -8213,7 +8213,10 @@
         save () {
             this._save()
         },
-        locate (editPartOrModelOrID, offset = {x: 0, y: 0}) {
+        setSelection:function(editPart){
+            this.rootEditPart.setSelection(editPart)
+        },
+        reveal (editPartOrModelOrID, offset = {x: 0, y: 0}) {
             let editPart = editPartOrModelOrID
             if (editPart instanceof anra.gef.NodeEditPart) {
 

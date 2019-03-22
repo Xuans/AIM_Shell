@@ -60,7 +60,12 @@ export default {
   mixins: [abbreviate],
 
   mounted() {
+    window.sd=this;
     this.store = this.$refs["shell-flow"].store;
+  },
+  
+  beforeDestroy() {
+    console.log("shell-design beforeDestroy");
   },
   computed: {
     versionModel() {
@@ -87,6 +92,7 @@ export default {
 
   methods: {
     handleOfSelectionChange() {
+      console.log('shell-design handleOfSelectionChange',this.expand,this.store.active);
       this.visible = this.expand || this.store.active != null;
       this.expand && this.handleOfExpand();
     },
@@ -171,7 +177,7 @@ export default {
       this.dialogFormVisible = false;
       if (this.newVersion) {
         //检查数据合法性
-        let data = this.$refs["shell-flow"].state.genJson(editor);
+        let data = this.$refs["shell-flow"].state.genJson(this.store.activeEditor);
         let msg;
         if ((msg = this.$checkServiceContent(data))) {
           app.alert(msg);
