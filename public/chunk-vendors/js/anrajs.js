@@ -8212,6 +8212,38 @@
         },
         save () {
             this._save()
+        },
+        locate (editPartOrModelOrID, offset = {x: 0, y: 0}) {
+            let editPart = editPartOrModelOrID
+            if (editPart instanceof anra.gef.NodeEditPart) {
+
+            } else {
+                if (typeof editPart === 'string') {
+                    editPart = this.rootEditPart.getEditPartById(editPart)
+                } else if (editPart instanceof anra.gef.NodeModel) {
+                    editPart = this.rootEditPart.getEditPart(editPart)
+                } else {
+                    return
+                }
+            }
+
+            let wrap = this.element
+            let wrapParent = wrap.parentNode
+            let viewHalfWidth, viewHalfHeight
+
+            viewHalfWidth = (wrapParent.clientWidth - offset.x) / 2
+            viewHalfHeight = (wrapParent.clientHeight - offset.y) / 2
+            viewHalfWidth += wrap.scrollLeft
+            viewHalfHeight += wrap.scrollTop
+
+            /* scroll */
+            let bounds = editPart.figure.bounds
+            let center = {x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2}
+            let scale = editPart.figure.svg.dispatcher.scale
+
+            let x = Math.round((viewHalfWidth - center.x * scale[0]))
+            let y = Math.round((viewHalfHeight - center.y * scale[1]))
+            editPart.getRoot().translate(x, y)
         }
     };
 
