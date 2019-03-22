@@ -59,7 +59,7 @@ export class Target {
   }
 
   static makeNull () {
-    return new Target({tree_node_name: 1})
+    return new Target({tree_node_name: 1, sv_id: 2})
   }
 }
 /* class Target {
