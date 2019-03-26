@@ -1,11 +1,13 @@
 <template>
   <div class="stm">
-    <!-- 市场列表 Start -->
-    <div class="scene-ctn">
-      <div class="search-ctn">
+		<!-- 搜索 Start -->
+		<div class="search-ctn">
         <input placeholder="搜索" v-model="searchMarketItemInput">
 				<i class="fa fa-search"></i>
       </div>
+		<!-- 搜索 End -->
+    <!-- 市场列表 Start -->
+    <div class="scene-ctn">
       <div
         v-for="(item, itemIndex) in searchSceneMarketItems"
         :key="item.sceneClassName"
@@ -38,13 +40,13 @@
       aria-hidden="false"
     >
       <div class="modal-header ui-draggable-handle">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >×</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"  @click.stop="isShowDownloadDialog=false">×</button>
         <h4 class="ui-draggable-handle">下载服务</h4>
       </div>
       <div class="modal-body ssm-modal-body">
         <div class="stm-form stm-add-task-filter" style="position: relative;">
           <div>
-            <span style="width: 100px;">选择挂载节点：&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span style="width: 150px;">选择挂载节点：&nbsp;&nbsp;&nbsp;&nbsp;</span>
             <div class="stm-add-task-tree-ctn">
               <div class="stm-search" title="搜索">
                 <input
@@ -65,7 +67,6 @@
                       :data-id="cat1[mapping['id']]"
                       :title="cat1[mapping['label']]"
                       @click="expand(cat1)"
-                      :class="{selected:cat1==selectedCatelog}"
                     >
                       <span>
                         {{cat1[mapping['id']]}}
@@ -82,7 +83,7 @@
                           <li>
                             <div
                               class="ssm-tree-header noselect"
-                              :class="{selected:cat2==selectedCatelog}"
+                              :class="{active:cat2[mapping['id']]===selectedCatelog[mapping['id']]}"
                               data-level="1"
                               :data-p-name="cat1[mapping['label']]"
                               :data-desc="cat2.desc"
@@ -231,8 +232,17 @@ export default {
         if (searchList.sceneList.length) arrScene.push(searchList);
       }
       return arrScene;
-    }
-  },
+		}
+	},
+	watch:{
+		isShowDownloadDialog(val){
+			if(!val){
+				this.selectedCatelog={};
+				this.expandList={};
+				this.$forceUpdate();
+			}
+		}
+	},
   mounted: function() {
     let today = formatTime(new Date().getTime());
 
@@ -318,6 +328,7 @@ export default {
       return this.expandList[category[this.mapping.id]];
     },
     selectionChanged(cat2) {
+			console.log(cat2);
       this.selectedCatelog = cat2;
     },
     download() {
@@ -325,13 +336,20 @@ export default {
         .downloadVersion([
           {
             sv_id: this.selectedService.id,
-            tree_p_node_name: this.selectedCatelog.tree_p_node_name,
+            tree_p_node_name:this.selectedCatelog.tree_node_name,
             user: window.currentUser
           }
         ])
         .then(response => {
-          debuglog;
-        });
+					if(response.r.ret){
+						 this.isShowDownloadDialog=false;
+						 showSuccess('下载成功！');
+					}
+				})
+				.catch(error=>{
+					showSuccess(error);
+					console.log(error);
+				});
     }
   }
 };
@@ -355,15 +373,13 @@ export default {
     }
   }
 }
-.scene-ctn {
-  float: left;
-  height: 100%;
-  width: 70%;
-  padding: @padding-value;
-  box-sizing: border-box;
-  border-radius: @border-radius;
-  .search-ctn {
-    position: relative;
+
+.search-ctn {
+    position: absolute;
+    top:10px; 
+    left:10px; 
+		right:10px;
+		
     > i {
       position: absolute;
       top: 8px;
@@ -371,7 +387,7 @@ export default {
       color: #ccc;
     }
     input {
-      width: 100%;
+      width: ~"calc(100% - 45px)";
       height: 30px;
       margin-bottom: 10px;
       padding: 0 10px 0 30px;
@@ -384,7 +400,15 @@ export default {
         box-shadow: 0 0 5px #ccc;
       }
     }
-  }
+	}
+	
+.scene-ctn {
+    position:absolute;
+    top:50px;
+    left:10px;
+    right:10px;
+    bottom:10px;
+		overflow:auto;
 }
 .scene-icon {
   float: left;
