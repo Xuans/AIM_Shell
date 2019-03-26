@@ -1,11 +1,11 @@
 <template>
   <div class="stm">
-		<!-- 搜索 Start -->
-		<div class="search-ctn">
-        <input placeholder="搜索" v-model="searchMarketItemInput">
-				<i class="fa fa-search"></i>
-      </div>
-		<!-- 搜索 End -->
+    <!-- 搜索 Start -->
+    <div class="search-ctn">
+      <input placeholder="搜索" v-model="searchMarketItemInput">
+      <i class="fa fa-search"></i>
+    </div>
+    <!-- 搜索 End -->
     <!-- 市场列表 Start -->
     <div class="scene-ctn">
       <div
@@ -40,7 +40,13 @@
       aria-hidden="false"
     >
       <div class="modal-header ui-draggable-handle">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"  @click.stop="isShowDownloadDialog=false">×</button>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+          @click.stop="isShowDownloadDialog=false"
+        >×</button>
         <h4 class="ui-draggable-handle">下载服务</h4>
       </div>
       <div class="modal-body ssm-modal-body">
@@ -54,7 +60,7 @@
                   type="text"
                   autocomplete="off"
                   placeholder="请输入查询信息"
-									v-model="searchServiceItemInput"
+                  v-model="searchServiceItemInput"
                 >
                 <i class="fa fa-search"></i>
               </div>
@@ -188,7 +194,7 @@ export default {
   data() {
     return {
       //搜索
-      searchMarketItemInput: '',
+      searchMarketItemInput: "",
 
       //展开
       isShow: [],
@@ -202,15 +208,15 @@ export default {
       //选中要下载的服务
       selectedService: {},
 
-			//可以选择的服务列表树
-			
-			serviceTreeList: [],
+      //可以选择的服务列表树
 
-			//
-			searchServiceItemInput:'',
-			
-			expandList: {},
-			
+      serviceTreeList: [],
+
+      //
+      searchServiceItemInput: "",
+
+      expandList: {},
+
       selectedCatelog: {}
     };
   },
@@ -232,21 +238,20 @@ export default {
         if (searchList.sceneList.length) arrScene.push(searchList);
       }
       return arrScene;
-		}
-	},
-	watch:{
-		isShowDownloadDialog(val){
-			if(!val){
-				this.selectedCatelog={};
-				this.expandList={};
-				this.$forceUpdate();
-
-				app.shelter.upperZIndex()
-			}else{
-				app.shelter.lowerZIndex()
-			}
-		}
-	},
+    }
+  },
+  watch: {
+    isShowDownloadDialog(val) {
+      if (!val) {
+        this.selectedCatelog = {};
+        this.expandList = {};
+        this.$forceUpdate();
+        app.shelter.lowerZIndex();
+      } else {
+        app.shelter.upperZIndex();
+      }
+    }
+  },
   mounted: function() {
     let today = formatTime(new Date().getTime());
 
@@ -305,11 +310,11 @@ export default {
       .catch(e => showError(e));
     api
       .getTreeNodeLoop([{ tree_class: "0002", tree_node_name: "" }])
-      .then(response=>{
-				this.serviceTreeList=response.r.ret;
-				console.log(response);
-			})
-    .catch(e => showError(e));
+      .then(response => {
+        this.serviceTreeList = response.r.ret;
+        console.log(response);
+      })
+      .catch(e => showError(e));
     // api.downloadVersion([{sv_id:'',tree_p_node_name:'',user:window.currentUser}]).then(response=>{
     // 	debuglog;
     // });
@@ -332,7 +337,7 @@ export default {
       return this.expandList[category[this.mapping.id]];
     },
     selectionChanged(cat2) {
-			console.log(cat2);
+      console.log(cat2);
       this.selectedCatelog = cat2;
     },
     download() {
@@ -340,20 +345,20 @@ export default {
         .downloadVersion([
           {
             sv_id: this.selectedService.id,
-            tree_p_node_name:this.selectedCatelog.tree_node_name,
+            tree_p_node_name: this.selectedCatelog.tree_node_name,
             user: window.currentUser
           }
         ])
         .then(response => {
-					if(response.r.ret){
-						 this.isShowDownloadDialog=false;
-						 showSuccess('下载成功！');
-					}
-				})
-				.catch(error=>{
-					showError(error);
-					console.log(error);
-				});
+          if (response.r.ret) {
+            this.isShowDownloadDialog = false;
+            showSuccess("下载成功！");
+          }
+        })
+        .catch(error => {
+          showError(error);
+          console.log(error);
+        });
     }
   }
 };
@@ -379,40 +384,40 @@ export default {
 }
 
 .search-ctn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+
+  > i {
     position: absolute;
-    top:10px; 
-    left:10px; 
-		right:10px;
-		
-    > i {
-      position: absolute;
-      top: 8px;
-      left: 12px;
-      color: #ccc;
+    top: 8px;
+    left: 12px;
+    color: #ccc;
+  }
+  input {
+    width: ~"calc(100% - 45px)";
+    height: 30px;
+    margin-bottom: 10px;
+    padding: 0 10px 0 30px;
+    border-radius: 30px;
+    border: @normal-border;
+    &:focus,
+    &:active {
+      outline: none;
+      border-color: #ccc;
+      box-shadow: 0 0 5px #ccc;
     }
-    input {
-      width: ~"calc(100% - 45px)";
-      height: 30px;
-      margin-bottom: 10px;
-      padding: 0 10px 0 30px;
-      border-radius: 30px;
-      border: @normal-border;
-      &:focus,
-      &:active {
-        outline: none;
-        border-color: #ccc;
-        box-shadow: 0 0 5px #ccc;
-      }
-    }
-	}
-	
+  }
+}
+
 .scene-ctn {
-    position:absolute;
-    top:50px;
-    left:10px;
-    right:10px;
-    bottom:10px;
-		overflow:auto;
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  overflow: auto;
 }
 .scene-icon {
   float: left;
