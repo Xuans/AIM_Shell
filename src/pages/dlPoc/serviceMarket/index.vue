@@ -240,6 +240,10 @@ export default {
 				this.selectedCatelog={};
 				this.expandList={};
 				this.$forceUpdate();
+
+				app.shelter.upperZIndex()
+			}else{
+				app.shelter.lowerZIndex()
 			}
 		}
 	},
@@ -347,7 +351,7 @@ export default {
 					}
 				})
 				.catch(error=>{
-					showSuccess(error);
+					showError(error);
 					console.log(error);
 				});
     }
