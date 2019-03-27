@@ -7,34 +7,60 @@
     </div>
     <!-- 搜索 End -->
     <!-- 市场列表 Start -->
-    <div class="scene-ctn">
+    <div
+      class="data-file-list"
+      style="position: absolute;top: 60px;left: 10px;right: 10px;bottom: 10px;height: auto;"
+    >
       <div
-        v-for="(item, itemIndex) in searchSceneMarketItems"
+        v-for="(item, itemIndex) in searchServiceMarketItems"
         :key="item.sceneClassName"
-        class="scene-class-ctn"
+        class="bi-button-group bi-card bi-vertical-layout bi-computer"
       >
-        <div class="scene-class-title" @click="toggle(itemIndex)" :class="{open:isShow[itemIndex]}">
-          <i class="fa fa-angle-down"></i>
-          {{item.sceneClassName}}({{item.sceneList.length}})
-        </div>
-        <div class="scene-class-list-ctn" v-show="isShow[itemIndex]">
-          <div v-for="list in item.sceneList" :key="list.id" class="scene-class-list-ctt">
-            <img class="scene-icon" v-bind:src="list.icon?list.icon:'../../img/icon.jpg'">
-            <div class="scene-title-desp">
-              <div v-html="list.name" class="scene-title"></div>
-              <div v-html="list.desp" class="scene-desp"></div>
-              <button @click="showDownloadDialog(list)">下载</button>
+        <div data-id class="bi-pane bi-computer-list">
+          <div
+            class="scene-class-title noselect"
+            @click="toggle(itemIndex)"
+            :class="{open:isShow[itemIndex]}"
+          >
+            <i class="fa fa-caret-down"></i>
+            {{item.sceneClassName}}&nbsp;&nbsp;（{{item.sceneList.length}}）
+          </div>
+          <div class="bi-computer-card-content" v-show="isShow[itemIndex]">
+            <div
+              v-for="list in item.sceneList"
+              :key="list.id"
+              :data-parent="item.sceneClassName"
+              :data-id="list.id"
+              :data-sid="list.service_id"
+              class="bi-computer-card-item"
+              :title="'名称：'+list.name+'\n'+'描述：'+list.desp"
+               
+            >
+            <!-- @click.stop="showPreview(list)" -->
+              <div class="card-content-text">
+                <div class="file-name">{{list.name}}</div>
+                <div class="file-name" style="font-size:0.86em;color:#efefef;">{{list.desp}}</div>
+              </div>
+              <div class="card-content-icon">
+                <i class="el-icon-document"></i>
+              </div>
+              <div class="card-content-number"></div>
+              <div class="card-content-icon-operate">
+                <i title="下载" class="fa fa-download" @click.stop="showDownloadDialog(list)"></i>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
     <!-- 市场列表 End -->
+    <!-- 预览 Start-->
+    <!-- 预览 End-->
 
     <!-- 下载弹窗 Start -->
     <div v-show="isShowDownloadDialog" class="mask"></div>
     <div
-      :style="'height:600px;width:450px;z-index:1070'"
+      :style="'z-index:1070'"
       v-show="isShowDownloadDialog"
       class="modal in fade stm-add-task-modal"
       aria-hidden="false"
@@ -50,62 +76,94 @@
         <h4 class="ui-draggable-handle">下载服务</h4>
       </div>
       <div class="modal-body ssm-modal-body">
-        <div class="stm-form stm-add-task-filter" style="position: relative;">
-          <div>
-            <span style="width: 150px;">选择挂载节点：&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <div class="stm-add-task-tree-ctn">
-              <div class="stm-search" title="搜索">
-                <input
-                  data-role="ssm-service-filter-input"
-                  type="text"
-                  autocomplete="off"
-                  placeholder="请输入查询信息"
-                  v-model="searchServiceItemInput"
-                >
-                <i class="fa fa-search"></i>
+        <div style="top: 20px;bottom: 0;height: auto;">
+          <div class="stm-add-task-panel">
+            <div class="stm-add-task-panel-left">
+              <div class="stm-form">
+                <div>
+                  <span style="width:100px;">新服务英文名：</span>
+                  <input
+                    name="newServiceEName"
+                    v-model="newServiceEName"
+                    autocomplete="off"
+                    class="stm-modal-add-input"
+                    type="text"
+                  >
+                </div>
+                <div>
+                  <span style="width:100px;">新服务中文名：</span>
+                  <input
+                    name="newServiceCName"
+                    v-model="newServiceCName"
+                    autocomplete="off"
+                    type="text"
+                    class="stm-modal-add-input"
+                  >
+                </div>
               </div>
-              <div :class="'ssm-tree-list'">
-                <ul v-for="(cat1,cat1_index) of serviceTreeList" :key="cat1_index">
-                  <li>
-                    <div
-                      class="ssm-tree-header noselect"
-                      data-level="0"
-                      :data-id="cat1[mapping['id']]"
-                      :title="cat1[mapping['label']]"
-                      @click="expand(cat1)"
-                    >
-                      <span>
-                        {{cat1[mapping['id']]}}
-                        <i
-                          data-role="expand"
-                          class="fa fa-caret-down"
-                          @click.stop="expand(cat1)"
-                        ></i>
-                      </span>
+            </div>
+            <div class="stm-add-task-panel-right">
+              <div class="stm-form stm-add-task-filter">
+                <div>
+                  <span style="width: 100px;">挂载节点：&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  <div class="stm-add-task-tree-ctn">
+                    <div class="stm-search" title="搜索">
+                      <input
+                        data-role="ssm-service-filter-input"
+                        type="text"
+                        autocomplete="off"
+                        placeholder="请输入查询信息"
+                        v-model="searchServiceItemInput"
+                      >
+                      <i class="fa fa-search"></i>
                     </div>
-                    <el-collapse-transition>
-                      <div v-show="isExpand(cat1)">
-                        <ul v-for="(cat2,cat2_index) in cat1.children" :key="cat2_index">
-                          <li>
-                            <div
-                              class="ssm-tree-header noselect"
-                              :class="{active:cat2[mapping['id']]===selectedCatelog[mapping['id']]}"
-                              data-level="1"
-                              :data-p-name="cat1[mapping['label']]"
-                              :data-desc="cat2.desc"
-                              :data-id="cat2[mapping['id']]"
-                              :title="cat2[mapping['label']]"
-                              @click.stop="expand(cat2)"
-                            >
-                              <span @click.stop="selectionChanged(cat2)">{{cat2[mapping['id']]}}</span>
+                    <div :class="'ssm-tree-list'">
+                      <ul v-for="(cat1,cat1_index) of serviceTreeList" :key="cat1_index">
+                        <li>
+                          <div
+                            class="ssm-tree-header noselect"
+                            data-level="0"
+                            :data-id="cat1[mapping['id']]"
+                            :title="cat1[mapping['label']]"
+                            @click="expand(cat1)"
+                          >
+                            <span>
+                              {{cat1[mapping['id']]}}
+                              <i
+                                data-role="expand"
+                                class="fa fa-caret-down"
+                                @click.stop="expand(cat1)"
+                              ></i>
+                            </span>
+                          </div>
+                          <el-collapse-transition>
+                            <div v-show="isExpand(cat1)">
+                              <ul v-for="(cat2,cat2_index) in cat1.children" :key="cat2_index">
+                                <li>
+                                  <div
+                                    class="ssm-tree-header noselect"
+                                    :class="{active:cat2[mapping['id']]===selectedCatelog[mapping['id']]}"
+                                    data-level="1"
+                                    :data-p-name="cat1[mapping['label']]"
+                                    :data-desc="cat2.desc"
+                                    :data-id="cat2[mapping['id']]"
+                                    :title="cat2[mapping['label']]"
+                                    @click.stop="expand(cat2)"
+                                  >
+                                    <span
+                                      @click.stop="selectionChanged(cat2)"
+                                    >{{cat2[mapping['id']]}}</span>
+                                  </div>
+                                </li>
+                              </ul>
                             </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </el-collapse-transition>
-                  </li>
-                  <li></li>
-                </ul>
+                          </el-collapse-transition>
+                        </li>
+                        <li></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -131,6 +189,8 @@
 <script>
 // import axios from "axios";
 import "element-ui/lib/theme-chalk/index.css";
+import { request } from "http";
+import iresourceManager from "../../../components/resourceManagent";
 // Vue.prototype.axios = axios;
 
 //判断是否为生成环境
@@ -176,7 +236,9 @@ const dateMove = function(str, move) {
   return new Date(formattedTime).getTime() + move * 24 * 3600 * 1000;
 };
 const showError = msg => {
-  app.alert("服务市场", msg, app.alertShowType.ERROR);
+  const arr = msg.toString().split("Exception:");
+
+  app.alert("服务市场", arr[arr.length - 1], app.alertShowType.ERROR);
 };
 const showSuccess = msg => {
   app.alert("服务市场", msg, app.alertShowType.SUCCESS);
@@ -188,6 +250,14 @@ export default {
     mapping: {
       default() {
         return { id: "tree_node_name", label: "tree_node_name" };
+      }
+    },
+    serviceMapping: {
+      default() {
+        return {
+          id: "service_id",
+          label: "desp"
+        };
       }
     }
   },
@@ -207,21 +277,20 @@ export default {
 
       //选中要下载的服务
       selectedService: {},
+      selectedCatelog: {},
+      newServiceEName: "",
+      newServiceCName: "",
 
-      //可以选择的服务列表树
-
-      serviceTreeList: [],
-
-      //
+      //搜索
       searchServiceItemInput: "",
-
-      expandList: {},
-
-      selectedCatelog: {}
+      //可以选择的服务列表树
+      serviceTreeList: [],
+      //展开列表
+      expandList: {}
     };
   },
   computed: {
-    searchSceneMarketItems: function() {
+    searchServiceMarketItems: function() {
       var arrScene = [];
       var items = this.serviceMarketItems;
       var search = this.searchMarketItemInput;
@@ -237,7 +306,17 @@ export default {
         };
         if (searchList.sceneList.length) arrScene.push(searchList);
       }
+
+      this.isShow = arrScene.map(e => true);
       return arrScene;
+    },
+    searchServiceTreeItems: function() {
+      var search = this.searchServiceItemInput;
+
+      var ret = [];
+      var list = this.serviceTreeList;
+
+      //list.map(l=>)
     }
   },
   watch: {
@@ -245,6 +324,8 @@ export default {
       if (!val) {
         this.selectedCatelog = {};
         this.expandList = {};
+        this.newServiceEName = "";
+        this.newServiceCName = "";
         this.$forceUpdate();
         app.shelter.lowerZIndex();
       } else {
@@ -267,7 +348,9 @@ export default {
       .getVersions([{}])
       .then(response => {
         console.log("成功");
-        const services = response.r.ret.sort((a, b) => b - a);
+        const services = response.r.ret.sort(
+          (a, b) => b.publish_time - a.publish_time
+        );
 
         let list = ["今天", "昨天", "前天"].map((e, i) => {
           return {
@@ -295,7 +378,8 @@ export default {
             sort = list[cursor];
           }
           sort.sceneList.push({
-            id: s.service_id,
+            id: s.sv_id,
+            service_id: s.service_id,
             name: s.service_ename,
             desp: s.service_desc,
             icon: "./chunk-vendors/img/icon-6.png",
@@ -305,7 +389,6 @@ export default {
 
         list = list.filter(l => l.sceneList.length);
         this.serviceMarketItems = list;
-        this.isShow = list.map(e => true);
       })
       .catch(e => showError(e));
     api
@@ -322,6 +405,16 @@ export default {
   methods: {
     toggle: function(itemIndex) {
       this.isShow[itemIndex] = !this.isShow[itemIndex];
+      this.$forceUpdate();
+    },
+    showPreview(service) {
+      app.domain.exports("serviceDebugPage", service);
+      app.dispatcher.load({
+        title: "服务-" + service[this.serviceMapping.label],
+        moduleId: "dlPoc",
+        section: "serviceDebugPage",
+        id: service[this.serviceMapping.id]
+      });
     },
     showDownloadDialog: function(service) {
       this.isShowDownloadDialog = true;
@@ -344,13 +437,15 @@ export default {
       api
         .downloadVersion([
           {
+            cname: this.newServiceCName,
+            ename: this.newServiceEName,
             sv_id: this.selectedService.id,
             tree_p_node_name: this.selectedCatelog.tree_node_name,
             user: window.currentUser
           }
         ])
         .then(response => {
-          if (response.r.ret) {
+          if (response.r) {
             this.isShowDownloadDialog = false;
             showSuccess("下载成功！");
           }
@@ -408,165 +503,6 @@ export default {
       border-color: #ccc;
       box-shadow: 0 0 5px #ccc;
     }
-  }
-}
-
-.scene-ctn {
-  position: absolute;
-  top: 50px;
-  left: 10px;
-  right: 10px;
-  bottom: 10px;
-  overflow: auto;
-}
-.scene-icon {
-  float: left;
-  width: 50px;
-  height: 50px;
-  background: @brand-color;
-  border-radius: 4px;
-}
-
-.scene-title-desp {
-  float: none;
-  margin-left: 60px;
-  font-size: 13px;
-  button {
-    margin-top: 5px;
-    border-radius: @border-radius;
-    border: @normal-border;
-    background-color: #fff;
-    cursor: pointer;
-    + button {
-      margin-left: 5px;
-    }
-  }
-}
-.scene-class-ctn {
-  padding: 0 @padding-value;
-  .scene-class-list-ctn {
-    height: 170px;
-    margin-bottom: 20px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid #e5e5e5;
-  }
-  .scene-class-list-ctt {
-    position: relative;
-    float: left;
-    width: 33.3%;
-    width: ~"calc(100% / 3)";
-    margin-bottom: 30px;
-  }
-}
-.scene-store {
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  color: #fff;
-  font-weight: bold;
-  text-align: center;
-  font-size: 16px;
-  line-height: 0.8;
-  background-color: #ddd;
-  z-index: 0;
-  cursor: pointer;
-  &:after {
-    position: absolute;
-    content: "";
-    border: 7px solid #ddd;
-    top: 8px;
-    left: 0;
-    right: 0;
-    border-color: #ddd #ddd transparent #ddd;
-    z-index: -1;
-  }
-  i {
-    display: none;
-    top: -60px;
-    transition: all linear 0.5s;
-  }
-  &.store {
-    background-color: @red-color;
-    &:after {
-      border-color: @red-color @red-color transparent @red-color;
-    }
-    i {
-      position: absolute;
-      left: 2px;
-      top: 2px;
-      font-size: 12px;
-      display: block;
-    }
-    span {
-      display: none;
-    }
-  }
-}
-.scene-desp {
-  color: @ctn-ctt-color;
-  line-height: 2;
-}
-.scene-load-ctn {
-  float: none;
-  height: 100%;
-  margin-left: 70%;
-  padding: @padding-value;
-  box-sizing: border-box;
-  background-color: @model-ctn-bg;
-  .scene-load-title {
-    font-size: 16px;
-    margin-bottom: @padding-value;
-  }
-}
-.scene-load-list-ctn.ishover {
-  img,
-  button,
-  .scene-store {
-    display: block;
-  }
-  .scene-title-desp {
-    margin-left: 60px;
-  }
-}
-
-.scene-load-list-ctn.inhover {
-  img,
-  button,
-  .scene-store {
-    display: none;
-  }
-  .scene-title-desp {
-    margin-left: 0px;
-  }
-}
-
-.scene-load-list-ctn {
-  position: relative;
-  padding-bottom: @padding-value;
-  padding-left: 20px;
-  cursor: pointer;
-  .top-num {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-  }
-  button {
-    background: transparent;
-    border-color: #ccc;
-    color: #888;
-    padding: 0 8px;
-    border-radius: 2px;
-  }
-  img,
-  button,
-  .scene-store {
-    display: none;
-  }
-  .scene-title-desp {
-    margin-left: 0;
-  }
-
-  &:first-child {
   }
 }
 </style>

@@ -102,6 +102,10 @@
 		//发布脚本
 		c: 'tc.cama.aweb.shell.service.IShellServiceExec',
 		m: 'publishShell'
+	}, {
+		//下载到`我的`
+		c: 'tc.cama.aweb.shell.service.IShellSerVersionService',
+		m: 'downloadVersion'
 	}].forEach(method => {
 		methods[method.m] = (function (method) {
 			return function (p) {
@@ -137,10 +141,6 @@
 		//获取服务市场列表
 		c: 'tc.cama.aweb.shell.service.IShellSerVersionService',
 		m: 'getVersions'
-	}, {
-		//下载到`我的`
-		c: 'tc.cama.aweb.shell.service.IShellSerVersionService',
-		m: 'downloadVersion'
 	}].forEach(method => {
 		methods[method.m] = (function (method) {
 			return function (p) {
