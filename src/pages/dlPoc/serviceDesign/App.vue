@@ -142,11 +142,21 @@ export default {
   },
 
   methods: {
+    getServiceArgs(params) {
+      //serviceArgs要求的是数组型的键值对
+      let args = [];
+      for (let p of params) {
+        args.push({
+          [p.placeholder]: p.value
+        });
+      }
+      return args;
+    },
     execute() {
       this.runMessage = "初始化执行器...";
       let service_id = this.getStore().target.service_id;
       let service_content = this.getStore().target.service_content;
-      let service_args = this.run_service_args;
+      let service_args = this.getServiceArgs(this.serviceParams);
       this.$addExecuteTask({
         service_id,
         service_content,
@@ -170,7 +180,7 @@ export default {
                     task: {
                       instance_name:
                         this.getStore().target.service_name + "试运行",
-                      instance_id,
+                      instance_id
                     },
                     service: {
                       service_id,
@@ -209,13 +219,10 @@ export default {
       }
       //弹出一个参数配置页面，填写完参数后，转到Log页面
       this.serviceParams = this.getSerivceParams();
-      this.run_service_args = JSON.parse(
-        JSON.stringify(this.getStore().service_args)
-      );
       this.runConfigurationVisiable = true;
     },
-    handleOfValue(val, item, key) {
-      this.run_service_args[item.nodeId][item.ename][key] = val;
+    handleOfValue(val, item) {
+      item.value = val;
     },
     getSerivceParams() {
       let treeData = [];
