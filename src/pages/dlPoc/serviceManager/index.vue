@@ -1,17 +1,18 @@
 <template>
-  <keep-alive>
     <iworkbench @reveal="reveal" :model="serviceConfig" :mapping="serviceMapping" v-loading="loading" 
       :element-loading-text="`加载内容中...`">
       <div slot="leftPage" class="stm-left-ctn">
         <div class="stm-header">
           <span>服务列表</span>
-          <div class="stm-tookit" style="float: right">
+          <div class="stm-tookit" style="float: right;font-size:.8rem;">
             <span data-role="btn" @click="createItem" title="新增分类">
-              <i class="fa fa-plus"></i> 新增分类
+              <i class="fa fa-plus"></i> 
+            </span>
+            <span data-role="btn" @click="refreshTree" title="刷新">
+              <i class="el-icon-refresh"></i> 
             </span>
           </div>
         </div>
-        <keep-alive>
           <itree
             ref="tree"
             @open="openFile"
@@ -20,18 +21,15 @@
             @edit="editCategory"
             :mapping="serviceMapping"
           ></itree>
-        </keep-alive>
       </div>
       <div slot="centerPage" style="position:relative;width:100%;height:100%;">
         <el-col :span="24" style="height:100%;">
-          <keep-alive>
             <iresourceManager
               @open="openFile"
               @create="createItem"
               @getResourceInfo="getResourceInfo"
               ref="resourceManager"
             ></iresourceManager>
-          </keep-alive>
         </el-col>
       </div>
       <!-- <div slot="leftTool">
@@ -89,7 +87,6 @@
         </div>
       </div>
     </iworkbench>
-  </keep-alive>
 </template>
 
 <script>

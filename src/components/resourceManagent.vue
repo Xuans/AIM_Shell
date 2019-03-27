@@ -54,7 +54,7 @@
                   class="title-name-computer"
                   @click="()=>{contentVisible[index]=contentVisible[index]==false?true:false;$forceUpdate();}"
                 >
-                  <span class="file-name">{{item.tree_node_desc}}</span>
+                  <span class="file-name">{{item.tree_node_name}}</span>
                 </div>
               </div>
             </div>
@@ -80,7 +80,7 @@
                 :data-id="child.tree_node_name"
               >
                 <div class="card-content-text">
-                  <span class="file-name">{{child.tree_node_desc}}</span>
+                  <span class="file-name">{{child.tree_node_name}}</span>
                 </div>
                 <div class="card-content-icon">
                   <i :class="child.tree_node_type === '1' ? 'fa fa-briefcase':'el-icon-document'"></i>
@@ -105,11 +105,11 @@
             :key="index"
             class="search-list"
             :data-type="item.tree_node_type"
-            :data-name="item.tree_node_desc"
+            :data-name="item.tree_node_name"
             :data-id="item.tree_node_name"
           >
             <i :class="item.tree_node_type==='1' ? 'fa fa-briefcase':'el-icon-tickets'"></i>
-            <span>{{item.tree_node_desc}}</span>
+            <span>{{item.tree_node_name}}</span>
           </div>
         </div>
       </div>
@@ -146,7 +146,8 @@ export default {
       console.log('list',l);
     }
   },
-
+  updated(){
+  },
   components: {
     ServiceInfo
   },
@@ -205,9 +206,9 @@ export default {
     },
     filter(item) {
       if (!this.queryString || this.queryString.length == 0) return true;
-      if (!item || !item.tree_node_desc) return true;
+      if (!item || !item.tree_node_name) return true;
       return (
-        item.tree_node_desc
+        item.tree_node_name
           .toLowerCase()
           .match(this.queryString.toLowerCase()) != null
       );
@@ -250,7 +251,7 @@ export default {
   computed: {},
   mounted() {
     console.log('resource manger mounted');
-    window.resMgr = this;
+    this.expand(this.parent.selection);
   },
   data() {
     return {

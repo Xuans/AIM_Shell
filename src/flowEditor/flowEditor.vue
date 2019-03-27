@@ -4,7 +4,7 @@
       <slot name="palette"></slot>
     </el-aside>
 
-    <el-container v-once ref="main" direction="vertical" style="overflow:none;">
+    <el-container ref="main" direction="vertical" style="overflow:none;">
       <el-main style="overflow:none;position:relative;padding:0;">
         <div ref="canvas" class="flow-canvas"></div>
         <slot name="canvas"></slot>

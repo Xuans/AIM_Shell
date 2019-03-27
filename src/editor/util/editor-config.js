@@ -48,10 +48,10 @@ function addDataAndLine(config, dataOfService) {
 }
 
 function addServiceParas(config, p) {
-  if(p==''||!p)
-    p={}
-  if (p.constructor != Object && p.constructor != Array){
-    console.log('服务参数转换:',p);
+  if (p == '' || !p)
+    p = {}
+  if (p.constructor != Object && p.constructor != Array) {
+    console.log('服务参数转换:', p);
     p = JSON.parse(p);
   }
   config.service_args = p;
@@ -67,10 +67,56 @@ export class EditorConfig {
     this.lines = {
       '0': line
     }
-    this.background="#F1F2F2";
+    this.background = "#F1F2F2";
     this.types = types
     this.layoutable = layoutPolicy
-    this.onHooks = Array.of(ReaderListener)
+    this.onHooks = Array.of(ReaderListener, {
+      childAdded(editPart) {
+        let model = editPart.model;
+
+        let shell_def = model.get("data.shell_def");
+        if (shell_def) return;
+        let tree_node_name=model.get("data.tree_info.tree_node_name");
+        let nodeId=model.get("data.id");
+        model.set("$isReady", false);
+        //在创建节点时，初始化脚本信息
+        Vue.$getShellInstance({
+            shell_ename:tree_node_name
+          })
+          .then(resp => {
+            if (resp.r.ret) {
+              model.set("data.shell_def", resp.r.ret);
+              model.set("$isReady", true);
+
+              let outArgs=resp.r.ret.shell_args_out;
+              //为出参信息初始化占位符
+              if(outArgs){
+                outArgs=JSON.parse(outArgs);
+                let out_args=[]
+                for(let arg of outArgs){
+                  out_args.push({
+                    ...arg,
+                    //节点ID_参数名
+                    placeholder:'${'+nodeId+'_'+arg.ename+'}'
+                  })
+                }
+                model.set("data.args_out",out_args);
+              }
+
+
+              return;
+            }
+            throw '节点脚本丢失：' + tree_node_name;
+          })
+          .catch(e => {
+            app.alert(
+              "节点初始化失败",
+              (e && e.message) || e,
+              app.alertShowType.ERROR
+            );
+          });
+      }
+    })
     this.policies = {
       dblfPolicy
     }
@@ -182,7 +228,7 @@ export class DebugEditorConfig {
     this.lines = {
       '0': lineOfUnselectable
     }
-    this.background ='RGB(103,190,173)'
+    this.background = 'RGB(103,190,173)'
     this.types = types
     this.onHooks = Array.of(ReaderListener)
     this.policies = {
@@ -190,7 +236,7 @@ export class DebugEditorConfig {
       debugRootPolicy
     }
 
-    const t=target;
+    const t = target;
     this.operations = Array.of({
       id: 'debug-stop',
       name: '关闭Log',
@@ -202,8 +248,7 @@ export class DebugEditorConfig {
       run() {
         this.editor.rootEditPart.$emit('debug-stop')
       }
-    },
-    {
+    }, {
       id: 'debug-start',
       name: '查看Log',
       type: 2,
@@ -212,10 +257,9 @@ export class DebugEditorConfig {
         return true
       },
       run() {
-        this.editor.rootEditPart.$emit('debug-start',t.logs,1000)
+        this.editor.rootEditPart.$emit('debug-start', t.logs, 1000)
       }
-    }
-    )
+    })
 
     addDataAndLine(this, target.service_content.data)
     addServiceParas(this, target.service_args)
@@ -251,11 +295,11 @@ export class VersionsEditorConfig {
       }
     })
 
-    if(target.service_content&&target.service_content.constructor == String){
-      target.service_content=JSON.parse(target.service_content)
+    if (target.service_content && target.service_content.constructor == String) {
+      target.service_content = JSON.parse(target.service_content)
     }
-    if(target.service_args&&target.service_args.constructor == String){
-      target.service_args=JSON.parse(target.service_args)
+    if (target.service_args && target.service_args.constructor == String) {
+      target.service_args = JSON.parse(target.service_args)
     }
     addDataAndLine(this, target.service_content.data)
     addServiceParas(this, target.service_args)

@@ -1,5 +1,4 @@
 <template>
-  <div style="display:flex;position:relative;height:100%;">
     <!-- <div style="flex:1">
       service_args: {{store.service_args}}
       <br/>
@@ -10,27 +9,26 @@
       height="250px"
       :data="params"
       border
+      width="100%"
       size="mini"
       stripe
-      :fit="!0"
       tooltip-effect="dark"
     >
       <el-table-column prop="nodeId" label="所属节点" width="100"></el-table-column>
       <el-table-column prop="ename" label="英文名" width="120"></el-table-column>
 
       <el-table-column prop="placeholder" label="占位符" width="300"></el-table-column>
-      <el-table-column prop="cname" label="中文名（别名）" width="220">
+      <el-table-column prop="cname" label="中文名（别名）" fixed='right'>
         <template slot-scope="scope">
           <el-input v-model="scope.row.cname" @input="val => handleOfValue(val, scope.row,'cname')"></el-input>
         </template>
       </el-table-column>
-      <el-table-column prop="cname" label width="120">
+      <el-table-column prop="cname" label width="120" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" @click="reveal(scope.row)">定位节点</el-button>
         </template>
       </el-table-column>
     </el-table>
-  </div>
 </template>
 
 <script>

@@ -1,6 +1,7 @@
 <template>
     <div style="height: 300px">
-        <div style="padding: 10px 10px 6px;height: 5px;background-color: #f4f4f5">
+        <div style="display:flex;height: 20px;background-color: #f4f4f5" @dblclick="$emit('close')">
+            <span>服务信息（双击最小化）</span>
             <el-button class="mc-btn" type="info" plain icon="el-icon-minus" size="mini" @click="$emit('close')"></el-button>
             <el-button class="mc-btn" type="info" plain icon="el-icon-setting" size="mini" style="right: 35px"></el-button>
         </div>

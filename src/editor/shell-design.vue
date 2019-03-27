@@ -1,4 +1,5 @@
 <template>
+<!-- 脚本服务编排页面 -->
   <div style="flex:1">
     <shell-flow
       ref="shell-flow"

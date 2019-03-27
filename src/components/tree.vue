@@ -26,7 +26,7 @@
             </div>
           </div>
           <el-collapse-transition>
-            <div v-show="isExpand(cat1)">
+            <div v-show="expandList[cat1[mapping.id]]">
               <ul v-for="(cat2,cat2_index) in cat1.children" :key="cat2_index">
                 <li>
                   <div
@@ -147,10 +147,14 @@ export default {
       //   category.expanded = false;
       // }
       // category.expanded = !category.expanded;
+
       this.expandList[category[this.mapping.id]]=!this.expandList[category[this.mapping.id]];
       this.$forceUpdate();
-    },
+      console.log('tree expand',this.expandList);
+      console.log(category);
+  },
     isExpand(category){
+      console.log(category[this.mapping.id],this.expandList[category[this.mapping.id]]);
       return this.expandList[category[this.mapping.id]];
     },
   }

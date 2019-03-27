@@ -1,12 +1,16 @@
 <template>
-  <el-tabs :value="activeTab" type="card" style="width: 100%" class="shellFlowPanel">
+  <el-tabs :value="activeTab" type="card" style="width: 100%;overflow:auto" class="shellFlowPanel">
     <el-tab-pane
-      label="脚本参数配置"
+      label="脚本入参配置"
       name="first"
       v-loading="loading"
       :element-loading-text="`加载[${shellName}]脚本定义`"
     >
-      <props-card :header="`脚本[${shellName}]参数配置`" style="margin: 10px;">
+      <props-card :header="`脚本[${shellName}]入参配置`" style="margin: 10px;">
+        <div slot="righttoolbar">
+            <i class="el-icon-question" title=" 参数填写可以是占位符。
+            占位符来自于 前置节点出参\服务参数\常量表\全局变量。"></i>
+        </div>
         <!-- <template slot="righttoolbar">
           <el-button @click="save" size="mini">保存</el-button>
         </template>-->
@@ -48,6 +52,37 @@
                 v-model="scope.row.isExposure"
                 @change="val => handleOfExposure(val, scope.row)"
               ></el-checkbox>
+            </template>
+          </el-table-column>
+        </el-table>
+      </props-card>
+    </el-tab-pane>
+    <el-tab-pane label="脚本出参信息" name="out">
+      <props-card :header="`脚本[${shellName}]入参配置`" style="margin:10px;">
+     <div slot="righttoolbar">
+            <i class="el-icon-question" title="点击占位符以复制内容，可以应用在脚本入参"></i>
+        </div>
+       
+        <el-table
+          v-if="store.active"
+          ref="multipleTable"
+          :data="outParams"
+          border
+          size="mini"
+          stripe
+          tooltip-effect="dark"
+          style="width: 100%"
+        >
+          <el-table-column prop="ename" label="英文名" fixed="left" width="100"></el-table-column>
+          <el-table-column prop="cname" label="中文名" fixed="left" width="100"></el-table-column>
+          <el-table-column fixed="right" prop="placeholder" label="占位符(点击复制)">
+            <template slot-scope="scope">
+              <a href="#">
+                <p
+                  style="color:black"
+                  @click.stop="copyToClipboard(scope.row)"
+                >{{scope.row.placeholder}}</p>
+              </a>
             </template>
           </el-table-column>
         </el-table>
@@ -140,6 +175,10 @@ export default {
       }
       return v;
     },
+    outParams() {
+      let x = this.store.active.get("data.args_out");
+      return x || [];
+    },
     tableData() {
       let data = [];
       let shell_def;
@@ -150,7 +189,7 @@ export default {
           return data;
         }
       }
-      this.loading=false;
+      this.loading = false;
       let input, item, id;
       input = this.store.active.get("data.params");
       if (!input) {
@@ -194,6 +233,15 @@ export default {
   },
 
   methods: {
+    copyToClipboard(row) {
+      let clipboard = document.createElement("input");
+      document.body.append(clipboard);
+      clipboard.value = row.placeholder;
+      clipboard.select();
+      document.execCommand("Copy");
+      document.body.removeChild(clipboard);
+      app.alert(`${row.placeholder}复制成功`);
+    },
     searchAgent(queryString, cb) {
       this.$getAgent()
         .then(resp => {
@@ -210,7 +258,7 @@ export default {
       });
 
       app.dispatcher.load({
-        title: "脚本编排:"+this.shellName,
+        title: "脚本编排:" + this.shellName,
         moduleId: "dlPoc",
         section: "shellEditor",
         id: this.shellName

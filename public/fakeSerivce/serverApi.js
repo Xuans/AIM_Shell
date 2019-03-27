@@ -24,6 +24,41 @@ export default {
 
     return hours + 'h ' + minutes + 'min ' + seconds + 's '
   },
+  /**
+   * 添加试运行任务
+   * @param {*} param0 
+   */
+  $addExecuteTask({
+    service_id,
+    service_content,
+    service_args,
+  }) {
+    return methods.addInstance([{
+      service_id,
+      service_version: new Date(),
+      service_content,
+      instance_ename: service_id,
+      instance_name: '试运行任务',
+      job_type: 'n',
+      shell_args: service_args,
+      job_timeout: 3000,
+      no_tree_node: true,
+    }]);
+  },
+  $publishShell({
+    instance_id
+  }){
+    return methods.publishShell({
+      instance_id
+    });
+  },
+  $getSchedules({
+    instance_id
+  }) {
+    return methods.getSchedules({
+      instance_id,
+    });
+  },
   $getTasks({
     service_id
   }) {
@@ -258,15 +293,15 @@ export default {
       "create_user": treeNode.user,
     }]);
   },
- $checkServiceContent(data){
+  $checkServiceContent(data) {
     //检查保存的数据里是否参数齐全
-    let nodes=data.data;
-    for(let k in nodes){
-      let node=nodes[k];
-     for(let pk in node.params){
-       let v=node.params[pk]
-       console.log(v);
-        if(v==null||v=='')
+    let nodes = data.data;
+    for (let k in nodes) {
+      let node = nodes[k];
+      for (let pk in node.params) {
+        let v = node.params[pk]
+        console.log(v);
+        if (v == null || v == '')
           return `节点${k}需要完善参数${pk}`
       }
     }
