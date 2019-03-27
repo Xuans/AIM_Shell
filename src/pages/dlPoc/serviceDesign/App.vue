@@ -144,13 +144,13 @@ export default {
   methods: {
     getServiceArgs(params) {
       //serviceArgs要求的是数组型的键值对
-      let args = [];
+      if(params.length==0)
+        return [];
+      let a={};
       for (let p of params) {
-        args.push({
-          [p.placeholder]: p.value
-        });
+          a[p.placeholder]=p.value
       }
-      return args;
+      return [a];
     },
     execute() {
       this.runMessage = "初始化执行器...";
