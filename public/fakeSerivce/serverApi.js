@@ -46,18 +46,22 @@ export default {
     }]);
   },
   $publishShell({
-    instance_id
+    instance_id,
+    service_args,
+    service_content,
   }){
-    return methods.publishShell({
-      instance_id
-    });
+    return methods.publishShell([{
+      instance_id,
+      shell_args:service_args,
+      service_content,
+    }]);
   },
   $getSchedules({
     instance_id
   }) {
-    return methods.getSchedules({
+    return methods.getSchedules([{
       instance_id,
-    });
+    }]);
   },
   $getTasks({
     service_id

@@ -113,6 +113,7 @@ import ExternalApi from "../../../plugin/externalApi";
 import VersionSelect from "../../../components/Tool/VersionSelect.vue";
 
 import workbench from "../../../components/workbench.vue";
+import formatLog from "../../../util/formatLogs.js";
 
 Vue.config.productionTip = false;
 Vue.use(ElementUi);
@@ -143,16 +144,21 @@ export default {
   methods: {
     execute() {
       this.runMessage = "初始化执行器...";
+      let service_id = this.getStore().target.service_id;
+      let service_content = this.getStore().target.service_content;
+      let service_args = this.run_service_args;
       this.$addExecuteTask({
-        service_id: this.getStore().target.service_id,
-        service_content: this.getStore().target.service_content,
-        service_args: this.run_service_args
+        service_id,
+        service_content,
+        service_args
       })
         .then(result => {
           this.runMessage = "执行器初始化成功，开始下发脚本";
           let instance_id = result.r.ret.instance_id;
           this.$publishShell({
-            instance_id
+            instance_id,
+            service_content,
+            service_args
           })
             .then(() => {
               this.$execServce({
@@ -161,17 +167,13 @@ export default {
                 .then(res => {
                   this.runMessage = "执行成功，准备打开日志...";
                   app.domain.exports("shellLogDetails", {
-                    log: new Promise(res => {
-                      this.$getSchedules({ instance_id }).then(data=>{
-                        console.log('schedules',data)
-                      });
-                    }),
                     task: {
                       instance_name:
-                        this.getStore().target.service_name + "试运行"
+                        this.getStore().target.service_name + "试运行",
+                      instance_id,
                     },
                     service: {
-                      service_id: this.getStore().target.service_id,
+                      service_id,
                       service_name: this.getStore().target.service_name,
                       service_version: ""
                     }
