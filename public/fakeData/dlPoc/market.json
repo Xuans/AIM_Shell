@@ -1,0 +1,125 @@
+[
+    {
+        "sceneClassName": "日常工作类",
+        "sceneList": [
+            {
+                "icon": "./chunk-vendors/img/icon.jpg",
+                "store": true,
+                "name": "场景1111",
+                "desp": "辅助场景说明"
+            },
+            {
+                "icon": "./chunk-vendors/img/icon-1.png",
+                "store": true,
+                "name": "场景1112",
+                "desp": "辅助场景说明"
+            },
+            {
+                "icon": "./chunk-vendors/img/icon-2.png",
+                "store": true,
+                "name": "场景1113",
+                "desp": "辅助场景说明"
+            },
+            {
+                "icon": "./chunk-vendors/img/icon-3.png",
+                "store": false,
+                "name": "场景1114",
+                "desp": "辅助场景说明"
+            },
+            {
+                "icon": "./chunk-vendors/img/icon-4.png",
+                "store": false,
+                "name": "场景1115",
+                "desp": "辅助场景说明"
+            },
+            {
+                "icon": "./chunk-vendors/img/icon-5.png",
+                "store": false,
+                "name": "场景1116",
+                "desp": "辅助场景说明"
+            }
+        ]
+    },
+    {
+        "sceneClassName": "智能办公类",
+        "sceneList": [
+            {
+                "icon": "./chunk-vendors/img/icon-6.png",
+                "store": false,
+                "name": "场景2221",
+                "desp": "辅助场景说明"
+            },
+            {
+                "icon": "./chunk-vendors/img/icon-7.png",
+                "store": false,
+                "name": "场景2222",
+                "desp": "辅助场景说明"
+            },
+            {
+                "icon": "./chunk-vendors/img/icon-8.png",
+                "store": false,
+                "name": "场景2223",
+                "desp": "辅助场景说明"
+            },
+            {
+                "icon": "./chunk-vendors/img/icon-9.png",
+                "store": false,
+                "name": "场景2224",
+                "desp": "辅助场景说明"
+            },
+            {
+                "icon": "./chunk-vendors/img/icon-10.png",
+                "store": false,
+                "name": "场景2225",
+                "desp": "辅助场景说明"
+            },
+            {
+                "icon": "./chunk-vendors/img/icon-11.png",
+                "store": false,
+                "name": "场景2226",
+                "desp": "辅助场景说明"
+            }
+        ]
+    },
+    {
+        "sceneClassName": "监控业务类",
+        "sceneList": [
+            {
+                "icon": "./chunk-vendors/img/icon-1.png",
+                "store": false,
+                "name": "场景3331",
+                "desp": "辅助场景说明"
+            },
+            {
+                "icon": "./chunk-vendors/img/icon-2.png",
+                "store": false,
+                "name": "场景3332",
+                "desp": "辅助场景说明"
+            },
+            {
+                "icon": "./chunk-vendors/img/icon-3.png",
+                "store": false,
+                "name": "场景3333",
+                "desp": "辅助场景说明"
+            },
+            {
+                "icon": "./chunk-vendors/img/icon-4.png",
+                "store": false,
+                "name": "场景3334",
+                "desp": "辅助场景说明"
+            },
+            {
+                "icon": "./chunk-vendors/img/icon-5.png",
+                "store": false,
+                "name": "场景3335",
+                "desp": "辅助场景说明"
+            },
+            {
+                "icon": "./chunk-vendors/img/icon-6.png",
+                "store": false,
+                "name": "场景3336",
+                "desp": "辅助场景说明"
+            }
+        ]
+    }
+]

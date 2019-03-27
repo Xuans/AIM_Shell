@@ -566,4 +566,19 @@ export default {
   text-overflow: ellipsis;
   cursor: pointer;
 }
+
+.bi-computer-card-item:HOVER>.card-content-icon-operate{
+	position: absolute;
+    right: 10px;
+    flex-direction: column;
+    display: flex;
+    height: 42%;
+    justify-content: space-between;
+    top: 10px;
+    align-items: center;
+    width: 20px;
+}
+.bi-computer-card-item>.card-content-icon-operate{
+	display: none;
+}
 </style>
