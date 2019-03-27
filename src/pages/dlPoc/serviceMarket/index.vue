@@ -34,9 +34,8 @@
               :data-sid="list.service_id"
               class="bi-computer-card-item"
               :title="'名称：'+list.name+'\n'+'描述：'+list.desp"
-               
             >
-            <!-- @click.stop="showPreview(list)" -->
+              <!-- @click.stop="showPreview(list)" -->
               <div class="card-content-text">
                 <div class="file-name">{{list.name}}</div>
                 <div class="file-name" style="font-size:0.86em;color:#efefef;">{{list.desp}}</div>
@@ -118,7 +117,7 @@
                       <i class="fa fa-search"></i>
                     </div>
                     <div :class="'ssm-tree-list'">
-                      <ul v-for="(cat1,cat1_index) of serviceTreeList" :key="cat1_index">
+                      <ul v-for="(cat1,cat1_index) of searchServiceTreeItems" :key="cat1_index">
                         <li>
                           <div
                             class="ssm-tree-header noselect"
@@ -311,12 +310,39 @@ export default {
       return arrScene;
     },
     searchServiceTreeItems: function() {
-      var search = this.searchServiceItemInput;
+      var search = (this.searchServiceItemInput || "").trim();
 
-      var ret = [];
       var list = this.serviceTreeList;
+      var expandList = {};
+      var ret;
 
-      //list.map(l=>)
+      if (search) {
+        ret = list
+          .filter(s => s.children && s.children.length)
+          .map(s => {
+            expandList[s[this.mapping.id]] = true;
+            const children =
+              s[this.mapping.label].indexOf(search) !== -1
+                ? s.children
+                : s.children.filter(
+                    c => c[this.mapping.label].indexOf(search) !== -1
+                  );
+
+            return {
+              ...s,
+              children
+            };
+          })
+          .filter(s => s.children && s.children.length);
+      } else {
+        this.serviceTreeList.forEach(
+          s => (expandList[s[this.mapping.id]] = true)
+        );
+        ret = this.serviceTreeList;
+      }
+
+      this.expandList = expandList;
+      return ret;
     }
   },
   watch: {
