@@ -75,19 +75,21 @@ import {
      * @param {*} sv_id 当前版本ID，undefined时表示为开发版本
      */
     const dispay = function (viewId, service_id, sv_id,logs=log_data) {
+      let target=new Target({
+        service_id,
+        sv_id,
+        id: service_id,
+        //TODO 这里传入log数据的默认值log_data为测试数据
+        logs,
+      });
       let ins = new AppCtr({
         propsData: {
-          target: new Target({
-            service_id,
-            sv_id,
-            id: service_id,
-            //TODO 这里传入log数据的默认值log_data为测试数据
-            logs,
-          }),
+          target: target
         }
       }).$mount(`#${viewId}`)
       window.lv=ins;
-      return ins
+      ins.$$$target=target;
+      return ins;
     }
 
     // app.dlPoc.serviceDebug = function (viewId, serviceId) {
