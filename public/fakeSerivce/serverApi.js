@@ -30,6 +30,7 @@ export default {
    */
   $addExecuteTask({
     service_id,
+    service_name,
     service_content,
     service_args,
   }) {
@@ -37,8 +38,8 @@ export default {
       service_id,
       service_version: new Date(),
       service_content,
-      instance_ename: service_id,
-      instance_name: '试运行任务',
+      instance_ename: service_name+'_task',
+      instance_name: service_name+'试运行任务',
       job_type: 'n',
       shell_args: service_args,
       job_timeout: 3000,

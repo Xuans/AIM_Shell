@@ -155,10 +155,12 @@ export default {
     execute() {
       this.runMessage = "初始化执行器...";
       let service_id = this.getStore().target.service_id;
+      let service_name = this.getStore().target.service_name;
       let service_content = this.getStore().target.service_content;
       let service_args = this.getServiceArgs(this.serviceParams);
       this.$addExecuteTask({
         service_id,
+        service_name,
         service_content,
         service_args
       })
@@ -184,7 +186,7 @@ export default {
                     },
                     service: {
                       service_id,
-                      service_name: this.getStore().target.service_name,
+                      service_name,
                       service_version: ""
                     }
                   });
@@ -219,6 +221,8 @@ export default {
       }
       //弹出一个参数配置页面，填写完参数后，转到Log页面
       this.serviceParams = this.getSerivceParams();
+      this.runMessage=null;
+      this.runErrorMessage=null;
       this.runConfigurationVisiable = true;
     },
     handleOfValue(val, item) {

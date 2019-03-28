@@ -11,12 +11,13 @@
       size="mini"
       stripe
       tooltip-effect="dark"
+      height='250px'
     >
       <el-table-column prop="instance_ename" label="任务名" width="120"></el-table-column>
       <el-table-column prop="instance_name" label="任务描述" width="320"></el-table-column>
       <el-table-column prop="job_timeout" label="超时时间" width="120"></el-table-column>
-      <el-table-column prop="service_version" label="服务版本" width="220"></el-table-column>
-      <el-table-column prop="value" label width="120">
+      <el-table-column prop="service_version" label="服务版本" fixed='right'></el-table-column>
+      <el-table-column prop="value" fixed='right'>
         <template slot-scope="scope">
           <a href="#">
             <p @click.stop="jumpTo(scope.row)">执行记录</p>
@@ -43,15 +44,33 @@ export default {
   },
   methods: {
     jumpTo(task) {
-      app.domain.exports("shell", {
-        shell_ename: task.instance_name
-      });
+      // app.domain.exports("shell", {
+      //   shell_ename: task.instance_name
+      // });
 
+      // app.dispatcher.load({
+      //   title: "任务定义",
+      //   moduleId: "dlPoc",
+      //   section: "shellTaskMangement",
+      //   id: task.instance_ename
+      // });
+      app.domain.exports("shellLogDetails", {
+        task: {
+          instance_name: task.instance_name + "试运行",
+          instance_id: task.instance_id
+        },
+        service: {
+          service_id: task.service_id,
+          service_name: task.service_name,
+          service_version: task.service_versoin
+        }
+      });
+      //debugger;
       app.dispatcher.load({
-        title: "任务定义",
+        title: `任务执行记录`,
         moduleId: "dlPoc",
-        section: "shellTaskMangement",
-        id: task.instance_ename
+        section: "shellLogDetails",
+        id: task.instance_id
       });
     },
     reload() {
